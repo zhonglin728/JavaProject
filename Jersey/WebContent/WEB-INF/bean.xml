@@ -1,0 +1,85 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+ xmlns:context="http://www.springframework.org/schema/context"
+ xmlns:p="http://www.springframework.org/schema/p"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:aop="http://www.springframework.org/schema/aop"
+ xmlns:task="http://www.springframework.org/schema/task" 
+ xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+      http://www.springframework.org/schema/context
+      http://www.springframework.org/schema/context/spring-context.xsd
+      http://www.springframework.org/schema/task
+	  http://www.springframework.org/schema/task/spring-task-3.1.xsd
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+    
+    <!-- 1. 激活自动代理功能  会自动扫描有@aspect的类
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	-->
+    
+    <!-- 2. 手动配置AOP的类路径！ execution(* com.pingan.pilot.pact.*.restful..*(..))-->
+    <!-- 1  和 2 选一个即可！ -->
+     <bean id="aspectBean" class="com.pingan.util.MyInterceptor"/>  
+     <aop:config>  
+        <aop:aspect id="TestAspect" ref="aspectBean">  
+            <aop:pointcut id="businessService"  expression="execution(* com.pingan.restful..*(..))" />  
+           
+            <aop:before pointcut-ref="businessService" method="doBefore"/>  
+           
+            <aop:after pointcut-ref="businessService" method="doAfter"/>  
+            
+            <aop:around pointcut-ref="businessService" method="doAround"/> 
+            
+            <aop:after-throwing pointcut-ref="businessService" method="doThrowing" throwing="ex"/>  
+        </aop:aspect>  
+    </aop:config> 
+    
+    <!-- Spring定时任务Demo -->
+    <task:annotation-driven />
+    <context:annotation-config/>
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+    <context:component-scan base-package="com.pingan.util"/>
+    
+    
+    <!--配置一个user1  bean实例-->
+    <bean id="user1" class="com.pingan.entity.User">  
+        <property name="name" value="钟林"/>  
+        <property name="address" value="我是河北人啊"/>  
+    </bean>  
+    <!--配置一个user2 bean实例-->
+     <bean id="user2" class="com.pingan.entity.User">  
+        <property name="name" value="周强"/>  
+        <property name="address" value="我是襄阳人啊"/>  
+    </bean> 
+    
+	<!--配置一个List  对象 并向里面添加User对象！-->
+	<bean id="SpringUser" class="com.pingan.service.UserService">
+		<property name="userList">
+			<list>
+				<ref bean="user1"/>
+				<ref bean="user2"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 自定义加载Bean  这个方法没有加IOC 注解！ -->
+	<bean id="oaServiceZhonglin" class="com.pingan.service.OaService"></bean>
+    
+    
+    
+    <!-- 加载property配置文件！注入到user里面  和如下效果一样！
+    <context:property-placeholder location="WEB-INF/jdbc.properties"/>-->
+    <!-- 加载 jdbc.properties-->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	    <property name="locations">
+	       <list>
+	          <value>WEB-INF/jdbc.properties</value>
+	        </list>
+	    </property>
+	</bean>
+	
+    <bean id="user3" class="com.pingan.entity.User">  
+        <property name="name" value="${dataSource}"/>  
+        <property name="address" value="${driverClass}"/>  
+    </bean>
+    
+</beans>

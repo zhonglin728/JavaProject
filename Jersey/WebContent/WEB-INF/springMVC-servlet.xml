@@ -1,0 +1,40 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+    
+     <!-- 启动包扫描功能，以便注册带有@Controller、@Service、@repository、@Component等注解的类成为spring的bean -->
+     <context:component-scan base-package="com.pingan" />  
+     
+     <!-- 配置SpringMVC的视图渲染器， 让其前缀为:/page/ 后缀为.jsp  将视图渲染到/page/<method返回值>.jsp中 -->  
+      <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/page/" />
+        <property name="suffix" value=".jsp" />
+      </bean>
+     <!--排除以下页面以及JS静态页面！-->
+	<mvc:resources location="/" mapping="/**/*.html"/>  
+	<mvc:resources location="/" mapping="/**/*.js"/>  
+	<mvc:resources location="/" mapping="/**/*.css"/>  
+	<mvc:resources location="/" mapping="/**/*.png"/>  
+	<mvc:resources location="/" mapping="/**/*.gif"/> 
+	<mvc:resources location="/" mapping="/**/*.jsp"/> 
+      
+     <!-- 启动注解驱动的Spring MVC功能，注册请求url和注解POJO类方法的映射-->
+	<mvc:annotation-driven> 
+	<!--自定义参数注解 用于保存用户的登录信息!@UserInfo-->
+		<mvc:argument-resolvers>
+				<bean class="com.pingan.annotation.LogineUserAnnatation" />
+		</mvc:argument-resolvers>
+	</mvc:annotation-driven>
+	
+</beans>

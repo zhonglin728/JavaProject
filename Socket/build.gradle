@@ -1,0 +1,23 @@
+apply plugin: 'java'
+apply plugin:'war'
+
+version = '1.0'
+
+repositories {
+    //mavenCentral()
+    	mavenLocal()
+          maven { url "http://" + "192.168.5.17:8081/archiva" +"/repository/release" }
+          maven { url "http://" + "192.168.5.17:8081/archiva" +"/repository/snapshots" }
+          maven { url "http://" + "192.168.5.17:8081/archiva" +"/repository/internal" }
+}
+
+dependencies {
+	compile group: 'javax', name: 'javaee-api', version: '7.0'  
+	compile group: 'net.sf.json-lib', name: 'json-lib', version: '2.4'
+	
+}
+
+task copyjars(type: Copy) {
+    from configurations.runtime
+    into 'lib' // 目标位置
+}

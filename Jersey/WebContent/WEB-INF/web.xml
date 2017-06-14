@@ -78,7 +78,7 @@
 	
 
 
-	<!--cxf服务-->
+	<!-- 集成  cxf服务  2017-6-14 11:38:46-->
 	<servlet>  
 	   <servlet-name>CXFServlet</servlet-name>  
 	   <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>  

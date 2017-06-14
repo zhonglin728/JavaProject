@@ -48,8 +48,10 @@
     <context:component-scan base-package="com.pingan.util"/>
     
     
-    
+    <!-- 集成  cxf    implementor指向具体的cxf服务方法      address访问地址     2017-6-14 11:40:31-->
     <jaxws:endpoint id="helloworldBean" implementor="com.pingan.cxf.HelloWorldService"  address="/hellow" />
+    
+    
     
     <!--配置一个user1  bean实例-->
     <bean id="user1" class="com.pingan.entity.User">  

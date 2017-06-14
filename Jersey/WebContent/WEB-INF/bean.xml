@@ -4,14 +4,22 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xmlns:aop="http://www.springframework.org/schema/aop"
  xmlns:task="http://www.springframework.org/schema/task" 
+ xmlns:jaxws="http://cxf.apache.org/jaxws"  
+ xmlns:cxf="http://cxf.apache.org/core" 
  xsi:schemaLocation="http://www.springframework.org/schema/beans
       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
       http://www.springframework.org/schema/context
       http://www.springframework.org/schema/context/spring-context.xsd
       http://www.springframework.org/schema/task
 	  http://www.springframework.org/schema/task/spring-task-3.1.xsd
-      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
-    
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+      http://cxf.apache.org/jaxws   
+      http://cxf.apache.org/schemas/jaxws.xsd
+      ">
+		 <import resource="classpath:META-INF/cxf/cxf.xml" />
+		 <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+		 
+		 
     <!-- 1. 激活自动代理功能  会自动扫描有@aspect的类
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
 	-->
@@ -39,6 +47,9 @@
     <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
     <context:component-scan base-package="com.pingan.util"/>
     
+    
+    
+    <jaxws:endpoint id="helloworldBean" implementor="com.pingan.cxf.HelloWorldService"  address="/hellow" />
     
     <!--配置一个user1  bean实例-->
     <bean id="user1" class="com.pingan.entity.User">  

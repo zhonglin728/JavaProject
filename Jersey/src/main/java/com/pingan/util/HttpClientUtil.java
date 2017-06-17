@@ -7,12 +7,10 @@ import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.ws.rs.core.HttpHeaders;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.logging.Log;
@@ -34,10 +32,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 /**
  * httpclient工具类
@@ -87,7 +81,7 @@ public class HttpClientUtil {
 	 * @throws InstantiationException 
 	 * 调用   new HttpClientUtil().scanPackage("com.pingan");
      */  
-    public void scanPackage(String Package) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public  void scanPackage(String Package) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         URL url = this.getClass().getClassLoader().getResource("" + Package.replaceAll("\\.", "/"));// 将所有的.转义获取对应的路径  
         String pathFile = url.getFile();  
         File file = new File(pathFile);  
@@ -344,16 +338,10 @@ public class HttpClientUtil {
 		//token = login();
 	}
 
-	public static void main(String[] args) throws UnsupportedEncodingException  {
-		//String s = httpGetRequest("http://192.168.5.25:8080/api/v1/role");
-		//System.out.println(format(s));
-		for (int i = 0; i < 100; i++) {
-			String s = httpGetRequest("http://www.toutiao.com/api/article/recent/?source=2&count=1&category=gallery_detail&max_behot_time=0&utm_source=toutiao&device_platform=web&offset=0&as=A1F5F87E2BC3ACB&cp=48EBA33A1C6B3E2&_=1");
-			Document document = Jsoup.parse(s);
-			JSONArray jsonArray = JSONObject.fromObject(document.body().text()).getJSONArray("data");
-			System.out.println("-------"+jsonArray);
-		}
-	
+	public static void main(String[] args) throws UnsupportedEncodingException, ClassNotFoundException, InstantiationException, IllegalAccessException  {
+		findFile("com");
+		System.out.println("-------------------");
+		new HttpClientUtil().scanPackage("com");
 		
 	}
 	

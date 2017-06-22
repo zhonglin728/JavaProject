@@ -15,9 +15,10 @@ import org.springframework.stereotype.Component;
 
 import com.pingan.entity.User;
 import com.pingan.service.UserService;
+import com.pingan.util.PropertyPlaceholder;
 
 @Component
-@Path("/hellow")
+@Path("/userRest")
 public class UserRestful {
 	/**
 	 * ��ȡSpring Bean  user �������õ�ֵ��a
@@ -39,10 +40,11 @@ public class UserRestful {
 	private HttpServletRequest res;
 	
 	/**
-	 * http://localhost:8080/Jersey/rest/hellow?name=zhonglin
+	 * http://localhost:8080/Jersey/rest/userRest/query
 	 * @return
 	 * @throws InterruptedException
 	 */
+	@Path("query")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUser() throws InterruptedException{
@@ -50,6 +52,7 @@ public class UserRestful {
 		List<User> list = SpringUser.getUserList();
 		String param = request.getParameter("name");
 		String result = user+list.get(0).getName()+list.get(0).getAddress()+"请求参数为"+param;
+		System.out.println("---------------"+PropertyPlaceholder.getProperty("user"));
 		return Response.ok(result).build();
 	}
 	

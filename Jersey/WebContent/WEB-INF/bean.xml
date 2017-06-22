@@ -82,7 +82,7 @@
     <!-- 加载property配置文件！注入到user里面  和如下效果一样！
     <context:property-placeholder location="WEB-INF/jdbc.properties"/>-->
     <!-- 加载 jdbc.properties-->
-	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<bean id="propertyConfigurer" class="com.pingan.util.PropertyPlaceholder">
 	    <property name="locations">
 	       <list>
 	          <value>WEB-INF/jdbc.properties</value>

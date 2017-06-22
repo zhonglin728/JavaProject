@@ -225,7 +225,7 @@ public class HttpClientUtil {
 	}
 	
 	/**
-	 *  局域网 设置代理 服务器！
+	 *  局域网 设置代理 ip服务器！
 	 */
 	private static RequestConfig proxy(){
 		HttpHost proxy = new HttpHost("192.168.7.1", 8080);  
@@ -240,7 +240,7 @@ public class HttpClientUtil {
 	 */
 	private static String getResult(HttpRequestBase request) {
 		//CloseableHttpClient httpClient = HttpClients.createDefault();
-		request.setConfig(proxy());
+		//request.setConfig(proxy());//局域网设置代理IP访问
 		CloseableHttpClient httpClient = getHttpClient();
 		try {
 			CloseableHttpResponse response = httpClient.execute(request);
@@ -338,10 +338,16 @@ public class HttpClientUtil {
 		//token = login();
 	}
 
-	public static void main(String[] args) throws UnsupportedEncodingException, ClassNotFoundException, InstantiationException, IllegalAccessException  {
-		findFile("com");
-		System.out.println("-------------------");
-		new HttpClientUtil().scanPackage("com");
+	public static void main(String[] args) throws Exception  {
+		//findFile("com");
+		for(int i=0;i<10000;i++){
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("action", "createFolder");
+			jsonObject.put("newPath", "作者好厉害求源码"+i+".jar");
+			String httpPostJSON = httpPostJSON("http://albert6.com:8888/fileManager/createFolder/", jsonObject);
+			System.out.println(i+"---"+httpPostJSON);
+		}
+		
 		
 	}
 	

@@ -17,8 +17,19 @@ import java.util.concurrent.Future;
  */
 public class ExecutorServiceThread {
 	
-	public static void main(String[] args) {
-		 long timeStart = System.currentTimeMillis(); 
+public static void main(String[] args) {
+	for (int i = 10000; i < 100000; i++) {
+		multiThreading(i);
+	}
+}
+
+
+	/**
+	 * 多线程调用方法
+	 * @param i 坐标
+	 */
+	private static void multiThreading(int i) {
+		long timeStart = System.currentTimeMillis(); 
 		 
 		  int taskSize = 4;//线程数量
 		  ExecutorService pool = Executors.newFixedThreadPool(taskSize);
@@ -27,28 +38,28 @@ public class ExecutorServiceThread {
 			callables.add(new Callable<String>() {
 				@Override
 				public String call() throws Exception {
-					JsoupHttp.login();
+					HttpClientUtil.zhonglin(i);
 					return UUID.randomUUID().toString()+"线程1";
 				}
 			});
 			callables.add(new Callable<String>() {
 				@Override
 				public String call() throws Exception {
-					JsoupHttp.login();
+					HttpClientUtil.zhonglin(i);
 					return UUID.randomUUID().toString()+"线程2";
 				}
 			});
 			callables.add(new Callable<String>() {
 				@Override
 				public String call() throws Exception {
-					JsoupHttp.login();
+					HttpClientUtil.zhonglin(i);
 					return UUID.randomUUID().toString()+"线程3";
 				}
 			});
 			callables.add(new Callable<String>() {
 				@Override
 				public String call() throws Exception {
-					JsoupHttp.login();
+					HttpClientUtil.zhonglin(i);
 					return UUID.randomUUID().toString()+"线程4";
 				}
 			});
@@ -56,7 +67,7 @@ public class ExecutorServiceThread {
 				List<Future<String>> invokeAll = pool.invokeAll(callables);
 				for (Future<String> future : invokeAll) {
 					try {
-						System.out.println(future.get());
+						System.out.println("线程返回结果！---"+future.get());
 					} catch (ExecutionException e) {
 						e.printStackTrace();
 					}
@@ -68,9 +79,6 @@ public class ExecutorServiceThread {
 			}finally{
 				pool.shutdown();
 			}
-			
-			
-			
 	}
 	
 	

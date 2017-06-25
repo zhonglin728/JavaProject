@@ -6,8 +6,9 @@
  xmlns:task="http://www.springframework.org/schema/task" 
  xmlns:jaxws="http://cxf.apache.org/jaxws"  
  xmlns:cxf="http://cxf.apache.org/core" 
+ xmlns:cache="http://www.springframework.org/schema/cache" 
  xsi:schemaLocation="http://www.springframework.org/schema/beans
-      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+      http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
       http://www.springframework.org/schema/context
       http://www.springframework.org/schema/context/spring-context.xsd
       http://www.springframework.org/schema/task
@@ -15,6 +16,8 @@
       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
       http://cxf.apache.org/jaxws   
       http://cxf.apache.org/schemas/jaxws.xsd
+      http://www.springframework.org/schema/cache
+      http://www.springframework.org/schema/cache/spring-cache-3.1.xsd 
       ">
 		 <import resource="classpath:META-INF/cxf/cxf.xml" />
 		 <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
@@ -77,9 +80,13 @@
 	<!-- 自定义加载Bean  这个方法没有加IOC 注解！ -->
 	<bean id="oaServiceZhonglin" class="com.pingan.service.OaService"></bean>
     
+    <bean id="user3" class="com.pingan.entity.User">  
+        <property name="name" value="${dataSource}"/>  
+        <property name="address" value="${driverClass}"/>  
+    </bean>
     
     
-    <!-- 加载property配置文件！注入到user里面  和如下效果一样！
+       <!-- 加载property配置文件！注入到user里面  和如下效果一样！
     <context:property-placeholder location="WEB-INF/jdbc.properties"/>-->
     <!-- 加载 jdbc.properties-->
 	<bean id="propertyConfigurer" class="com.pingan.util.PropertyPlaceholder">
@@ -90,9 +97,21 @@
 	    </property>
 	</bean>
 	
-    <bean id="user3" class="com.pingan.entity.User">  
-        <property name="name" value="${dataSource}"/>  
-        <property name="address" value="${driverClass}"/>  
-    </bean>
+	
+	<!-- <cache:annotation-driven cache-manager="cacheManager" /> -->
+    <!-- 配置EhCache的CacheManager
+    通过configLocation指定ehcache.xml文件的位置 -->
+   <!--  <bean id="ehCacheManager"
+        class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+        p:configLocation="classpath:ehcache.xml"
+        p:shared="false" /> -->
+    <!-- 配置基于EhCache的缓存管理器
+    并将EhCache的CacheManager注入该缓存管理器Bean -->
+   <!--  <bean id="cacheManager"
+        class="org.springframework.cache.ehcache.EhCacheCacheManager"
+        p:cacheManager-ref="ehCacheManager" > 
+    </bean> -->
+	
+	
     
 </beans>

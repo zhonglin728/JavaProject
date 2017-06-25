@@ -1,0 +1,654 @@
+﻿<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml" ng-app='myApp'>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>抓取数据</title>
+
+    <script src="http://baike.baidu.com/wikiui/api/zhixinmap?lemmaId=249243&callback=zhonglinCall"></script>
+    <script src="http://cdn.bootcss.com/angular.js/1.5.0/angular.js"></script>
+    <script src="https://cdn.bootcss.com/angular-i18n/1.6.0-rc.1/angular-locale_zh-cn.min.js"></script>
+    <script src="https://cdn.bootcss.com/angular-ui-bootstrap/2.2.0/ui-bootstrap-tpls.js"></script>
+    <script src="http://cdn.bootcss.com/angular-ui-grid/4.0.2/ui-grid.js"></script>
+    <!--<script src="http://cdn.bootcss.com/pdfmake/0.1.26/pdfmake.js"></script>-->
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/angular-ui-grid/4.0.2/ui-grid.css" >
+    <style>
+        .panel-body{
+            background-color: rgba(196, 243, 83, 0.29);
+        }
+        #titlePhone{
+              /*border:1px dashed #F00;*/
+              text-align: center;
+              width:95%;
+              margin: 0px auto;
+              margin-top: 10px;
+        }
+        #titlePhone img{
+           margin-left: 10px;
+        }
+    </style>
+    <script>
+    var app = angular.module('myApp', ['ui.grid','ui.grid.selection','ui.grid.edit',
+            'ui.grid.exporter','ui.grid.pagination','ui.grid.resizeColumns','ui.grid.autoResize','ui.bootstrap']);
+        
+        app.controller('MyCtrl', function($scope,i18nService,$http,$uibModal,$log,$sce) {
+            // 国际化；
+            i18nService.setCurrentLang("zh-cn");
+            $scope.gridOptions = {
+                data: 'myData',
+                columnDefs: [{ field: 'id', 
+                                 displayName: 'ID', 
+                                 width: '10%', 
+                                 enableColumnMenu: true,// 是否显示列头部菜单按钮
+                                 enableHiding: false,
+                                 suppressRemoveSort: true,
+                                 enableCellEdit: false // 是否可编辑
+                             },
+                             { field: "content",displayName: '内容',width: '70%'},
+                             { field: "share_url",displayName: '地址'},
+                             { field: "online_time",displayName: '时间', cellFilter: 'date: "yyyy-MM-dd HH:mm:ss"'},
+                             {  
+                            field : 'action',  
+                            displayName : "操作",  
+                            cellTemplate : '<div class="container-fluid"><div class="row cell-action-style"><div class="col-xs-3 text-center"><div class="div-click"  ng-click="grid.appScope.goToUpdate(row)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></div></div><div class="col-xs-3 text-center" ><div class="div-click"  ng-click="grid.appScope.goToDelete(row)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></div></div><div></div></div></div>',  
+                            enableCellEdit: false
+                            }
+                            ],
+                            
+                enableSorting: true, //是否排序
+                useExternalSorting: false, //是否使用自定义排序规则
+                enableGridMenu: true, //是否显示grid 菜单
+                showGridFooter: true, //是否显示grid footer
+                enableHorizontalScrollbar :  0, //grid水平滚动条是否显示, 0-不显示  1-显示
+                enableVerticalScrollbar : 0, //grid垂直滚动条是否显示, 0-不显示  1-显示
+                
+                //-------- 分页属性 ----------------
+                enablePagination: true, //是否分页，默认为true
+                enablePaginationControls: true, //使用默认的底部分页
+                paginationPageSizes: [10, 11,12,13,14,15,16,17,18,19,20], //每页显示个数可选项
+                paginationCurrentPage:1, //当前页码
+                paginationPageSize: 10, //每页显示个数
+                //paginationTemplate:"<div></div>", //自定义底部分页代码
+                totalItems : 0, // 总数量
+                useExternalPagination: true,//是否使用分页按钮
+                
+           
+                //----------- 选中 ----------------------
+                enableFooterTotalSelected: true, // 是否显示选中的总数，默认为true, 如果显示，showGridFooter 必须为true
+                enableFullRowSelection : true, //是否点击行任意位置后选中,默认为false,当为true时，checkbox可以显示但是不可选中
+                enableRowHeaderSelection : true, //是否显示选中checkbox框 ,默认为true
+                enableRowSelection : true, // 行选择是否可用，默认为true;
+                enableSelectAll : true, // 选择所有checkbox是否可用，默认为true; 
+                enableSelectionBatchEvent : true, //默认true
+                   isRowSelectable: function(row){ //GridRow
+                   if(row.entity.age > 45){
+                       row.grid.api.selection.selectRow(row.entity); // 选中行
+                   }
+                },
+                modifierKeysToMultiSelect: false ,//默认false,为true时只能 按ctrl或shift键进行多选, multiSelect 必须为true;
+                multiSelect: true ,// 是否可以选择多个,默认为true;
+                noUnselect: false,//默认false,选中后是否可以取消选中
+                selectionRowHeaderWidth:30 ,//默认30 ，设置选择列的宽度；
+                
+                //--------------导出----------------------------------
+                exporterAllDataFn: function(){
+                       return getPage(1,$scope.gridOptions.totalItems);
+                },
+                exporterCsvColumnSeparator: ',',
+                exporterCsvFilename:'download.csv',
+                exporterFieldCallback : function ( grid, row, col, value ){
+                 if ( value == 50 ){
+                   value = "可以退休";
+                 }
+                 return value;
+                },
+                exporterHeaderFilter :function( displayName ){ 
+                   return 'col: ' + name; 
+                },
+                exporterHeaderFilterUseName : true,
+                exporterMenuCsv : true,
+                exporterMenuLabel : "Export",
+                exporterMenuPdf : true,
+                exporterOlderExcelCompatibility : false,
+                exporterPdfCustomFormatter : function ( docDefinition ) {
+                 docDefinition.styles.footerStyle = { bold: true, fontSize: 10 };
+                 return docDefinition;
+                },
+                exporterPdfFooter :{ 
+                                     text: 'My footer', 
+                                     style: 'footerStyle' 
+                                   },
+                exporterPdfDefaultStyle : {
+                  fontSize: 11,font:'simblack' //font 设置自定义字体
+                },
+                exporterPdfFilename:'download.pdf',
+                /* exporterPdfFooter : {
+                 columns: [
+                   'Left part',
+                   { text: 'Right part', alignment: 'right' }
+                 ]
+                }, 
+                或 */
+                exporterPdfFooter: function(currentPage, pageCount) { 
+                       return currentPage.toString() + ' of ' + pageCount; 
+                },
+                exporterPdfHeader : function(currentPage, pageCount) { 
+                   return currentPage.toString() + ' of ' + pageCount; 
+                },
+                exporterPdfMaxGridWidth : 720,
+                exporterPdfOrientation : 'landscape',//  'landscape' 或 'portrait' pdf横向或纵向
+                exporterPdfPageSize : 'A4',// 'A4' or 'LETTER' 
+                exporterPdfTableHeaderStyle : {
+                 bold: true,
+                 fontSize: 12,
+                 color: 'black'
+                },
+                exporterPdfTableLayout : null,
+                exporterPdfTableStyle: {
+                 margin: [0, 5, 0, 15]
+                },
+                exporterSuppressColumns : ['buttons'],
+                exporterSuppressMenu: false,
+
+                //---------------api---------------------
+                onRegisterApi: function(gridApi) {
+                    $scope.gridApi = gridApi;
+                    //分页按钮事件
+                    gridApi.pagination.on.paginationChanged($scope,function(newPage, pageSize) {
+                          if(getPage) { 
+                              getPage(newPage, pageSize); 
+                           }
+                    });
+                    //行选中事件
+                    $scope.gridApi.selection.on.rowSelectionChanged($scope,function(row,event){
+                        if(row){
+                            $scope.testRow = row.entity;
+							$scope.goToUpdate(row);
+                        }
+                     });
+                     
+                }
+            };
+
+
+            var mydefalutData = [];
+            function toutiao(){
+                mydefalutData = [];//清空数据
+                var myUrl = "http://www.toutiao.com/api/article/feed/?category=essay_joke&utm_source=toutiao&widen=1&max_behot_time=0&max_behot_time_tmp=0&tadrequire=true&as=A155E87DDC4B37E&cp=58DC4B13972E4E1&callback=JSON_CALLBACK";
+                $http.jsonp(myUrl).success(function(data){//jsonp   抓取今日头条 内涵段子 数据
+                        angular.forEach(data.data,function(n,i){
+                            delete n.comments;
+                            delete n.display_time;
+                            delete n.online_time;
+                            delete n.type;
+                            mydefalutData.push(n.group);
+                        })
+                        //分页数据
+                        let curPage = 1;
+                        let pageSize = $scope.gridOptions.paginationPageSize
+                        let firstRow = (curPage - 1) * pageSize;
+                        $scope.gridOptions.totalItems = mydefalutData.length;
+                        $scope.gridOptions.data = mydefalutData.slice(firstRow, firstRow + pageSize);
+                　　});
+            }
+
+            //copy对象
+            function copy(obj){
+                    var newobj = {};
+                    for ( var attr in obj) {
+                        newobj[attr] = obj[attr];
+                    }
+                    return newobj;
+            }
+            
+            var getPage = function(curPage, pageSize) {
+                    var firstRow = (curPage - 1) * pageSize;
+                    $scope.gridOptions.totalItems = mydefalutData.length;
+                    $scope.gridOptions.data = mydefalutData.slice(firstRow, firstRow + pageSize);
+            };
+
+             $scope.goToUpdate=function(row){
+                //alert('修改'+angular.toJson(row.entity)); 
+                $scope.item = row.entity;
+                debugger;
+                var msg = new Object();
+                msg.title = "内容......";
+                msg.context = angular.fromJson(row.entity);
+                var par = {
+                            msgFun: function () {
+                                return msg;
+                            }
+                        }
+                    var modalInstance = $uibModal.open({
+                    templateUrl: 'myModalContent.html',
+                    controller: 'ModalInstanceCtrl',
+                    backdrop: "static",
+                    animation:true,
+                    size: 'lg',
+                    resolve: par
+                    });
+                    modalInstance.result.then(function (selectedItem) {
+                        $scope.selected = selectedItem;
+                    }, function () {
+                        $log.info('Modal dismissed at: ' + new Date());
+                    });
+            }; 
+            //goToDelete
+             $scope.goToDelete=function(row){
+                //alert('删除'+angular.toJson(row.entity)); 
+                $scope.item = row.entity;
+                debugger;
+                var msg = new Object();
+                msg.title = "删除？......";
+                msg.context = angular.fromJson(row.entity.id);
+                var par = {
+                            msgFun: function () {
+                                return msg;
+                            }
+                        }
+                    var modalInstance = $uibModal.open({
+                    templateUrl: 'delModalContent.html',
+                    controller: 'delModalInstanceCtrl',
+                    backdrop: "static",
+                    animation:true,
+                    size: 'sm',
+                    resolve: par
+                    });
+                    modalInstance.result.then(function (selectedItem) {
+                        $scope.selected = selectedItem;
+                    }, function () {
+                        $log.info('Modal dismissed at: ' + new Date());
+                    });
+            }; 
+           
+            $scope.search = function (){
+                toutiao();
+               //getPage(1, $scope.gridOptions.paginationPageSize);
+           }
+
+
+            getPage(1, $scope.gridOptions.paginationPageSize);
+            toutiao();//初始化AJAX数据
+			//------------------ 今日头条搜索词汇---------------------------------------
+             document.querySelector("#serToutiao").style.height = 150 + 'px';
+			 $scope.searchToutiaoDict = function (){
+               
+                var searUrl = "http://www.toutiao.com/search/sug/?callback=JSON_CALLBACK";
+                var key = $scope.searToutiao;
+				$http({
+					method:"JSONP",
+					url:searUrl,
+					params:{"keyword":key}
+				  }).success(function (data){
+					 $scope.toutiaos = data;
+                     setTimeout(function() {//设置 外层DIV 高度自适应
+                        var liHeight = document.querySelector("#serToutiao li:first-child").offsetHeight;
+                        document.querySelector("#serToutiao").style.height = liHeight + 'px';
+                   }, 200);
+
+				  })
+
+			 }
+            //------------------ 百度百科词汇---------------------------------------
+             $scope.searchBaike = function (){
+                  //百度百科
+                  $http({
+					method:"JSONP",
+					url:"http://baike.baidu.com/api/openapi/BaikeLemmaCardApi?callback=JSON_CALLBACK",
+					params:{"scope":103,"format":"json","appid":379020,"bk_length":6000,"bk_key":$scope.searBaike}
+				  }).success(function (data,status,config,headers){
+					$scope.baikes = data;//百度百科数据
+                    $scope.baikeTitleShow = true;
+                    if(angular.equals("",$scope.searBaike) || angular.isUndefined($scope.searBaike)){
+                        $scope.baikeTitleShow = false;
+                    }
+                   setTimeout(function() {//设置 外层DIV 高度自适应
+                        var liHeight = document.querySelector("#serToutiao li:last-child").offsetHeight;
+                        document.querySelector("#serToutiao").style.height = liHeight + 'px';
+                   }, 200);
+                   
+				  }).error(function (data,status,config,headers){
+                      console.log(err);
+                  })
+             }
+             //作品信息  接口返回HTML格式 无法接收。
+             $scope.info = function (lemmaId){
+                $http({
+					method:"JSONP",
+					url:"http://baike.baidu.com/api/wikisecond/modulemedialistsort",
+					params:{"lemmaId":lemmaId,"callback":"JSON_CALLBACK"}
+				}).success(function (data){
+                    console.log(data);
+                }).error(function (data,status,config,headers){
+                    console.log("error"+data);
+                })
+                
+             }
+
+             //显示今日头条推荐数据
+             $scope.tuiJian = function (){
+                    $http({
+					method:"JSONP",
+					url:"http://www.toutiao.com/api/pc/feed/",
+					params:{
+                        "category":"__all__",
+                        "utm_source":"toutiao",
+                        "widen":1,
+                        "max_behot_time":0,
+                        "max_behot_time_tmp":0,
+                        "tadrequire":true,
+                        "as":"A165188EF790386",
+                        "cp":"58E7D0B348B66E1",
+                        "callback":"JSON_CALLBACK"
+                        }
+				}).success(function (data){
+                    $scope.tuijian = data;
+                }).error(function (data,status,config,headers){
+                    console.log("error"+data);
+                })
+             }
+            //初始化 数据
+            $scope.tuiJian()
+             //显示评论信息  http://www.toutiao.com/api/comment/list/
+             $scope.pinlun = function(id,title){
+                    $http({
+					method:"JSONP",
+					url:"http://www.toutiao.com/api/comment/list/",
+					params:{
+                       "group_id":id,
+                        "item_id":"6406076667583791617",
+                        "offset":0,
+                        "count":1000,
+                        "callback":"JSON_CALLBACK"
+                        }
+				}).success(function (data){
+                    console.log(data);
+                    var msg = new Object();
+                    msg.title = "评论......";
+                    msg.context = data;
+                    msg.firstTitle = title;
+                    var par = {
+                                msgFun: function () {
+                                    return msg;
+                                }
+                            }
+                        var modalInstance = $uibModal.open({
+                        templateUrl: 'pinLunModalContent.html',
+                        controller: 'pinLunModalCtrl',
+                        backdrop: "static",
+                        animation:true,
+                        size: 'lg',
+                        resolve: par
+                        });
+                        modalInstance.result.then(function (selectedItem) {
+                            $scope.selected = selectedItem;
+                        }, function () {
+                            $log.info('Modal dismissed at: ' + new Date());
+                        });
+                }).error(function (data,status,config,headers){
+                    console.log("error"+data);
+                })
+             }
+
+             //左右选择框Demo
+             $scope.leftSelect = ['十堰','襄阳','宜昌','武汉','黄石','孝感','锦州','汉口','郧西','河夹镇','大屏','小乔'];
+             $scope.rightSelect = ['钟林','鸡哥'];
+             $scope.leftCheck = function (l,i){
+                //$scope.leftSelect.splice(i,1);
+                $scope.rightSelect.push(l);//移动数据到右边
+             }
+             $scope.rightCheck = function (l,i){
+                 $scope.rightSelect.splice(i,1);//删除数据
+                 //$scope.leftSelect.push(l);
+             }
+          
+    });
+
+    // 详情ModalInstanceCtrl 弹窗controller  
+        app.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, msgFun) {
+            var vm = this;
+            $scope.items = msgFun.context;
+            $scope.title = msgFun.title;
+            $scope.ok = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+    });
+    // 删除delModalInstanceCtrl 弹窗controller  
+        app.controller('delModalInstanceCtrl', function ($scope, $uibModalInstance, msgFun) {
+            var vm = this;
+            $scope.items = msgFun.context;
+            $scope.title = msgFun.title;
+            $scope.ok = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+    });
+    // 显示评论ModalInstanceCtrl 弹窗controller  
+        app.controller('pinLunModalCtrl', function ($scope, $uibModalInstance, msgFun) {
+            var vm = this;
+            $scope.pItem = msgFun.context;
+            $scope.pTitle = msgFun.title;
+            $scope.firstTitle = msgFun.firstTitle;
+            $scope.ok = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+    });
+
+    </script>
+
+</head>
+<body ng-controller="MyCtrl">
+
+        <div id="titlePhone">
+             <img style="width: 200px;height: 200px;" ng-src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1491591185517&di=af1d6ada4b36fbcb2337b1d3e099320a&imgtype=0&src=http%3A%2F%2Fwww.nongshanghang.cn%2Fyule%2Fuploads%2Fallimg%2F161230%2F154P43245_0.jpg" class="img-circle">
+             <img style="width: 200px;height: 200px;" ng-src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1491591383379&di=5242060955b4e695817f66e3065c89a7&imgtype=0&src=http%3A%2F%2Fimg.guatian.com%2FUpload%2Fimage%2F20170214%2F58a2c2e68d535.jpeg" class="img-circle">
+             <img style="width: 200px;height: 200px;" ng-src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1491591447751&di=50be48c920e9ec0b511755a1ffc216ae&imgtype=0&src=http%3A%2F%2Fimage.zzd.sm.cn%2F16971519320643245531.jpg%3Fid%3D0" class="img-circle">
+             <img style="width: 200px;height: 200px;" ng-src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1498368498241&di=2eda99a73572ad307b5859ebcaf107eb&imgtype=0&src=http%3A%2F%2Fimage.xinmin.cn%2F2017%2F06%2F12%2FCqgNOlk-Rv2AMXJAAAAAAAAAAAA291.690x461.jpg" class="img-circle">
+             <img style="width: 200px;height: 200px;" ng-src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1491591578386&di=4121f9077811f204fd132b240e288bf8&imgtype=jpg&src=http%3A%2F%2Fimg1.imgtn.bdimg.com%2Fit%2Fu%3D3943879384%2C1831083696%26fm%3D214%26gp%3D0.jpg" class="img-circle">
+             <img style="width: 200px;height: 200px;" ng-src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1498368601523&di=dc6699240e47fd9e28a0189d18312e3b&imgtype=0&src=http%3A%2F%2Fwww.people.com.cn%2Fmediafile%2Fpic%2F20170608%2F9%2F16078133871903015977.jpg" class="img-circle">
+        </div>
+
+        <button type="button" ng-click="search();" class="btn btn-primary btn-lg btn-block" style="margin-top:20px;">点击-抓取今日头条内涵段子数据</button>
+
+        <hr/>
+
+        <div  ui-grid="gridOptions" style="width: 100%; height: 700px; text-align: center;color: #F57303;"
+         ui-grid-edit ui-grid-pagination  ui-grid-selection ui-grid-exporter ui-grid-resize-columns ui-grid-auto-resize>
+        </div>
+        
+        
+
+        <div style="width:100%;height: 100px;">
+             <ul class="list-group">
+                <li>ID：{{testRow.id}}</li>
+                <li>内容：{{testRow.content}}</li>
+                <li>地址：{{testRow.share_url}}</li>
+				 <li>时间：{{testRow.online_time}}</li>
+             </ul>   
+        </div>
+        
+        
+            <ul id="serToutiao" style="list-style:none;border:1px dashed  #e0bd10;width:95%;margin: 0px auto;">
+                <li style="float: left;width:20%">
+                    <!--头条关键字 搜索-->
+                    <input type="text" ng-model="searToutiao" ng-keyup="searchToutiaoDict();" class="form-control" placeholder="请输入搜索关键字">
+                    <!--<input type="text" ng-model="searToutiao" ng-keyup="searchToutiaoDict();" uib-typeahead="n for n in dict | filter:$viewValue | limitTo:8" class="form-control">-->
+                    <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h2 class="panel-title">今日头条搜索结果</h2>
+                            </div>
+                           
+                            <div class="panel-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item" ng-repeat="x in toutiaos.data">
+                                        <span class="glyphicon glyphicon-fire" style="color: rgb(255, 0, 0);"> {{x}}</span>
+                                    </li>
+                                <ul>
+                            </div>
+                    </div>
+                <li>
+                <li style="float: right;width:78%;">
+                <!--百度百科  搜索-->
+                    <input type="text" ng-model="searBaike" ng-keyup="searchBaike();" class="form-control" placeholder="请输入搜索关键字">
+                    <!--<input type="text" ng-model="searToutiao" ng-keyup="searchBaike();" uib-typeahead="n for n in dict | filter:$viewValue | limitTo:8" class="form-control">-->
+                    <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <div class="panel-title" ng-if="!baikeTitleShow">百度百科搜索结果</div>
+                                <div class="panel-title" ng-if="baikeTitleShow" >
+                                    <span ng-bind="baikes.abstract"></span>
+                                </div>              
+                            </div>
+                            
+                            <div class="panel-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item" ng-if="baikes.card.length>0" ng-click="info(baikes.newLemmaId)"><!--图片区域-->
+                                        <span class="glyphicon glyphicon-film" style="color: rgb(255, 0, 0);"> 照片:</span>
+                                        <img style="width: 250px;height: 220px;" ng-src="{{baikes.image}}" class="img-circle">
+                                    </li>
+                                    <li class="list-group-item" ng-repeat="x in baikes.card"><!--接口数据区域-->
+                                        <span class="glyphicon glyphicon-fire" style="color: rgb(255, 0, 0);"> {{x.name}}: </span>
+                                        <span>{{x.value[0]}}</span>
+                                    </li>
+                                    {{zhixin}}
+                                <ul>
+                            </div>
+                    </div>        
+                </li>
+            </ul>
+
+       <hr/>
+    <!--刷新今日头条推荐数据-->
+    <button type="button" ng-click="tuiJian();" class="btn btn-primary btn-lg btn-block" style="margin-top:20px;">刷新今日头条推荐数据</button>
+    <table class="table table-bordered table-hover"  style="margin-top:10px;width:96%;margin:0px auto;">
+            <tr ng-if="tuijian.data.length>0">
+                <th>ID</th>
+                <th>标题</th>
+                <th>类型</th>
+                <th>内容</th>
+                <th>图片</th>
+            </tr>
+            <tr ng-repeat="t in tuijian.data" uib-tooltip="点击查看详细评论" ng-click="pinlun(t.group_id,t.title);">
+                <td>{{t.group_id}}</td>
+                <td>{{t.title}}</td>
+                <td>{{t.chinese_tag}}</td>
+                <td>{{t.abstract}}</td>
+                <td>
+                     <img style="width: 100px;height: 100px;" ng-src="{{t.image_url}}" class="img-rounded">
+                </td>
+            </tr>
+    </table>
+
+    <!--左右筛选Demo-->
+    <div style="width:250px;height:200px;position:relative;float:left;margin-top:10px;">
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat="left in leftSelect" ng-dblclick="leftCheck(left,$index)" uib-tooltip="双击选项左边数据到右边！"><span class="glyphicon glyphicon-glass" style="color: rgb(255, 0, 1);"></span>&nbsp; {{left}}</li>
+     <ul>
+    </div>
+
+    <div style="width:250px;height:200px;position:relative;float:left;margin-left:10px;margin-top:10px;">
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat="right in rightSelect" ng-dblclick="rightCheck(right,$index)"><span class="glyphicon glyphicon-glass" style="color: rgb(255, 0, 1);"></span>&nbsp; {{right}}</li>
+     <ul>
+          {{rightSelect}}
+    </div>
+   
+<!--<div class="progress">
+	<div class="progress-bar progress-bar-success" role="progressbar"
+		 aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+		 style="width: 90%;">
+		<span class="sr-only">90% 完成（成功）</span>
+	</div>
+</div>-->
+        <!--数据详情页面-->
+        <script type="text/ng-template" id="myModalContent.html">
+                    <div ng-model="bootDemo">
+                        <div class="modal-header">
+                            <h4 class="modal-title">
+                                <span class="glyphicon glyphicon-th-list" style="color: rgb(255, 0, 1); font-size: 31px;">{{title}}</span>
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="panel panel-success">
+                                <div class="panel-heading">
+                                    <h2 class="panel-title">段子</h2>
+                                </div>
+                                <div class="panel-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><span class="glyphicon glyphicon-glass" style="color: rgb(255, 0, 1);"></span>&nbsp; {{items.id}}</li>
+                                        <li class="list-group-item"><span class="glyphicon glyphicon-book" style="color: rgb(255, 0, 1);"></span>&nbsp; {{items.content}}</li>
+                                        <li class="list-group-item"><span class="glyphicon glyphicon-link" style="color: rgb(255, 0, 1);"></span>&nbsp; {{items.share_url}}</li>
+                                        <li class="list-group-item"><span class="glyphicon glyphicon-sound-dolby" style="color: rgb(255, 0, 1);"></span>&nbsp; {{items.online_time | date:'yyyy-MM-dd HH:mm:ss'}}</li>
+                                    <ul>
+                                </div>
+                            </div>
+                            
+                           
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+                            <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+                        </div>
+                    </div>
+        </script>
+
+
+        <!--删除数据页面-->
+        <script type="text/ng-template" id="delModalContent.html">
+                    <div ng-model="bootDemo">
+                        <div class="modal-header">
+                            <h4 class="modal-title"><span class="glyphicon glyphicon-remove">{{title}}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <span class="glyphicon glyphicon-log-out" style="color: rgb(255, 0, 0);">：</span>{{items}}
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+                            <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+                        </div>
+                    </div>
+        </script>
+
+
+        <!--显示评论详情页面-->
+        <script type="text/ng-template" id="pinLunModalContent.html">
+                    <div ng-model="bootDemo">
+                        <div class="modal-header">
+                            <h4 class="modal-title">
+                                <span class="glyphicon glyphicon-th-list" style="color: rgb(255, 0, 1); font-size: 31px;">{{pTitle}}</span>
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="panel panel-success">
+                                <div class="panel-heading">
+                                    <h2 class="panel-title">{{firstTitle}}【{{pItem.data.total}}】</h2>
+                                </div>
+                                <div class="panel-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item" ng-repeat="t in pItem.data.comments">
+                                            <span class="glyphicon glyphicon-pencil" style="color: rgb(255, 17, 3);">{{$index+1}}内容:</span>&nbsp; {{t.text}}<br/>
+                                            <span class="glyphicon glyphicon-book" style="color: rgb(255, 1, 3);">评论人：</span>&nbsp; 
+                                            <img style="width: 50px;height: 50px;" ng-src="{{t.user.avatar_url}}" class="img-circle">
+                                            {{t.user.name}}
+                                        </li>
+                                    <ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+                            <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+                        </div>
+                    </div>
+        </script>
+
+
+    </body>
+</html>

@@ -11,7 +11,7 @@
     <script src="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.3/js/bootstrap.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.3/js/bootstrap.min.js"></script>
     <script src="layer/layer.js"></script>
-    <link rel="stylesheet" href="layer/skin/layui.css"  media="all">
+    <link rel="stylesheet" href="layer\mobile\need\layer.css"  media="all">
     <script src="lib/ligerUI/js/plugins/ligerGrid.js" type="text/javascript"></script>
     <link href="https://cdn.bootcss.com/ionic/1.3.2/css/ionic.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/ionic/1.3.2/js/ionic.bundle.min.js"></script>
@@ -89,7 +89,7 @@
 	    	height = height + height;
 	    	$("#message").scrollTop($("#message").height()+height);
 	    	console.log(event);
-	       // setMessageInnerHTML(event.data);
+	        setMessageInnerHTML(event.data);
 	    }
 
 	    //连接关闭的回调方法

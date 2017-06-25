@@ -7,24 +7,39 @@ repositories {
 }
 
 dependencies { 
+		//Spring MVC
 		compile group: 'org.springframework', name: 'spring-webmvc', version: '4.3.6.RELEASE'
+		compile group: 'org.springframework', name: 'spring-core', version: '4.3.7.RELEASE'
+		//servlet
  		compile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.0-b01'
+ 		//Jersey
 		compile group: 'org.glassfish.jersey.core', name: 'jersey-server', version: '2.25'
 		compile group: 'org.glassfish.jersey.ext', name: 'jersey-spring3', version: '2.25'
+		//log
 		compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.6.2'
 		compile group: 'log4j', name: 'log4j', version: '1.2.17'
+		//Java AOP 代理
 		compile group: 'org.aspectj', name: 'aspectjrt', version: '1.8.3'
 		compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.8.9'
+		//阿里巴巴 json转换
 		compile group: 'com.google.code.gson', name: 'gson', version: '2.8.0'
+		//JavaWeb工程 所需的jar
 		compile group: 'javax', name: 'javaee-api', version: '7.0'  
+		//JSON 转换
 		compile group: 'net.sf.json-lib', name: 'json-lib', version: '2.4', classifier:'jdk15'
 		compile group: 'net.sf.json-lib', name: 'json-lib-ext-spring', version: '1.0.2'
+		//httpclient Java http请求工具类
 		compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'
+		//Java爬虫 访问Web页面
 		compile group: 'org.jsoup', name: 'jsoup', version: '1.10.2'
+		//导出excel工具
 		compile group: 'org.apache.poi', name: 'poi', version: '3.16-beta2'
+		//Java webservice  CXF
 		compile group: 'org.apache.cxf', name: 'cxf-rt-frontend-jaxws', version: '3.1.11'
 		compile group: 'org.apache.cxf', name: 'cxf-rt-transports-http', version: '3.1.11'
-		compile group: 'net.sf.ehcache', name: 'ehcache', version: '2.10.4'
+		
+		
+		compile group: 'org.springmodules', name: 'spring-modules-cache', version: '0.8'
     	runtime("jstl:jstl:1.2") 
 }
 

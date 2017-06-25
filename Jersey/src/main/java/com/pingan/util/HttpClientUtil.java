@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.ws.rs.core.HttpHeaders;
@@ -126,7 +127,7 @@ public class HttpClientUtil {
 	}
 	
 	/**
-	 * 
+	 *  
 	 * @param url
 	 * @return
 	 */
@@ -136,7 +137,13 @@ public class HttpClientUtil {
 		httpGet.setHeader(HttpHeaders.USER_AGENT,userAgent);
 		return getResult(httpGet);
 	}
-
+	/**
+	 * 
+	 * @param url
+	 * @param params
+	 * @return
+	 * @throws URISyntaxException
+	 */
 	public static String httpGetRequest(String url, Map<String, Object> params) throws URISyntaxException {
 		//HttpHost proxy = new HttpHost("192.168.7.1",80); 
 		//RequestConfig  config = RequestConfig.custom().setProxy(proxy).build();
@@ -150,7 +157,14 @@ public class HttpClientUtil {
 		httpGet.setHeader(HttpHeaders.USER_AGENT,userAgent);
 		return getResult(httpGet);
 	}
-
+	/**
+	 * 
+	 * @param url
+	 * @param headers
+	 * @param params
+	 * @return
+	 * @throws URISyntaxException
+	 */
 	public static String httpGetRequest(String url, Map<String, Object> headers, Map<String, Object> params)
 			throws URISyntaxException {
 		URIBuilder ub = new URIBuilder();
@@ -167,14 +181,24 @@ public class HttpClientUtil {
 		}
 		return getResult(httpGet);
 	}
-
+	/**
+	 * 
+	 * @param url
+	 * @return
+	 */
 	public static String httpPostRequest(String url) {
 		HttpPost httpPost = new HttpPost(url);
 		httpPost.setHeader(HttpHeaders.AUTHORIZATION,token);
 		httpPost.setHeader(HttpHeaders.USER_AGENT,userAgent);
 		return getResult(httpPost);
 	}
-
+	/**
+	 * 
+	 * @param url
+	 * @param params
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
 	public static String httpPostRequest(String url, Map<String, Object> params) throws UnsupportedEncodingException {
 		HttpPost httpPost = new HttpPost(url);
 		httpPost.setHeader(HttpHeaders.AUTHORIZATION,token);
@@ -183,7 +207,14 @@ public class HttpClientUtil {
 		httpPost.setEntity(new UrlEncodedFormEntity(pairs, UTF_8));
 		return getResult(httpPost);
 	}
-
+	/**
+	 * 
+	 * @param url
+	 * @param headers
+	 * @param params
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
 	public static String httpPostRequest(String url, Map<String, Object> headers, Map<String, Object> params)
 			throws UnsupportedEncodingException {
 		HttpPost httpPost = new HttpPost(url);
@@ -338,17 +369,16 @@ public class HttpClientUtil {
 		//token = login();
 	}
 
-	public static void main(String[] args) throws Exception  {
+	
+	public static void zhonglin(int i) throws Exception  {
 		//findFile("com");
-		for(int i=0;i<10000;i++){
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("action", "createFolder");
-			jsonObject.put("newPath", "作者好厉害求源码"+i+".jar");
-			String httpPostJSON = httpPostJSON("http://albert6.com:8888/fileManager/createFolder/", jsonObject);
-			System.out.println(i+"---"+httpPostJSON);
-		}
-		
-		
+			Map<String, Object> params = new HashMap<>();
+			params.put("pageUrl", "'蠕虫入侵数据url"+i);
+			params.put("pageTitle", "蠕虫入侵数据title"+i);
+			params.put("pageDesc", "蠕虫入侵数据desc"+i);
+			params.put("action", "add");
+			String res = httpPostRequest("http://wblog1234.ngrok.cc/testManager_v1/pageInfo/addPageInfo.json", params);
+			System.out.println(i+"-------"+res);
 	}
 	
 }

@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml" ng-app='myApp'>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>抓取数据</title>
+
+    <script src="http://baike.baidu.com/wikiui/api/zhixinmap?lemmaId=249243&callback=zhonglinCall"></script>
+    <script src="http://cdn.bootcss.com/angular.js/1.5.0/angular.js"></script>
+    <script src="https://cdn.bootcss.com/angular-i18n/1.6.0-rc.1/angular-locale_zh-cn.min.js"></script>
+    <script src="https://cdn.bootcss.com/angular-ui-bootstrap/2.2.0/ui-bootstrap-tpls.js"></script>
+    <script src="http://cdn.bootcss.com/angular-ui-grid/4.0.2/ui-grid.js"></script>
+    <!--<script src="http://cdn.bootcss.com/pdfmake/0.1.26/pdfmake.js"></script>-->
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/angular-ui-grid/4.0.2/ui-grid.css" >
+    <style>
+        .panel-body{
+            background-color: rgba(196, 243, 83, 0.29);
+        }
+      
+        #titlePhone img{
+           margin-left: 10px;
+        }
+    </style>
+    <script>
+    var app = angular.module('myApp', ['ui.grid','ui.grid.selection','ui.grid.edit',
+            'ui.grid.exporter','ui.grid.pagination','ui.grid.resizeColumns','ui.grid.autoResize','ui.bootstrap']);
+        app.controller('MyCtrl', function($scope,i18nService,$http,$uibModal,$log,$sce) {
+        	picture();
+        	$scope.search = function (){
+        		picture();
+        	}
+        	function picture (){
+        		var id = math(6000,7000);
+        		$http({
+            		url:'http://zhonglin.ngrok.cc/Jersey/rest/userRest/picture/'+id,
+            		method:'GET'
+            		}).success(function(data,header,config,status){
+            			if(data.length==0){
+            				alert("没有找到数据 请点击刷新按钮！！");
+            			}else{
+            				console.log(data);
+            				$scope.picture = data;
+            			}
+            		}).error(function(data,header,config,status){
+            		//处理响应失败
+            		});
+        }
+        	
+       	
+       	function math(begin,end){
+       	 return Math.floor(Math.random()*(end-begin))+begin;
+       	}
+       	
+       	
+    });
+
+    </script>
+
+</head>
+<body ng-controller="MyCtrl">
+<button type="button" ng-click="search();" class="btn btn-primary btn-lg btn-block" style="margin-top:20px;">强仔请点击刷新图片</button>
+        <div id="titlePhone" ng-repeat="p in picture" style="float: left;">
+			<div class="panel panel-default">
+	    		<div class="panel-body">
+	             	<img style="width: 400px;height: 400px;" class="img-circle" ng-src="{{p}}">
+	             </div>
+             </div>
+        </div>
+
+        
+
+
+    </body>
+</html>

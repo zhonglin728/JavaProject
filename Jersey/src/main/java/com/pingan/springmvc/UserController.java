@@ -122,6 +122,8 @@ public class UserController {
 		System.out.println("3");
 		return "update";
 	}
+	
+	
 
 
 }

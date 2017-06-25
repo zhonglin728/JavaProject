@@ -6,14 +6,18 @@ import java.util.Map;
 
 import javax.ws.rs.core.HttpHeaders;
 
+import net.sf.json.JSONArray;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 public class JsoupHttp {
 	
 	public static void main(String[] args) throws IOException {
 		
-		
+		yellowPicture();
 	}
 	
 	
@@ -46,6 +50,21 @@ public class JsoupHttp {
 			System.out.println("------------------"+i);
 			System.out.println(document.body());
 		}
+	}
+	
+	/**
+	 * 抓取 picture
+	 * @return
+	 * @throws IOException
+	 */
+	public static JSONArray yellowPicture() throws IOException{
+		JSONArray jsonArray = new JSONArray();
+		Document document = Jsoup.connect("http://www.ok583.com/arthtml/4371.html").get();
+		Elements select = document.select("#postmessage img");
+		for (Element element : select) {
+			jsonArray.add(element.attr("src"));
+		}
+		return jsonArray; 
 	}
 
 }

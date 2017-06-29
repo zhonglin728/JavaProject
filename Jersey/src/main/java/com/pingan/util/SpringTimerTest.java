@@ -25,8 +25,8 @@ public class SpringTimerTest {
 	 /**
 	  * 启动时执行一次，之后每隔3秒执行一次
 	  */
-	 @Scheduled(cron="0/5000000 * *  * * ? ")   //每5秒执行一次  
-	 //@Scheduled(fixedRate = 1000 * 3)
+	 
+	 @Scheduled(fixedRate = 1000 * 3)
 	 public String print() {
 		 User user =  (User) ContextLoader.getCurrentWebApplicationContext().getBean("user1");
 		 User users = (User) SpringContextUtil.getBean("user2");

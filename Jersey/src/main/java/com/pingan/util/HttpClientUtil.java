@@ -41,73 +41,11 @@ import org.apache.http.util.EntityUtils;
  */
 public class HttpClientUtil {
 	public   Log log = LogFactory.getLog(this.getClass());
-	/**
-	 *  扫描包下面的class 反射方法！
-	 * @param path
-	 * @throws ClassNotFoundException
-	 * 调用    findFile("com/pingan");
-	 */
-	public static  void findFile(String path) throws ClassNotFoundException{
-		URL url = Thread.currentThread().getContextClassLoader().getResource(path);
-		File file = new File(url.getFile());
-		if(file.isDirectory()){
-			String[] list = file.list();
-			for (String string : list) {
-				findFile(path+"/"+string);
-			}
-		}
-		else{
-			if(file.getName().indexOf("$")==-1 && file.getName().endsWith(".class")){
-				Class<?> forName = Class.forName(path.replaceAll("/", ".").replaceAll(".class", ""));
-				Method[] methods = forName.getDeclaredMethods();
-				for (Method method : methods) {
-					Annotation[] annotations = method.getAnnotations();
-					for (Annotation annotation : annotations) {
-						System.out.println(method.getName()+"---"+annotation);
-					}
-				}
-			}
-			
-		}
-	}
 	
-	/** 
-     * 扫描包下的所有文件 的注解
-     * 
-     *  com.pingan.pilot.pact
-     *  
-     * @param Package 
-	 * @throws ClassNotFoundException 
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
-	 * 调用   new HttpClientUtil().scanPackage("com.pingan");
-     */  
-    public  void scanPackage(String Package) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        URL url = this.getClass().getClassLoader().getResource("" + Package.replaceAll("\\.", "/"));// 将所有的.转义获取对应的路径  
-        String pathFile = url.getFile();  
-        File file = new File(pathFile);  
-        String fileList[] = file.list();  
-        for (String path : fileList) {  
-            File eachFile = new File(pathFile+ "/" +path);  
-            if (eachFile.isDirectory()) {  
-                scanPackage(Package +"/" +eachFile.getName());  
-            } else {  
-                //packageNames.add(Package + "." + eachFile.getName());  
-            	String name = (Package + "." + eachFile.getName()).replaceAll("/", ".");
-            	if(name.indexOf("$") == -1 && name.indexOf(".class")>-1){
-                	Class<?> forName = Class.forName(name.replaceAll(".class", ""));
-                	Method[] declaredMethods = forName.getDeclaredMethods();
-                	for (Method method : declaredMethods) {
-						Annotation[] annotations = method.getAnnotations();
-						for (Annotation annotation : annotations) {
-							System.out.println(method.getName()+"--"+annotation);
-						}
-					}
-            	}
-            }  
-        }  
-    }
-    
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+		
+	}
+
     
 	private static PoolingHttpClientConnectionManager cm;
 	private static String EMPTY_STR = "";

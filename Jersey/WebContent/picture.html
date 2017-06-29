@@ -29,8 +29,10 @@
         	$scope.search = function (){
         		picture();
         	}
+        	
+        	
         	function picture (){
-        		var id = math(6000,7000);
+        		var id = math(1,10);
         		$http({
             		url:'http://zhonglin.ngrok.cc/Jersey/rest/userRest/picture/'+id,
             		method:'GET'
@@ -44,7 +46,7 @@
             		}).error(function(data,header,config,status){
             		//处理响应失败
             		});
-        }
+        	}
         	
        	
        	function math(begin,end){
@@ -58,7 +60,7 @@
 
 </head>
 <body ng-controller="MyCtrl">
-<button type="button" ng-click="search();" class="btn btn-primary btn-lg btn-block" style="margin-top:20px;">强仔请点击刷新图片</button>
+<button type="button" ng-click="search();" class="btn btn-primary btn-lg btn-block" style="margin-top:20px;">请点击刷新图片</button>
         <div id="titlePhone" ng-repeat="p in picture" style="float: left;">
 			<div class="panel panel-default">
 	    		<div class="panel-body">

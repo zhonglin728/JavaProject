@@ -15,7 +15,6 @@ import javax.ws.rs.core.Response;
 import net.sf.json.JSONArray;
 
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,8 +64,8 @@ public class UserRestful {
 	}
 	
 	/**
-	 * 爬虫 抓取图片   src
-	 * http://www.ok583.com/arthtml/4371.html
+	 * 写真图片
+	 * @param id
 	 * @return
 	 */
 	@Path("picture/{id}")
@@ -74,28 +73,41 @@ public class UserRestful {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response picture(@PathParam("id") String id) {
 		JSONArray jsonArray = new JSONArray();
-		Document document;
 		try {
-			Elements select = Jsoup.connect("http://www.ok583.com/arthtml/"+id+".html").get().select("#postmessage img");
-			if(select.size()==0){
-				select = Jsoup.connect("http://www.ok583.com/arthtml/"+(id+1)+".html").get().select("#postmessage img");
-			}
+			Elements select = Jsoup.connect("http://www.4j4j.cn/beauty/tag_23_"+id+".html").get().select("#pic-list li a img");
 			for (Element element : select) {
-				jsonArray.add(element.attr("src"));
+				String attr = element.attr("data-original");
+				jsonArray.add(attr);
 			}
+			System.out.println("IP---------------"+getRemortIP());
+			System.out.println("数据---"+jsonArray);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return Response.ok(jsonArray.toString()).build();
-	}
+	} 
 	
-//	public static void main(String[] args) throws NoSuchMethodException, NoSuchFieldException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InterruptedException {
-//		User user = new User();
-//		Method declaredMethod = User.class.getDeclaredMethod("setName", String.class);
-//		declaredMethod.invoke(user, "rest");
-//		System.out.println(user.getName());
-//		Object invoke = User.class.getMethod("getName", new Class[]{}).invoke(user);
-//		System.out.println(invoke);
-//	}
+	
+	
+	/**
+	 * 获取IP
+	 * @return
+	 */
+	public String getRemortIP() {
+		  if (res.getHeader("x-forwarded-for") == null) {
+		   return res.getRemoteAddr();
+		  }
+		  return res.getHeader("x-forwarded-for");
+		}
+
+	
+	public static void main(String[] args) throws IOException {
+		Elements select = Jsoup.connect("http://www.4j4j.cn/beauty/tag_23_2.html").get().select("#pic-list li a img");
+		for (Element element : select) {
+			String attr = element.attr("data-original");
+			System.out.println(attr);
+		}
+		
+	}
 
 }

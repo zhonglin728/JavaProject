@@ -40,6 +40,10 @@ dependencies {
 		
 		
 		compile group: 'org.springmodules', name: 'spring-modules-cache', version: '0.8'
+		
+		
+		compile group: 'javax.ws.rs', name: 'jsr311-api', version: '1.1.1'
+		
     	runtime("jstl:jstl:1.2") 
 }
 

@@ -38,11 +38,14 @@ dependencies {
 		compile group: 'org.apache.cxf', name: 'cxf-rt-frontend-jaxws', version: '3.1.11'
 		compile group: 'org.apache.cxf', name: 'cxf-rt-transports-http', version: '3.1.11'
 		
-		
-		compile group: 'org.springmodules', name: 'spring-modules-cache', version: '0.8'
-		
-		
-		compile group: 'javax.ws.rs', name: 'jsr311-api', version: '1.1.1'
+		//Spring + mogodb
+		compile group: 'org.springframework.data', name: 'spring-data-mongodb', version: '1.10.1.RELEASE'
+		//duboo
+		compile(group: 'com.alibaba', name: 'dubbo', version: '2.5.3') {
+        exclude(module: 'spring')
+    	}
+    	//zookeeper
+    	compile group: 'org.apache.zookeeper', name: 'zookeeper', version: '3.4.6'
 		
     	runtime("jstl:jstl:1.2") 
 }

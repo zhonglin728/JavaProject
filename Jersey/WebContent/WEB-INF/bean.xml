@@ -52,7 +52,7 @@
     
     
     <!-- 集成  cxf    implementor指向具体的cxf服务方法      address访问地址     2017-6-14 11:40:31-->
-    <jaxws:endpoint id="helloworldBean" implementor="com.pingan.cxf.HelloWorldService"  address="/hellow" />
+    <jaxws:endpoint id="helloworldBean" implementor="com.pingan.cxf.HelloWorldService"  address="/cxf" />
     
     
     
@@ -96,21 +96,6 @@
 	        </list>
 	    </property>
 	</bean>
-	
-	
-	<!-- <cache:annotation-driven cache-manager="cacheManager" /> -->
-    <!-- 配置EhCache的CacheManager
-    通过configLocation指定ehcache.xml文件的位置 -->
-   <!--  <bean id="ehCacheManager"
-        class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
-        p:configLocation="classpath:ehcache.xml"
-        p:shared="false" /> -->
-    <!-- 配置基于EhCache的缓存管理器
-    并将EhCache的CacheManager注入该缓存管理器Bean -->
-   <!--  <bean id="cacheManager"
-        class="org.springframework.cache.ehcache.EhCacheCacheManager"
-        p:cacheManager-ref="ehCacheManager" > 
-    </bean> -->
 	
 	
     

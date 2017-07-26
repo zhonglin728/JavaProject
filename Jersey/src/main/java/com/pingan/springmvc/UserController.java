@@ -1,6 +1,8 @@
 package com.pingan.springmvc;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -25,6 +27,7 @@ import com.pingan.service.EmpService;
 import com.pingan.service.OaService;
 import com.pingan.service.StudentService;
 import com.pingan.service.UserService;
+import com.wordnik.swagger.annotations.ApiOperation;
 
 /**
  * 
@@ -87,6 +90,7 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value="/query",method=RequestMethod.GET)
+	@ApiOperation(value = "根据用户名获取用户对象", httpMethod = "get", response = User.class, notes = "根据用户名获取用户对象")
 	public String query(Model model,@UserInfo User annatationUser){
 		System.out.println(studentService.getStudent());
 		System.out.println(empService.getEmp());
@@ -101,6 +105,10 @@ public class UserController {
 			User user = new User();
 			user.setAddress("湖北"+i);
 			user.setName("钟林"+i);
+			user.setSex("男");
+			user.setBirthday(randomDate("1990-01-05 21:43:21", "2017-07-05 20:10:12"));
+			user.setAge(20+i);
+			user.setDep("华为DU"+i+"部门");
 			list.add(user);
 		}
 		Map<RequestMappingInfo, HandlerMethod> handlerMethods = handlerMapping.getHandlerMethods();
@@ -124,6 +132,62 @@ public class UserController {
 	}
 	
 	
+	
+	
+	/**
+	 * 生成随机时间
+	 * 
+	 * @param beginDate
+	 * @param endDate
+	 * @return
+	 */
+	@SuppressWarnings("unused")
+	private static Date randomDate(String beginDate, String endDate) {
+		try {
+
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+			Date start = format.parse(beginDate);// 构造开始日期
+
+			Date end = format.parse(endDate);// 构造结束日期
+
+			// getTime()表示返回自 1970 年 1 月 1 日 00:00:00 GMT 以来此 Date 对象表示的毫秒数。
+
+			if (start.getTime() >= end.getTime()) {
+
+				return null;
+
+			}
+
+			long date = random(start.getTime(), end.getTime());
+
+			return new Date(date);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+
+		return null;
+
+	}
+
+	private static long random(long begin, long end) {
+
+		long rtn = begin + (long) (Math.random() * (end - begin));
+
+		// 如果返回的是开始时间和结束时间，则递归调用本函数查找随机值
+
+		if (rtn == begin || rtn == end) {
+
+			return random(begin, end);
+
+		}
+
+		return rtn;
+
+	}
 
 
 }

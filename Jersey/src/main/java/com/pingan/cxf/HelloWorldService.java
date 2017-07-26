@@ -9,7 +9,7 @@ import com.pingan.entity.User;
 /**
  * cxf  服务 实现  2017-6-13 16:05:28
  * @author Administrator
- * http://localhost:8080/Jersey/service/hellow?wsdl
+ * http://localhost:8080/Jersey/service/cxf?wsdl
  *
  */
 @WebService(endpointInterface="com.pingan.cxf.IHelloWorldService")//endpointInterface是为了在实现多个接口情况下指明webservice的接口

@@ -18,7 +18,7 @@ import java.util.concurrent.Future;
 public class ExecutorServiceThread {
 	
 public static void main(String[] args) {
-	for (int i = 10000; i < 100000; i++) {
+	for (int i = 1; i < 100000000; i++) {
 		multiThreading(i);
 	}
 }
@@ -38,29 +38,29 @@ public static void main(String[] args) {
 			callables.add(new Callable<String>() {
 				@Override
 				public String call() throws Exception {
-					HttpClientUtil.zhonglin(i);
-					return UUID.randomUUID().toString()+"线程1";
+					String s = HttpClientUtil.zhonglin(i);
+					return Thread.currentThread().getName()+s;
 				}
 			});
 			callables.add(new Callable<String>() {
 				@Override
 				public String call() throws Exception {
-					HttpClientUtil.zhonglin(i);
-					return UUID.randomUUID().toString()+"线程2";
+					String s = HttpClientUtil.zhonglin(i);
+					return Thread.currentThread().getName()+s;
 				}
 			});
 			callables.add(new Callable<String>() {
 				@Override
 				public String call() throws Exception {
-					HttpClientUtil.zhonglin(i);
-					return UUID.randomUUID().toString()+"线程3";
+					String s = HttpClientUtil.zhonglin(i);
+					return Thread.currentThread().getName()+s;
 				}
 			});
 			callables.add(new Callable<String>() {
 				@Override
 				public String call() throws Exception {
-					HttpClientUtil.zhonglin(i);
-					return UUID.randomUUID().toString()+"线程4";
+					String s = HttpClientUtil.zhonglin(i);
+					return Thread.currentThread().getName()+s;
 				}
 			});
 			try {

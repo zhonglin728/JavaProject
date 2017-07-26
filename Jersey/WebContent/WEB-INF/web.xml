@@ -8,11 +8,13 @@
 	    <param-name>log4jConfigLocation</param-name>  
 	    <param-value>WEB-INF/log4j.xml</param-value>  
 	</context-param>     
+	<!-- 开启监控   3秒扫描一次配置文件的变动 -->
 	<context-param>  
 	    <param-name>log4jRefreshInterval</param-name>  
 	      <param-value>3000</param-value>  
 	 </context-param>  
 	<listener>  
+	
 	    <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>  
 	 </listener>  
 	 

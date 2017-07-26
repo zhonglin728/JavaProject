@@ -1,14 +1,11 @@
 package com.pingan.util;
-import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.ws.rs.core.HttpHeaders;
 
@@ -138,6 +135,7 @@ public class HttpClientUtil {
 	 * @throws UnsupportedEncodingException
 	 */
 	public static String httpPostRequest(String url, Map<String, Object> params) throws UnsupportedEncodingException {
+		System.out.println("请求头" + params);
 		HttpPost httpPost = new HttpPost(url);
 		httpPost.setHeader(HttpHeaders.AUTHORIZATION,token);
 		httpPost.setHeader(HttpHeaders.USER_AGENT,userAgent);
@@ -308,15 +306,23 @@ public class HttpClientUtil {
 	}
 
 	
-	public static void zhonglin(int i) throws Exception  {
+	public static String zhonglin(int i) throws Exception  {
 		//findFile("com");
-			Map<String, Object> params = new HashMap<>();
-			params.put("pageUrl", "'蠕虫入侵数据url"+i);
-			params.put("pageTitle", "蠕虫入侵数据title"+i);
-			params.put("pageDesc", "蠕虫入侵数据desc"+i);
-			params.put("action", "add");
-			String res = httpPostRequest("http://wblog1234.ngrok.cc/testManager_v1/pageInfo/addPageInfo.json", params);
-			System.out.println(i+"-------"+res);
+			Map<String, Object> m = new HashMap<>();
+			m.put("peopleOrApplyVo.name","康拓扑"+UUID.randomUUID().toString()+i);
+			m.put("peopleOrApplyVo.tel","12358745623");
+			m.put("peopleOrApplyVo.mail","121211212121@qq.com");
+			m.put("peopleOrApplyVo.jobExp","南方电网");
+			m.put("peopleOrApplyVo.projectExp","景田地铁站");
+			m.put("peopleOrApplyVo.education","小学毕业");
+			m.put("peopleOrApplyVo.speciality","运维/实施");
+			m.put("peopleOrApplyVo.jobAge","康拓扑科技有限公司");
+			m.put("peopleOrApplyVo.willSite","全国");
+			m.put("openId","12323233");
+			m.put("jumpFlag",-10);
+			m.put("jobId",null);
+			String res = httpPostRequest("http://zhaopin.bill-jc.com/BJCWechatS/noJobAction!checkNoJob", m);
+			return res;
 	}
 	
 }

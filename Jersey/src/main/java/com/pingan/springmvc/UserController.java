@@ -27,7 +27,6 @@ import com.pingan.service.EmpService;
 import com.pingan.service.OaService;
 import com.pingan.service.StudentService;
 import com.pingan.service.UserService;
-import com.wordnik.swagger.annotations.ApiOperation;
 
 /**
  * 
@@ -90,7 +89,6 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value="/query",method=RequestMethod.GET)
-	@ApiOperation(value = "根据用户名获取用户对象", httpMethod = "get", response = User.class, notes = "根据用户名获取用户对象")
 	public String query(Model model,@UserInfo User annatationUser){
 		System.out.println(studentService.getStudent());
 		System.out.println(empService.getEmp());

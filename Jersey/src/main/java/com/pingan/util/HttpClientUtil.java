@@ -31,6 +31,8 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import com.pingan.redis.RedisUtils;
+
 /**
  * httpclient工具类
  * @author ZhongLin728
@@ -322,6 +324,8 @@ public class HttpClientUtil {
 			m.put("jumpFlag",-10);
 			m.put("jobId",null);
 			String res = httpPostRequest("http://zhaopin.bill-jc.com/BJCWechatS/noJobAction!checkNoJob", m);
+			RedisUtils.addObject(m.get("peopleOrApplyVo.name").toString(), m);
+			System.out.println("redis成功！");
 			return res;
 	}
 	

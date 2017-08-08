@@ -3,7 +3,6 @@ package com.pingan.util;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -31,38 +30,18 @@ public static void main(String[] args) {
 	private static void multiThreading(int i) {
 		long timeStart = System.currentTimeMillis(); 
 		 
-		  int taskSize = 4;//线程数量
+		  int taskSize = 8;//线程数量
 		  ExecutorService pool = Executors.newFixedThreadPool(taskSize);
 		  Set<Callable<String>> callables = new HashSet<Callable<String>>(); 
-		  
-			callables.add(new Callable<String>() {
-				@Override
-				public String call() throws Exception {
-					String s = HttpClientUtil.zhonglin(i);
-					return Thread.currentThread().getName()+s;
-				}
-			});
-			callables.add(new Callable<String>() {
-				@Override
-				public String call() throws Exception {
-					String s = HttpClientUtil.zhonglin(i);
-					return Thread.currentThread().getName()+s;
-				}
-			});
-			callables.add(new Callable<String>() {
-				@Override
-				public String call() throws Exception {
-					String s = HttpClientUtil.zhonglin(i);
-					return Thread.currentThread().getName()+s;
-				}
-			});
-			callables.add(new Callable<String>() {
-				@Override
-				public String call() throws Exception {
-					String s = HttpClientUtil.zhonglin(i);
-					return Thread.currentThread().getName()+s;
-				}
-			});
+		  for(int j=0;j<taskSize;j++){
+			  callables.add(new Callable<String>() {
+					@Override
+					public String call() throws Exception {
+						String s = HttpClientUtil.zhonglin(i);
+						return Thread.currentThread().getName()+s;
+					}
+				});
+		  }
 			try {
 				List<Future<String>> invokeAll = pool.invokeAll(callables);
 				for (Future<String> future : invokeAll) {

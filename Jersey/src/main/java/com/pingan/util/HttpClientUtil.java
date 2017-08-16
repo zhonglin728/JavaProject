@@ -324,7 +324,7 @@ public class HttpClientUtil {
 			m.put("jumpFlag",-10);
 			m.put("jobId",null);
 			String res = httpPostRequest("http://zhaopin.bill-jc.com/BJCWechatS/noJobAction!checkNoJob", m);
-			RedisUtils.addObject(m.get("peopleOrApplyVo.name").toString(), m);
+			RedisUtils.setList(m.get("peopleOrApplyVo.name").toString(), JSONObject.fromObject(m));
 			System.out.println("redis成功！");
 			return res;
 	}

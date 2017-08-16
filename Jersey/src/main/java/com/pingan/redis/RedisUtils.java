@@ -151,6 +151,30 @@ public class RedisUtils {
 	}
 
 	/**
+	 * 插入list
+	 * @param key
+	 * @param obj
+	 * 2017年8月12日13:12:10
+	 * @return
+	 */
+	public static boolean setList(String key,JSONObject obj){
+		Jedis jedis = null;
+		try {
+			jedis = getJedis();
+			Long code = jedis.lpush(key, obj.toString());
+			if (code > 1) {
+				return true;
+			}
+		} catch (Exception e) {
+			logger.debug("删除key异常.");
+			return false;
+		} finally {
+			getColse(jedis);
+		}
+		return false;
+		
+	}
+	/**
 	 * @Description: 关闭连接
 	 * @param @param jedis
 	 * @return void 返回类型

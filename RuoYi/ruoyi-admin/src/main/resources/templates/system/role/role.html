@@ -2,7 +2,9 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org"
 	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <meta charset="utf-8">
-<head th:include="include :: header"></head>
+<head th:include="include :: header">
+
+</head>
 <body class="gray-bg">
 	
 	<div class="container-div">
@@ -56,9 +58,28 @@
 	        <div class="col-sm-12 select-table table-striped">
 			    <table id="bootstrap-table" data-mobile-responsive="true"></table>
 			</div>
+
+			<div class="col-sm-12">
+				<table id="example" class="display" cellspacing="0" width="100%">
+					<thead>
+					<tr>
+						<th>角色编号</th>
+						<th>角色名称</th>
+						<th>权限字符</th>
+						<th>显示顺序</th>
+						<th>状态</th>
+						<th>创建时间</th>
+					</tr>
+					</thead>
+				</table>
+				<div id="result"></div>
+			</div>
 		</div>
 	</div>
-	<div th:include="include :: footer"></div>
+	<div th:include="include :: footer">
+
+	</div>
+
 	<script th:inline="javascript">
 		var editFlag = [[${@permission.hasPermi('system:role:edit')}]];
 		var removeFlag = [[${@permission.hasPermi('system:role:remove')}]];
@@ -125,6 +146,8 @@
 		        }]
 		    };
 		    $.table.init(options);
+
+            iniyRoleTable();
 		});
 		
 		/*角色管理-分配数据权限*/
@@ -132,6 +155,60 @@
 		    var url = prefix + '/rule/' + roleId;
 		    $.modal.open("分配数据权限", url);
 		}
+		function iniyRoleTable(){
+		    var self = this;
+		    self.table = $('#example').DataTable({
+				ajax:{
+				    url:'/system/role/list',
+					type:'POST',
+					data:{
+                        pageSize:10,
+                        pageNum:1,
+                        orderByColumn:'roleSort,createTime',
+                        isAsc:'asc'
+					},
+                    dataSrc:'rows'
+				},
+                pageLength:5,
+                lengthMenu: [5, 10, 25, 50, 75, 100 ],
+                ordering:false,
+                rowReorder: {
+                    selector: 'td:nth-child(1)'
+                },
+                stateSave:false,
+                columns:[
+					{data:'roleId'},
+                    {data:'roleName'},
+                    {data:'roleKey'},
+                    {data:'roleSort'},
+                    {data:'status'},
+                    {data:'createTime'}
+				]
+
+			}).on( 'row-reorder', function ( e, diff, edit ) {
+			    let pageLength = self.table.context[0]._iDisplayLength;
+			    let pageSize = self.table.page();
+                let exchangeList = diff.map((curValue,index,arr)=>{
+                    var rowData = self.table.row( diff[index].node ).data();
+					rowData.roleSort = diff[index].newPosition + pageSize*pageLength;
+					return rowData;
+				});
+                console.info( exchangeList );
+                $.ajax({
+                    type: "post",
+                    url: "/system/role/sort",
+                    dataType : "json",
+                    contentType : "application/json",      //网上很多介绍加上此参数的，后来我发现不加入这个参数才会请求成功。
+                    data: JSON.stringify(exchangeList),
+                    success: function (d) {
+                    self.table.ajax.reload(null,false);
+                    layer.msg('排序成功！');
+                    }
+                });
+            } );
+
+		}
 	</script>
 </body>
+
 </html>

@@ -1,6 +1,8 @@
 package com.ruoyi.system.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.system.domain.SysRole;
 
 /**
@@ -81,4 +83,6 @@ public interface SysRoleMapper
      * @return 角色信息
      */
     public SysRole checkRoleKeyUnique(String roleKey);
+
+    void sort(Map map);
 }

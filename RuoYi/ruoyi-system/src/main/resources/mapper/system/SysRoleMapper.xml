@@ -127,5 +127,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			sysdate()
  		)
 	</insert>
+
+	<update id="sort" parameterType="java.util.Map">
+		update sys_role
+		<set>
+			<if test="roleSort != null and roleSort != ''">role_sort = #{roleSort},</if>
+		</set>
+		where role_id = #{roleId}
+	</update>
 	
 </mapper> 

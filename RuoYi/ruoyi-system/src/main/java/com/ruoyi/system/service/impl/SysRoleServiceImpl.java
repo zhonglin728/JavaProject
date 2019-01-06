@@ -1,10 +1,7 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.annotation.DataScope;
@@ -297,5 +294,15 @@ public class SysRoleServiceImpl implements ISysRoleService
     public int countUserRoleByRoleId(Long roleId)
     {
         return userRoleMapper.countUserRoleByRoleId(roleId);
+    }
+
+    @Override
+    public void sort(String roleId, String roleSort) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("roleId",roleId);
+        map.put("roleSort",roleSort);
+        roleMapper.sort(map);
+
     }
 }

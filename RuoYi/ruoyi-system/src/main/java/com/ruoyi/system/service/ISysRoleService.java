@@ -114,4 +114,6 @@ public interface ISysRoleService
      * @return 结果
      */
     public int countUserRoleByRoleId(Long roleId);
+
+    void sort(String roleId, String roleSort);
 }

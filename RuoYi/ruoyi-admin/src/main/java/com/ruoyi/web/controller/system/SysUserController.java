@@ -1,4 +1,4 @@
-package com.ruoyi.web.controller.system;
+﻿package com.ruoyi.web.controller.system;
 
 import java.util.List;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -26,7 +26,7 @@ import com.ruoyi.system.service.ISysUserService;
 import com.ruoyi.framework.web.base.BaseController;
 
 /**
- * 用户信息
+ * 用户信息啊
  * 
  * @author ruoyi
  */

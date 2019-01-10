@@ -26,7 +26,7 @@ import com.ruoyi.system.service.ISysUserService;
 import com.ruoyi.framework.web.base.BaseController;
 
 /**
- * 用户信息啊  2019年1月10日22:40:22
+ * 用户信息啊  2019年1月10日22:40:22 大幅度
  * 
  * @author ruoyi
  */

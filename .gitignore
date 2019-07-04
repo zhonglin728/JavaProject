@@ -17,3 +17,16 @@ Socket/.settings/gradle/org.springsource.ide.eclipse.gradle.core.prefs
 Socket/.settings/org.eclipse.jdt.core.prefs
 Socket/.classpath
 Jersey/WebContent/angular/
+*.class
+RuoYi/ruoyi-admin/target/
+RuoYi/ruoyi-system/target/classes/mapper/system/SysUserOnlineMapper.xml
+RuoYi/ruoyi-system/target/
+RuoYi/ruoyi-generator/target/
+RuoYi/ruoyi-quartz/target/
+RuoYi/.idea/inspectionProfiles/Project_Default.xml
+RuoYi/.idea/workspace.xml
+RuoYi/.idea/
+Jersey/.idea/modules.xml
+Jersey/.idea/
+Jersey/Jersey.iml
+Jersey/lib/

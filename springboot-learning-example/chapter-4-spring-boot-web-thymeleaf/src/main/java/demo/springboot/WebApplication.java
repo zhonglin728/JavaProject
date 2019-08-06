@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Spring Boot 应用启动类
+ * Spring Boot 应用启动类1
  *
  * Created by bysocket on 30/09/2017.
  */

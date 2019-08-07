@@ -14,4 +14,8 @@ public class HelloController {
     public String sayHello(String name){
         return helloService.sayHello() + " " + name;
     }
+    @GetMapping("/findInt")
+    public String findInt(@RequestParam(value = "id" ,defaultValue = "88",required = false) int id){
+        return helloService.findInt(id);
+    }
 }

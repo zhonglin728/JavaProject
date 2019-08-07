@@ -13,4 +13,9 @@ public class HelloService implements IHelloServiceInter {
     public String sayHello(){
         return getHello.sayHello(); // 提供一个hello World
     }
+
+    @Override
+    public int findInt(int id) {
+        return getHello.findInt(id);
+    }
 }

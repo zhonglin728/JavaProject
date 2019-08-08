@@ -5,18 +5,28 @@ package org.spring.springboot.web;
 import org.spring.springboot.entity.Demo;
 import org.spring.springboot.entity.Student;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toCollection;
 
+
+/**
+ * @author Hua-cloud
+ */
 public class Jdk8Test {
 
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         List<Student> list =new ArrayList<>();
         list.add(new Student("钟林",10,"24"));
         list.add(new Student("林俊杰",1,"23"));
@@ -55,12 +65,18 @@ public class Jdk8Test {
         }).collect(Collectors.toList());
 
 
+        List<String> collect6 = list.stream().flatMap(v -> Arrays.stream(v.getName().split(""))).collect(Collectors.toList());
+
+        // mapToInt  取出性别以及求和
+        int sum1 = list.stream().mapToInt(Student::getSex).sum();
+
         //filter  只取sex为0
         System.out.println("只取sex为0****************");
         List<Demo> demorm =demos.stream().filter(demo -> demo.getSex() == 0).distinct().collect(Collectors.toList());
         demorm.forEach(demo -> {
             System.out.println("年龄 "+demo.getAge() +"  性别 " +demo.getSex()+",");
         });
+
         //筛选年龄大于12岁
         System.out.println("筛选年龄大于12岁的*************");
         List<Demo> demoFilter =  demos.stream().filter(demo -> Integer.valueOf(demo.getAge()) > 12).collect(Collectors.toList());
@@ -133,16 +149,16 @@ public class Jdk8Test {
 
         //Stream.of 合并 list
         System.out.println("stream of合并集合数据*******************");
-        Stream.of(
-                list,demos
-        ).flatMap((e) -> e.stream()).forEach(e->System.out.println(e));
+        List<?> collect4 = Stream.of(
+                list, demos
+        ).flatMap((e) -> e.stream()).collect(Collectors.toList());
 
         //Stream.concat 合并 list
         System.out.println("stream.concat合并集合数据*******************");
-        Stream.concat(list.stream(), demos.stream()).collect(Collectors.toList()).forEach(System.out::println);
+        List<Object> collect5 = Stream.concat(list.stream(), demos.stream()).collect(Collectors.toList());
 
         // anyMatch 任意一个人匹配就返回  true
-        boolean allMatch = list.stream().anyMatch((v)->v.getAge().equals("12"));
+        boolean allMatch = list.stream().anyMatch((v)->v.getAge().equals("45"));
         System.out.println(allMatch);
 
         //findFirst,Optional 的使用*******************
@@ -171,9 +187,53 @@ public class Jdk8Test {
                         toCollection(() -> new TreeSet<>(Comparator.comparing(Student::getAge))), ArrayList::new)
         );
 
+        //灵活传递表达式
+        filterPre1(list,(str)->str.equals("周杰伦"));
+
+        //匹配 Name为周杰伦的数据
+        filterPre2(list,(str)->str.getName().equals("周杰伦"));
+        //匹配年龄大于44的数据
+        filterPre2(list,(str)->Integer.valueOf(str.getAge())>44);
+        // 输出所有数据！
+        filterPre2(list,(str)->true);
+
+
+        //JDK8  时间API
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String format = now.format(dateTimeFormatter);
+
+
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String format1 = simpleDateFormat.format(date);
+        Date parse = simpleDateFormat.parse(format1);
 
     }
 
+    /**
+     *Predicate用法1
+     * @param list
+     * @param condition
+     */
+    public static void filterPre1(List<Student> list, Predicate condition) {
+        for(Student v: list){
+            System.out.println(v);
+            //test  匹配表达式！
+            if (condition.test(v.getName())){
+                break;
+            }
+        }
+    }
 
+    /**
+     *redicate用法2
+     * @param list
+     * @param condition 传递灵活参数！
+     */
+    public static void filterPre2(List<Student> list, Predicate<Student> condition) {
+        List<Student> collect = list.stream().filter(condition).collect(Collectors.toList());
+        System.out.println(collect.size());
+    }
 
 }

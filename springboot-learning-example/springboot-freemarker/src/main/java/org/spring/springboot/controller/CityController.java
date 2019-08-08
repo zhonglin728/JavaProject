@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,8 +29,14 @@ public class CityController {
 
     @RequestMapping(value = "/api/city", method = RequestMethod.GET)
     public String findAllCity(Model model) {
-        List<City> cityList = cityService.findAllCity();
-        model.addAttribute("cityList",cityList);
+        //List<City> cityList = cityService.findAllCity();
+        List<City> list = new ArrayList<>();
+        City city = new City();
+        city.setId(12L);
+        city.setCityName("湖北");
+        city.setDescription("这个地方很好玩！");
+        list.add(city);
+        model.addAttribute("cityList",list);
         return "cityList";
     }
 }

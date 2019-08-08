@@ -187,17 +187,6 @@ public class Jdk8Test {
                         toCollection(() -> new TreeSet<>(Comparator.comparing(Student::getAge))), ArrayList::new)
         );
 
-        //灵活传递表达式
-        filterPre1(list,(str)->str.equals("周杰伦"));
-
-        //匹配 Name为周杰伦的数据
-        filterPre2(list,(str)->str.getName().equals("周杰伦"));
-        //匹配年龄大于44的数据
-        filterPre2(list,(str)->Integer.valueOf(str.getAge())>44);
-        // 输出所有数据！
-        filterPre2(list,(str)->true);
-
-
         //JDK8  时间API
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -208,6 +197,18 @@ public class Jdk8Test {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String format1 = simpleDateFormat.format(date);
         Date parse = simpleDateFormat.parse(format1);
+
+
+
+        //灵活传递表达式
+        filterPre1(list,(str)->str.equals("周杰伦"));
+        //匹配 Name为周杰伦的数据
+        filterPre2(list,(str)->str.getName().equals("周杰伦"));
+        //匹配年龄大于44的数据
+        filterPre2(list,(str)->Integer.valueOf(str.getAge())>44);
+        // 输出所有数据！
+        filterPre2(list,(str)->true);
+
 
     }
 

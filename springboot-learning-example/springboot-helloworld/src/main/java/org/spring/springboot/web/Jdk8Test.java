@@ -2,6 +2,9 @@ package org.spring.springboot.web;
 
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.spring.springboot.entity.Color;
 import org.spring.springboot.entity.Demo;
 import org.spring.springboot.entity.Student;
 
@@ -26,15 +29,15 @@ public class Jdk8Test {
 
 
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) throws ParseException, JsonProcessingException {
         List<Student> list =new ArrayList<>();
-        list.add(new Student("钟林",10,"24"));
-        list.add(new Student("林俊杰",1,"23"));
-        list.add(new Student("周杰伦",23,"20"));
-        list.add(new Student("蔡依林",56,"45"));
-        list.add(new Student("李现",34,"78"));
-        list.add(new Student("我是中国人",32,"89"));
-        list.add(new Student("陈飞宇",12,"47"));
+        list.add(new Student("钟林",10,"24",Color.GREEN));
+        list.add(new Student("林俊杰",1,"23",Color.GREEN));
+        list.add(new Student("周杰伦",23,"20",Color.GREEN));
+        list.add(new Student("蔡依林",56,"45",Color.GREEN));
+        list.add(new Student("李现",34,"78",Color.GREEN));
+        list.add(new Student("我是中国人",32,"89",Color.GREEN));
+        list.add(new Student("陈飞宇",12,"47",Color.GREEN));
         List<Demo> demos = new ArrayList<Demo>();
         //Map原始数据
         System.out.println("原始数据 组装list<demo>*******************");
@@ -128,18 +131,24 @@ public class Jdk8Test {
                 Collectors.groupingBy(Student::getAge,Collectors.summingInt(Student::getSex))
         );
 
-        //Optional使用
+
+        System.out.println("Optional  orElse  的使用*******************");
+        //Optional isPresent  不建议使用
         Optional<List<Student>> list1 = Optional.ofNullable(list);
         if (list1.isPresent()){
             List<Student> students = list1.get();
         }
-        //Optional  if else使用！
-        List<Student> students = Optional.ofNullable(list).orElse(new ArrayList<Student>());
-
-        String s = Optional.ofNullable(list.get(0)).map(v -> v.getName()).orElse("");
-
-        Student zz = Optional.ofNullable(list.get(0)).filter(v -> v.getSex()==1).orElse(new Student());
-
+        //Optional  List集合使用！
+        List<Student> students = Optional.ofNullable(list).orElse(list);
+        //Optiona 字符串使用*************************
+        Student student = new Student("周杰伦",30,"23",Color.GREEN);
+        String s1 = Optional.ofNullable(student).map(v -> v.getName()).orElse("..");
+        //Optional  对象使用！
+        Student student3 = Optional.ofNullable(student).orElse(new Student("刘德华",57,"2",Color.YELLO));
+        //Optional  get  使用！
+        Student student4 = Optional.ofNullable(student).get();
+        //序列化JSON
+        String s = new ObjectMapper().writeValueAsString(student3);
 
         //Collectors.toCollection(ArrayList::new)
         System.out.println("stream转换成toArray,ArrayList集合数据*******************");
@@ -161,25 +170,21 @@ public class Jdk8Test {
         boolean allMatch = list.stream().anyMatch((v)->v.getAge().equals("45"));
         System.out.println(allMatch);
 
-        //findFirst,Optional 的使用*******************
-        System.out.println("findFirst,Optional 的使用*******************");
+        //对象类型 findFirst 的使用*******************
+        System.out.println("findFirst 的使用*******************");
         Optional<Student> findFirst = list.stream().filter(m->m.getAge().equals("12")).findFirst();
         Student student1 = findFirst.orElse(new Student());
         findFirst.ifPresent(System.out::println);
         if(findFirst.isPresent()) {
-            Student student = findFirst.get();
-            System.out.println(student);
+            Student student2 = findFirst.get();
+            System.out.println(student2);
         }
-
-
 
         // reduce 求聚合函数求性别的max和sum值    ->  【 (s->s.getSex()) 可以简写为  (Student::getSex)】
         int max = list.parallelStream().mapToInt(Student::getSex).reduce(0,Integer::max);
         System.out.println(max);
         int sum = list.parallelStream().map(v->v.getSex()).reduce(0,Integer::sum);
         System.out.println(sum);
-
-
 
         //按照字段去除重复 数据
         ArrayList<Student> collect = list.stream().collect(
@@ -197,6 +202,11 @@ public class Jdk8Test {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String format1 = simpleDateFormat.format(date);
         Date parse = simpleDateFormat.parse(format1);
+
+
+        // 枚举的使用！
+        System.out.println( Color.getName2(2));
+        System.out.println(Color.getIndex2("绿色"));
 
 
 
@@ -228,7 +238,7 @@ public class Jdk8Test {
     }
 
     /**
-     *redicate用法2
+     *Predicate用法2
      * @param list
      * @param condition 传递灵活参数！
      */

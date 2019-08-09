@@ -228,7 +228,7 @@ public class Jdk8Test {
     }
 
     /**
-     *Predicate用法2
+     *redicate用法2
      * @param list
      * @param condition 传递灵活参数！
      */

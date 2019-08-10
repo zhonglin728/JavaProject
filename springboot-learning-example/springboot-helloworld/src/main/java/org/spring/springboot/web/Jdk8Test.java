@@ -4,6 +4,12 @@ package org.spring.springboot.web;
 
 import org.spring.springboot.entity.Demo;
 import org.spring.springboot.entity.Student;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
+import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.core.type.filter.AssignableTypeFilter;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,6 +33,25 @@ public class Jdk8Test {
 
 
     public static void main(String[] args) throws ParseException {
+        // true：默认TypeFilter生效，这种模式会查询出许多不符合你要求的class名
+        // false：关闭默认TypeFilter
+        ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(
+                false);
+        // 扫描带有自定义注解的类
+        provider.addIncludeFilter(new AnnotationTypeFilter(RestController.class));
+        // 接口不会被扫描，其子类会被扫描出来
+        provider.addIncludeFilter(new AssignableTypeFilter(RestController.class));
+
+        // Spring会将 .换成/  ("."-based package path to a "/"-based)
+        // Spring拼接的扫描地址：classpath*:xxx/xxx/xxx/**/*.class
+        // Set<BeanDefinition> scanList = provider.findCandidateComponents("com.p7.demo.scanclass");
+        Set<BeanDefinition> scanList = provider.findCandidateComponents("org.spring.springboot");
+
+        for (BeanDefinition beanDefinition : scanList) {
+            System.out.println(beanDefinition.getBeanClassName());
+        }
+
+
         List<Student> list =new ArrayList<>();
         list.add(new Student("钟林",10,"24"));
         list.add(new Student("林俊杰",1,"23"));
@@ -151,7 +176,9 @@ public class Jdk8Test {
         System.out.println("stream of合并集合数据*******************");
         List<?> collect4 = Stream.of(
                 list, demos
-        ).flatMap((e) -> e.stream()).collect(Collectors.toList());
+        ).flatMap(e->{
+            return e.stream();
+        }).collect(Collectors.toList());
 
         //Stream.concat 合并 list
         System.out.println("stream.concat合并集合数据*******************");

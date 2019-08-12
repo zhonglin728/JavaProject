@@ -62,7 +62,7 @@ public class Jdk8Test {
         list.add(new Student("陈飞宇",12,"47",Color.GREEN));
         List<Demo> demos = new ArrayList<Demo>();
         //Map原始数据
-        System.out.println("原始数据 组装list<demo>*******************");
+        System.out.println("原始数据 组装list<demo>******************");
         demos = list.stream().map(student-> new Demo(student.getAge(),student.getSex())).collect(Collectors.toList());
         demos.forEach(demo -> {
             System.out.println("年龄 "+demo.getAge() +"  性别 " +demo.getSex()+",");

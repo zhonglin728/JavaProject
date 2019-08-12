@@ -4,6 +4,7 @@ package org.spring.springboot.web;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.spring.springboot.interfunc.MyFunction;
 import org.spring.springboot.entity.Color;
 import org.spring.springboot.entity.Demo;
 import org.spring.springboot.entity.Student;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.core.type.filter.AssignableTypeFilter;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
@@ -21,7 +21,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.collectingAndThen;
@@ -243,6 +242,24 @@ public class Jdk8Test {
         // 输出所有数据！
         filterPre2(list,(str)->true);
 
+        //自定义 函数接口  begin
+        Student student2 = operationStudent("11", x -> {
+                    Student student5 = new Student("Function", 30, "23", Color.GREEN);
+                    return student5;
+        }
+        );
+        System.out.println(new ObjectMapper().writeValueAsString(student2));
+
+        MyFunction myFunction = x->{
+            Student student5 = new Student("Zhonglin", 45, "21", Color.YELLO);
+            return student5;
+        };
+        Student student5 = myFunction.findStudent("11");
+        Student student6 = operationStudent("1", myFunction);
+        //自定义 函数接口  end
+
+
+
 
     }
 
@@ -260,7 +277,6 @@ public class Jdk8Test {
             }
         }
     }
-
     /**
      *Predicate用法2
      * @param list
@@ -269,6 +285,34 @@ public class Jdk8Test {
     public static void filterPre2(List<Student> list, Predicate<Student> condition) {
         List<Student> collect = list.stream().filter(condition).collect(Collectors.toList());
         System.out.println(collect.size());
+    }
+
+    /**
+     * 调用自定义函数  function
+     * @param id
+     * @param myFunction
+     * @return
+     */
+    public static Student operationStudent(String id, MyFunction myFunction){
+        Student student = myFunction.findStudent(id);
+        return Optional.ofNullable(student).map(v->{
+            v.setName(v.getName().toUpperCase());
+            v.setAge("88");
+            return v;
+        }).get();
+    }
+
+    /**
+     *  泛型的使用！
+     * @param tClass
+     * @param <T>
+     * @return
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     */
+    public static <T> T convertBean(Class<T> tClass) throws IllegalAccessException, InstantiationException {
+        T t = tClass.newInstance();
+        return t;
     }
 
 }

@@ -1,5 +1,14 @@
 package org.spring.springboot.entity;
 
+import lombok.*;
+
+/**
+ * @Data 注解等于以下所有场景！
+ */
+@Setter
+@Getter
+@ToString
+@EqualsAndHashCode
 public class Demo {
 
     private String name;

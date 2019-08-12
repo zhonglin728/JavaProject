@@ -1,11 +1,20 @@
 package org.spring.springboot.entity;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * @author Hua-cloud
  * @Auther: zhonglin
  * @Date: 2019/7/4 16:03
  * @Description:
  */
+@Setter
+@Getter
+@ToString
+@EqualsAndHashCode
 public class Student {
 
     private String name;

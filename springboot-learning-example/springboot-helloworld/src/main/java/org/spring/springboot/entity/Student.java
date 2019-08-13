@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.spring.springboot.enums.ColorEnum;
 
 /**
  * @author Hua-cloud
@@ -20,16 +21,16 @@ public class Student {
     private String name;
     private  Integer sex;
     private  String age;
-    private Color color;
+    private ColorEnum colorEnum;
 
     public Student() {
     }
 
-    public Student(String name, Integer sex, String age,Color color) {
+    public Student(String name, Integer sex, String age, ColorEnum colorEnum) {
         this.name = name;
         this.sex = sex;
         this.age = age;
-        this.color = color;
+        this.colorEnum = colorEnum;
     }
 
 
@@ -38,12 +39,12 @@ public class Student {
         this.age = age;
     }
 
-    public Color getColor() {
-        return color;
+    public ColorEnum getColorEnum() {
+        return colorEnum;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
+    public void setColorEnum(ColorEnum colorEnum) {
+        this.colorEnum = colorEnum;
     }
 
     public void setName(String name) {

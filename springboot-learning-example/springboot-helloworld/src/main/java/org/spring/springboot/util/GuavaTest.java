@@ -1,8 +1,7 @@
 package org.spring.springboot.util;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import org.spring.springboot.entity.Color;
+import org.spring.springboot.enums.ColorEnum;
 import org.spring.springboot.entity.Student;
 
 import java.util.*;
@@ -21,16 +20,16 @@ public class GuavaTest {
     private  static   List<Student> list2 = new ArrayList<Student>();
 
     static {
-        list1.add(new Student("e",10,"24", Color.GREEN));
-        list1.add(new Student("b",1,"23",Color.GREEN));
-        list1.add(new Student("d",23,"20",Color.GREEN));
-        list1.add(new Student("c",56,"45",Color.GREEN));
-        list1.add(new Student("f",34,"78",Color.GREEN));
-        list1.add(new Student("g",32,"89",Color.GREEN));
-        list1.add(new Student("a",12,"47",Color.GREEN));
+        list1.add(new Student("e",10,"24", ColorEnum.GREEN));
+        list1.add(new Student("b",1,"23", ColorEnum.GREEN));
+        list1.add(new Student("d",23,"20", ColorEnum.GREEN));
+        list1.add(new Student("c",56,"45", ColorEnum.GREEN));
+        list1.add(new Student("f",34,"78", ColorEnum.GREEN));
+        list1.add(new Student("g",32,"89", ColorEnum.GREEN));
+        list1.add(new Student("a",12,"47", ColorEnum.GREEN));
 
-        list2.add(new Student("周杰伦",3,"25",Color.YELLO));
-        list2.add(new Student("罗志祥",7,"13",Color.RED));
+        list2.add(new Student("周杰伦",3,"25", ColorEnum.YELLO));
+        list2.add(new Student("罗志祥",7,"13", ColorEnum.RED));
 
     }
 
@@ -44,6 +43,10 @@ public class GuavaTest {
         ImmutableList<List<Student>> of = ImmutableList.of(list1, list2);
         //Set<Student> collect = of.stream().flatMap(v-> v.stream()).collect(Collectors.toSet());
         ImmutableList<Object> build = ImmutableList.builder().add(list1).add(list2).build();
+
+
+
+
 
 
     }

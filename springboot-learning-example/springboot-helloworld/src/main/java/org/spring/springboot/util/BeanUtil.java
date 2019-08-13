@@ -2,14 +2,14 @@ package org.spring.springboot.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.spring.springboot.entity.Color;
+import org.spring.springboot.enums.ColorEnum;
 import org.spring.springboot.entity.Demo;
 import org.spring.springboot.entity.Student;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -24,17 +24,20 @@ public class BeanUtil {
     private  static List<Student> list1 = new ArrayList<Student>();
 
     static {
-        list1.add(new Student("e",10,"24", Color.GREEN));
-        list1.add(new Student("b",1,"23",Color.GREEN));
-        list1.add(new Student("d",23,"20",Color.GREEN));
-        list1.add(new Student("c",56,"45",Color.GREEN));
-        list1.add(new Student("f",34,"78",Color.GREEN));
-        list1.add(new Student("g",32,"89",Color.GREEN));
-        list1.add(new Student("a",12,"47",Color.GREEN));
+        list1.add(new Student("e",10,"24", ColorEnum.GREEN));
+        list1.add(new Student("b",1,"23", ColorEnum.GREEN));
+        list1.add(new Student("d",23,"20", ColorEnum.GREEN));
+        list1.add(new Student("c",56,"45", ColorEnum.GREEN));
+        list1.add(new Student("f",34,"78", ColorEnum.GREEN));
+        list1.add(new Student("g",32,"89", ColorEnum.GREEN));
+        list1.add(new Student("a",12,"47", ColorEnum.GREEN));
     }
     public static void main(String [] args ) throws JsonProcessingException, InstantiationException, IllegalAccessException {
-        Student student = new Student("e", 10, "24", Color.GREEN);
+        Student student = new Student("e", 10, "24", ColorEnum.GREEN);
         Demo demo = new Demo();
+
+        String s = Optional.ofNullable(student.getName()).orElse("--");
+
 
         //单个 复制！
         BeanUtils.copyProperties(student,demo);

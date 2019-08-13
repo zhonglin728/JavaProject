@@ -5,7 +5,7 @@ package org.spring.springboot.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.spring.springboot.interfunc.MyFunction;
-import org.spring.springboot.entity.Color;
+import org.spring.springboot.enums.ColorEnum;
 import org.spring.springboot.entity.Demo;
 import org.spring.springboot.entity.Student;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -52,13 +52,13 @@ public class Jdk8Util {
 
 
         List<Student> list =new ArrayList<>();
-        list.add(new Student("钟林",10,"24",Color.GREEN));
-        list.add(new Student("林俊杰",1,"23",Color.GREEN));
-        list.add(new Student("周杰伦",23,"20",Color.GREEN));
-        list.add(new Student("蔡依林",56,"45",Color.GREEN));
-        list.add(new Student("李现",34,"78",Color.GREEN));
-        list.add(new Student("我是中国人",32,"89",Color.GREEN));
-        list.add(new Student("陈飞宇",12,"47",Color.GREEN));
+        list.add(new Student("钟林",10,"24", ColorEnum.GREEN));
+        list.add(new Student("林俊杰",1,"23", ColorEnum.GREEN));
+        list.add(new Student("周杰伦",23,"20", ColorEnum.GREEN));
+        list.add(new Student("蔡依林",56,"45", ColorEnum.GREEN));
+        list.add(new Student("李现",34,"78", ColorEnum.GREEN));
+        list.add(new Student("我是中国人",32,"89", ColorEnum.GREEN));
+        list.add(new Student("陈飞宇",12,"47", ColorEnum.GREEN));
         List<Demo> demos = new ArrayList<Demo>();
         //Map原始数据
         System.out.println("原始数据 组装list<demo>******************");
@@ -162,10 +162,10 @@ public class Jdk8Util {
         //Optional  List集合使用！
         List<Student> students = Optional.ofNullable(list).orElse(list);
         //Optiona 字符串使用*************************
-        Student student = new Student("周杰伦",30,"23",Color.GREEN);
+        Student student = new Student("周杰伦",30,"23", ColorEnum.GREEN);
         String s1 = Optional.ofNullable(student).map(v -> v.getName()).orElse("..");
         //Optional  对象使用！
-        Student student3 = Optional.ofNullable(student).orElse(new Student("刘德华",57,"2",Color.YELLO));
+        Student student3 = Optional.ofNullable(student).orElse(new Student("刘德华",57,"2", ColorEnum.YELLO));
         //Optional  get  使用！
         Student student4 = Optional.ofNullable(student).get();
         //序列化JSON
@@ -227,12 +227,6 @@ public class Jdk8Util {
         Date parse = simpleDateFormat.parse(format1);
 
 
-        // 枚举的使用！
-        System.out.println( Color.getName2(2));
-        System.out.println(Color.getIndex2("绿色"));
-
-
-
         //灵活传递表达式
         filterPre1(list,(str)->str.equals("周杰伦"));
         //匹配 Name为周杰伦的数据
@@ -244,14 +238,14 @@ public class Jdk8Util {
 
         //自定义 函数接口  begin
         Student student2 = operationStudent("11", x -> {
-                    Student student5 = new Student("Function", 30, "23", Color.GREEN);
+                    Student student5 = new Student("Function", 30, "23", ColorEnum.GREEN);
                     return student5;
         }
         );
         System.out.println(new ObjectMapper().writeValueAsString(student2));
 
         MyFunction myFunction = x->{
-            Student student5 = new Student("Zhonglin", 45, "21", Color.YELLO);
+            Student student5 = new Student("Zhonglin", 45, "21", ColorEnum.YELLO);
             return student5;
         };
         Student student5 = myFunction.findStudent("11");

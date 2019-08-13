@@ -1,4 +1,4 @@
-package org.spring.springboot.web;
+package org.spring.springboot.util;
 
 
 
@@ -30,7 +30,7 @@ import static java.util.stream.Collectors.toCollection;
 /**
  * @author Hua-cloud
  */
-public class Jdk8Test {
+public class Jdk8Util {
     public static void main(String[] args) throws ParseException, JsonProcessingException {
         // true：默认TypeFilter生效，这种模式会查询出许多不符合你要求的class名
         // false：关闭默认TypeFilter

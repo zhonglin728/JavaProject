@@ -1,4 +1,4 @@
-package org.spring.springboot.web;
+package org.spring.springboot.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

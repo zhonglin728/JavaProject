@@ -21,7 +21,7 @@ public enum Color {
        String name = Arrays.stream(Color.values())
                .filter(v -> v.getIndex() == index)
                .findFirst()
-               .map(v->v.getName())
+               .map(Color::getName)
                .orElse("未找到！");
         return name;
     }
@@ -29,7 +29,7 @@ public enum Color {
          int index = Arrays.stream(Color.values())
                  .filter(v -> v.getName().equals(name))
                  .findFirst()
-                 .map(v->v.getIndex())
+                 .map(Color::getIndex)
                  .orElse(0);
         return index;
     }

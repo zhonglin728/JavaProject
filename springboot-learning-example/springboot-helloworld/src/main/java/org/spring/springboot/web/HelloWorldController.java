@@ -1,5 +1,6 @@
 package org.spring.springboot.web;
 
+import org.spring.springboot.exception.OrderPeriodException;
 import org.spring.springboot.interfunc.EmployeeInter;
 import org.spring.springboot.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,12 @@ public class HelloWorldController {
 
         studentService.truck();
         EmployeeInter.staticMethod();
+        try {
+            System.out.println(1/0);
+        }catch (Exception e){
+            throw  new OrderPeriodException("500","错误消息！");
+        }
+
         return "Hello,World!";
 
     }

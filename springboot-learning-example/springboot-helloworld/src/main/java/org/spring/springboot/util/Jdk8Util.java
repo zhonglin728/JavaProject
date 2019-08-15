@@ -12,8 +12,10 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.core.type.filter.AssignableTypeFilter;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.swing.text.html.Option;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -32,25 +34,6 @@ import static java.util.stream.Collectors.toCollection;
  */
 public class Jdk8Util {
     public static void main(String[] args) throws ParseException, JsonProcessingException {
-        // true：默认TypeFilter生效，这种模式会查询出许多不符合你要求的class名
-        // false：关闭默认TypeFilter
-        ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(
-                false);
-        // 扫描带有自定义注解的类
-        provider.addIncludeFilter(new AnnotationTypeFilter(RestController.class));
-        // 接口不会被扫描，其子类会被扫描出来
-        provider.addIncludeFilter(new AssignableTypeFilter(RestController.class));
-
-        // Spring会将 .换成/  ("."-based package path to a "/"-based)
-        // Spring拼接的扫描地址：classpath*:xxx/xxx/xxx/**/*.class
-        // Set<BeanDefinition> scanList = provider.findCandidateComponents("com.p7.demo.scanclass");
-        Set<BeanDefinition> scanList = provider.findCandidateComponents("org.spring.springboot");
-
-        for (BeanDefinition beanDefinition : scanList) {
-            System.out.println(beanDefinition.getBeanClassName());
-        }
-
-
         List<Student> list =new ArrayList<>();
         list.add(new Student("钟林",10,"24", ColorEnum.GREEN));
         list.add(new Student("林俊杰",1,"23", ColorEnum.GREEN));
@@ -159,15 +142,27 @@ public class Jdk8Util {
         if (list1.isPresent()){
             List<Student> students = list1.get();
         }
-        //Optional  List集合使用！
-        List<Student> students = Optional.ofNullable(list).orElse(list);
-        //Optiona 字符串使用*************************
+        //Optional  List orElse集合使用！
+        List<Student> students = Optional.ofNullable(list).orElse(Collections.emptyList());
+
+        //Optiona 字符串 orElse使用*************************
         Student student = new Student("周杰伦",30,"23", ColorEnum.GREEN);
-        String s1 = Optional.ofNullable(student).map(v -> v.getName()).orElse("..");
-        //Optional  对象使用！
+        String s1 = Optional.ofNullable(student).map(v -> v.getName()).orElse("");
+
+        //Optional 对象  orElse对象使用！
         Student student3 = Optional.ofNullable(student).orElse(new Student("刘德华",57,"2", ColorEnum.YELLO));
+
+        //Optional null orElseGet使用
+        Object o = Optional.ofNullable(null).orElseGet(() -> {
+            return new Student();
+        });
+
+        //Optional null orElseThrow使用
+        Optional.ofNullable("").orElseThrow(()->new NullPointerException("有空值啦！"));
+
         //Optional  get  使用！
         Student student4 = Optional.ofNullable(student).get();
+
         //序列化JSON
         String s = new ObjectMapper().writeValueAsString(student3);
 
@@ -253,8 +248,12 @@ public class Jdk8Util {
         //自定义 函数接口  end
 
 
-
-
+        Map<String,Student> map1 = new HashMap();
+        map1.put("a",new Student("e",10,"24", ColorEnum.GREEN));
+        map1.put("b",new Student("f",34,"13", ColorEnum.BLANK));
+        map1.forEach((k,v)->{
+            System.out.println(v);
+        });
     }
 
     /**

@@ -35,10 +35,6 @@ public class BeanUtil {
     public static void main(String [] args ) throws JsonProcessingException, InstantiationException, IllegalAccessException {
         Student student = new Student("e", 10, "24", ColorEnum.GREEN);
         Demo demo = new Demo();
-
-        String s = Optional.ofNullable(student.getName()).orElse("--");
-
-
         //单个 复制！
         BeanUtils.copyProperties(student,demo);
         System.out.println(new ObjectMapper().writeValueAsString(demo));

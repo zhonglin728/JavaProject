@@ -1,8 +1,12 @@
 package org.spring.springboot.util;
 
 import com.google.common.collect.ImmutableList;
+import com.sun.deploy.util.ArrayUtil;
 import org.spring.springboot.enums.ColorEnum;
 import org.spring.springboot.entity.Student;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -35,6 +39,16 @@ public class GuavaTest {
 
 
     public static void main(String arg []) {
+        List<Student> e = list1.stream().filter(v ->v.getName().equals("e")).collect(Collectors.toList());
+        //String s = Optional.ofNullable(" ssss  ").orElseThrow();
+        System.out.println(Optional.ofNullable(" ssss  "));
+        System.out.println(CollectionUtils.isEmpty(new ArrayList<>()));
+        System.out.println(CollectionUtils.isEmpty(new HashMap<>()));
+        Map map = new HashMap();
+        map.put("a",1);
+        System.out.println(CollectionUtils.isEmpty(map));
+        System.out.println(Collections.emptyList());
+
         //排序
         List<Student> collect2 = list1.stream().sorted((v1, v2) -> v1.getSex() - v2.getSex()).collect(Collectors.toList());
         List<Student> collect3 = list1.stream().sorted((v1, v2) -> v1.getAge().compareTo(v2.getAge())).collect(Collectors.toList());

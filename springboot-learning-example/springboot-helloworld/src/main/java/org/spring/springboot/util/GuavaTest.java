@@ -1,6 +1,8 @@
 package org.spring.springboot.util;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.sun.deploy.util.ArrayUtil;
 import org.spring.springboot.enums.ColorEnum;
 import org.spring.springboot.entity.Student;
@@ -10,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @ClassName GuavaTest
@@ -53,13 +56,36 @@ public class GuavaTest {
         List<Student> collect2 = list1.stream().sorted((v1, v2) -> v1.getSex() - v2.getSex()).collect(Collectors.toList());
         List<Student> collect3 = list1.stream().sorted((v1, v2) -> v1.getAge().compareTo(v2.getAge())).collect(Collectors.toList());
         List<Student> collect4 = list1.stream().sorted((v1, v2) -> v2.getName().compareTo(v1.getName())).collect(Collectors.toList());
-       // ImmutableTableList
-        ImmutableList<List<Student>> of = ImmutableList.of(list1, list2);
+
         //Set<Student> collect = of.stream().flatMap(v-> v.stream()).collect(Collectors.toSet());
         ImmutableList<Object> build = ImmutableList.builder().add(list1).add(list2).build();
 
 
 
+
+        //  Joiner.on用法  list转string
+        List<String> collect = list1.stream().map(v -> v.getName()).collect(Collectors.toList());
+        String join = Joiner.on("&").skipNulls().join(collect);
+        System.out.println(join);
+
+        //字符串转List
+        String[] split = join.split("&");
+        List<String> strings = Arrays.asList(split);
+        List<String> collect1 = Arrays.stream(split).collect(Collectors.toList());
+
+        //StringJoiner用法 jdk 底层
+        StringJoiner stringJoiner = new StringJoiner(",");
+        stringJoiner.add("cx").add("er").add("fg");
+
+        //ImmutableMap使用  可以用来转枚举
+        ImmutableMap<String, String> of1 = ImmutableMap.of("0", "儿童", "1", "青年");
+        String s = of1.get("1");
+        of1.forEach((k,v)->{
+            //System.out.println(v);
+        });
+
+        // ImmutableTableList用法
+        ImmutableList<List<Student>> of = ImmutableList.of(list1, list2);
 
 
 

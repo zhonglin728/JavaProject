@@ -2,11 +2,13 @@ package org.spring.springboot.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.spring.springboot.entity.User;
 import org.spring.springboot.enums.ColorEnum;
 import org.spring.springboot.entity.Demo;
 import org.spring.springboot.entity.Student;
 import org.springframework.beans.BeanUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +34,7 @@ public class BeanUtil {
         list1.add(new Student("g",32,"89", ColorEnum.GREEN));
         list1.add(new Student("a",12,"47", ColorEnum.GREEN));
     }
-    public static void main(String [] args ) throws JsonProcessingException, InstantiationException, IllegalAccessException {
+    public static void main(String [] args ) throws JsonProcessingException, InstantiationException, IllegalAccessException, InvocationTargetException {
         Student student = new Student("e", 10, "24", ColorEnum.GREEN);
         Demo demo = new Demo();
         //单个 复制！
@@ -53,6 +55,20 @@ public class BeanUtil {
         List<Demo> demos = copyList(list1, Demo.class);
         //调用方法转换Bean
         Demo demo1 = copyBean(student, Demo.class);
+
+
+
+        User user = User.builder().id(1).name("钟林").age(24).address("湖北十堰").build();
+        Student student1 = new Student();
+        //apache 复制对象功能比Spring强大  遇到不同类型的字段也可以转换！
+        //转换后对象/源对象
+        org.apache.commons.beanutils.BeanUtils.copyProperties(student1,user);
+
+        Student student2 = new Student();
+        //Spring 复制对象！
+        //源对象/转换后对象
+        BeanUtils.copyProperties(user,student2);
+
 
 
 

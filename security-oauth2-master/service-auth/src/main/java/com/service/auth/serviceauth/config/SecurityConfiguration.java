@@ -21,10 +21,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected UserDetailsService userDetailsService() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-        String finalPassword = "{bcrypt}"+bCryptPasswordEncoder.encode("123456");
+        //username 的 password
+        String finalPassword = "{bcrypt}"+bCryptPasswordEncoder.encode("Paic1234");
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
         manager.createUser(User.withUsername("user_1").password(finalPassword).authorities("USER").build());
         manager.createUser(User.withUsername("user_2").password(finalPassword).authorities("USER").build());
+        manager.createUser(User.withUsername("user_3").password(finalPassword).authorities("USER").build());
+        manager.createUser(User.withUsername("user_4").password(finalPassword).authorities("USER").build());
 
         return manager;
     }

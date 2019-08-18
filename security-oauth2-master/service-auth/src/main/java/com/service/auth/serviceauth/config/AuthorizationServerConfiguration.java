@@ -24,7 +24,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        String finalSecret = "{bcrypt}" + new BCryptPasswordEncoder().encode("123456");
+        //client_secret
+        String finalSecret = "{bcrypt}" + new BCryptPasswordEncoder().encode("client_secret");
 
         // 配置两个客户端，一个用于password认证一个用于client认证
         clients.inMemory().withClient("client_1")
@@ -33,7 +34,22 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 .scopes("select")
                 .authorities("oauth2")
                 .secret(finalSecret)
+
                 .and().withClient("client_2")
+//                .resourceIds(Utils.RESOURCEIDS.ORDER)
+                .authorizedGrantTypes("password", "refresh_token")
+                .scopes("server")
+                .authorities("oauth2")
+                .secret(finalSecret)
+
+         .and().withClient("client_3")
+//                .resourceIds(Utils.RESOURCEIDS.ORDER)
+                .authorizedGrantTypes("password", "refresh_token")
+                .scopes("server")
+                .authorities("oauth2")
+                .secret(finalSecret)
+
+                .and().withClient("client_4")
 //                .resourceIds(Utils.RESOURCEIDS.ORDER)
                 .authorizedGrantTypes("password", "refresh_token")
                 .scopes("server")

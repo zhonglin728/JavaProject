@@ -52,8 +52,8 @@ public class LombokTest {
      * @return
      */
     public static List<String> findArr(@org.springframework.lang.NonNull String ...s){
-       val collect = Arrays.stream(s).map(String::toUpperCase).collect(Collectors.toList());
-        return collect;
+       final val list = Arrays.stream(s).map(String::toUpperCase).collect(Collectors.toList());
+        return list;
     }
 
 

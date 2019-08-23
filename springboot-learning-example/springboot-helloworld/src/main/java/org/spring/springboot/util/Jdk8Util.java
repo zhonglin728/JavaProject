@@ -152,6 +152,11 @@ public class Jdk8Util {
         //Optional 对象  orElse对象使用！
         Student student3 = Optional.ofNullable(student).orElse(new Student("刘德华",57,"2", ColorEnum.YELLO));
 
+        ///Optional  Map  orelse 使用
+        Map m = new HashMap();
+        m.put("name","钟林");
+        Optional.ofNullable(m.get("name")).map(Object::toString).orElse("默认人");
+
         //Optional null orElseGet使用
         Object o = Optional.ofNullable(null).orElseGet(() -> {
             return new Student();

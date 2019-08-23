@@ -10,6 +10,8 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -87,6 +89,16 @@ public class GuavaTest {
         // ImmutableTableList用法
         ImmutableList<List<Student>> of = ImmutableList.of(list1, list2);
 
+
+
+
+
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -1); //得到前一天
+        Date date = calendar.getTime();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String format = df.format(date);
 
 
     }

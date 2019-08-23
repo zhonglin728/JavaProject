@@ -16,6 +16,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toCollection;
+
 /**
  * @ClassName GuavaTest
  * @Description: TODO
@@ -88,7 +90,8 @@ public class GuavaTest {
 
         // ImmutableTableList用法
         ImmutableList<List<Student>> of = ImmutableList.of(list1, list2);
-
+        List<String> list2 = Stream.of("hello","world","tom").collect(toCollection(ArrayList::new));
+        List<String> list3 = Stream.of("hello","world","tom").collect(Collectors.toList());
 
 
 

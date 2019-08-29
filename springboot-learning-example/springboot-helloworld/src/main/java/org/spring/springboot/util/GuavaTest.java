@@ -67,6 +67,7 @@ public class GuavaTest {
 
 
 
+        //---------------------------------------------------------------------------------------------------
         //  Joiner.on用法  list转string
         List<String> collect = list1.stream().map(v -> v.getName()).collect(Collectors.toList());
         String join = Joiner.on("&").skipNulls().join(collect);
@@ -89,12 +90,13 @@ public class GuavaTest {
         });
 
         // ImmutableTableList用法
-        ImmutableList<List<Student>> of = ImmutableList.of(list1, list2);
-        List<String> list2 = Stream.of("hello","world","tom").collect(toCollection(ArrayList::new));
-        List<String> list3 = Stream.of("hello","world","tom").collect(Collectors.toList());
+        List<List<Student>> of = ImmutableList.of(list1, list2);
+        List<String> list3 = Stream.of("hello","world","tom").collect(toCollection(ArrayList::new));
+        List<String> list4 = Stream.of("hello","world","tom").collect(Collectors.toList());
 
 
-
+        List<Object> build1 = ImmutableList.builder().add(list1).add(list2).build();
+        Map<Object, Object> build2 = ImmutableMap.builder().put("z", "a").put("d", "b").build();
 
 
         Calendar calendar = Calendar.getInstance();

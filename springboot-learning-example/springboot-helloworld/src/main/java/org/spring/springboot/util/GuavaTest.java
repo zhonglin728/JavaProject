@@ -11,6 +11,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -105,6 +106,28 @@ public class GuavaTest {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String format = df.format(date);
 
+        String xx = "钟林/00934";
+        String[] split1 = StringUtils.split(xx, "/");
+        System.out.println(split);
+
+        long a = 1;
+        System.out.println(a+Float.parseFloat(division(5, 60)));
+
+
+
 
     }
+
+    public static String division(int a ,int b){
+        String result = "";
+        float num =(float)a/b;
+
+        DecimalFormat df = new DecimalFormat("0.0");
+
+        result = df.format(num);
+
+        return result;
+
+    }
+
 }

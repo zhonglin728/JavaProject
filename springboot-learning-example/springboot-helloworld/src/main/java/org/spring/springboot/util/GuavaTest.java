@@ -11,6 +11,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -67,6 +68,7 @@ public class GuavaTest {
 
 
 
+        //---------------------------------------------------------------------------------------------------
         //  Joiner.on用法  list转string
         List<String> collect = list1.stream().map(v -> v.getName()).collect(Collectors.toList());
         String join = Joiner.on("&").skipNulls().join(collect);
@@ -89,12 +91,13 @@ public class GuavaTest {
         });
 
         // ImmutableTableList用法
-        ImmutableList<List<Student>> of = ImmutableList.of(list1, list2);
-        List<String> list2 = Stream.of("hello","world","tom").collect(toCollection(ArrayList::new));
-        List<String> list3 = Stream.of("hello","world","tom").collect(Collectors.toList());
+        List<List<Student>> of = ImmutableList.of(list1, list2);
+        List<String> list3 = Stream.of("hello","world","tom").collect(toCollection(ArrayList::new));
+        List<String> list4 = Stream.of("hello","world","tom").collect(Collectors.toList());
 
 
-
+        List<Object> build1 = ImmutableList.builder().add(list1).add(list2).build();
+        Map<Object, Object> build2 = ImmutableMap.builder().put("z", "a").put("d", "b").build();
 
 
         Calendar calendar = Calendar.getInstance();
@@ -103,6 +106,28 @@ public class GuavaTest {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String format = df.format(date);
 
+        String xx = "钟林/00934";
+        String[] split1 = StringUtils.split(xx, "/");
+        System.out.println(split);
+
+        long a = 1;
+        System.out.println(a+Float.parseFloat(division(5, 60)));
+
+
+
 
     }
+
+    public static String division(int a ,int b){
+        String result = "";
+        float num =(float)a/b;
+
+        DecimalFormat df = new DecimalFormat("0.0");
+
+        result = df.format(num);
+
+        return result;
+
+    }
+
 }

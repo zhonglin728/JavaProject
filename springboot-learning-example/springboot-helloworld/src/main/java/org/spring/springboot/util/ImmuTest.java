@@ -28,11 +28,14 @@ public class ImmuTest {
         List<String> collect = Stream.of("a", "b", "c", "d", "e", "f", "g").collect(Collectors.toList());
         //字符串装到List里面
         List<String> of = ImmutableList.of("a", "b", "c", "d", "e", "f", "g");
-        // List 转 String 分割
+
+        // List 转 String 分割 1
         String join = Joiner.on(",").skipNulls().join(of);
-        //String 转 List
+        // List 转 String 分割 2
+        String collect2 = of.stream().collect(Collectors.joining(","));
+        //String 转 List 1
         List<String> strings = Splitter.on(",").omitEmptyStrings().trimResults().splitToList(join);
-        //String 转 List
+        //String 转 List 2
         List<String> collect1 = Arrays.stream(join.split(",")).collect(Collectors.toList());
 
         //字符串 拆分 再 拆分
@@ -42,7 +45,6 @@ public class ImmuTest {
         //字符串多条件拆分装入List
         String input = "aa.dd,,ff,,.";
         List<String> result = Splitter.onPattern("[.|,]").omitEmptyStrings().trimResults().splitToList(input);
-
 
         //ImmutableMap装入数据
         ImmutableMap<String, String> of1 = ImmutableMap.of("a", "sddd", "b", "kjkkj");

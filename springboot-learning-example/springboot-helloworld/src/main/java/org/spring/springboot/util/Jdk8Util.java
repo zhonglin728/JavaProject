@@ -195,7 +195,7 @@ public class Jdk8Util {
 
         //对象类型 findFirst 的使用*******************
         System.out.println("findFirst 的使用*******************");
-        Optional<Student> findFirst = list.stream().filter(m->m.getAge().equals("12")).findFirst();
+        Optional<Student> findFirst = list.stream().filter(v->v.getAge().equals("12")).findFirst();
         Student student1 = findFirst.orElse(new Student());
         findFirst.ifPresent(System.out::println);
         if(findFirst.isPresent()) {

@@ -74,6 +74,12 @@ public class GuavaTest {
         String join = Joiner.on("&").skipNulls().join(collect);
         System.out.println(join);
 
+        ImmutableList<String> of2 = ImmutableList.of("a", "b");
+        // 将List集合转成String，  JDK 原生写法
+        String join1 = String.join(",", of2);
+        // 将List集合转成String，  JDK8 Collectors.joining写法
+        String collect5 = of2.stream().collect(Collectors.joining("."));
+
         //字符串转List
         String[] split = join.split("&");
         List<String> strings = Arrays.asList(split);
@@ -112,6 +118,19 @@ public class GuavaTest {
 
         long a = 1;
         System.out.println(a+Float.parseFloat(division(5, 60)));
+
+
+
+
+        String spli = "我的，中国新,我爱你！,深大；";
+        String[] split2 = spli.split(",|，");
+        boolean b = spli.endsWith(";|；");
+        String substring = spli.substring(0,spli.length()-1);
+        System.out.println();
+
+        double dd = 12.3456344434433434343;
+        System.out.println(dd);
+
 
 
 

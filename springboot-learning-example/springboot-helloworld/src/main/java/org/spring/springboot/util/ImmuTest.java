@@ -49,7 +49,7 @@ public class ImmuTest {
         //ImmutableMap装入数据
         ImmutableMap<String, String> of1 = ImmutableMap.of("a", "sddd", "b", "kjkkj");
         ImmutableMap<Object, Object> build3 = ImmutableMap.builder().put("a", 1).put("b", 2).build();
-
+        ImmutableList<Object> build = ImmutableList.builder().add(null).add(null).build();
 
 
     }

@@ -95,6 +95,7 @@ public class GuavaTest {
         of1.forEach((k,v)->{
             //System.out.println(v);
         });
+        ImmutableMap<Object, Object> build3 = ImmutableMap.builder().put("a", 1).put("b", 2).build();
 
         // ImmutableTableList用法
         List<List<Student>> of = ImmutableList.of(list1, list2);
@@ -116,20 +117,11 @@ public class GuavaTest {
         String[] split1 = StringUtils.split(xx, "/");
         System.out.println(split);
 
-        long a = 1;
-        System.out.println(a+Float.parseFloat(division(5, 60)));
 
 
 
 
-        String spli = "我的，中国新,我爱你！,深大；";
-        String[] split2 = spli.split(",|，");
-        boolean b = spli.endsWith(";|；");
-        String substring = spli.substring(0,spli.length()-1);
-        System.out.println();
 
-        double dd = 12.3456344434433434343;
-        System.out.println(dd);
 
 
 
@@ -137,16 +129,6 @@ public class GuavaTest {
 
     }
 
-    public static String division(int a ,int b){
-        String result = "";
-        float num =(float)a/b;
 
-        DecimalFormat df = new DecimalFormat("0.0");
-
-        result = df.format(num);
-
-        return result;
-
-    }
 
 }

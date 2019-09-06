@@ -28,6 +28,17 @@ public class HelloController {
         return helloService.findInt(id);
     }
 
+    @GetMapping(value = {"gitHubApi","gitHub"})
+    public Map gitHubApi(@RequestParam(value = "q")String qq){
+        return helloService.gitHubApi(qq);
+    }
+
+    @GetMapping(value = {"getLayApi","getLayApis"})
+    public Map getLayApi(@RequestParam(value = "page")String page,@RequestParam(value = "limit")String limit){
+        return helloService.getLayApi(page,limit);
+    }
+
+
     @PostMapping("/saveUser")
     public Map saveUser(
             @RequestParam(name = "id",required = false,defaultValue = "0") String id,

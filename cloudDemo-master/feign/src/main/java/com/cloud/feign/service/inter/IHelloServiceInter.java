@@ -4,7 +4,11 @@ import com.cloud.feign.entity.User;
 
 import java.util.Map;
 
+/**
+ *
+ */
 public interface IHelloServiceInter {
+
     String sayHello();
 
     int findInt(int id);
@@ -12,4 +16,8 @@ public interface IHelloServiceInter {
     Map saveUser(String id, String userName, String userPassword);
 
     Map saveUserEntity(User user);
+
+     Map gitHubApi(String qq);
+
+     Map getLayApi(String page,String limit);
 }

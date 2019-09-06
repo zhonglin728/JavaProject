@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.val;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,8 +40,8 @@ public class ImmuTest {
         List<String> collect1 = Arrays.stream(join.split(",")).collect(Collectors.toList());
 
         //字符串 拆分 再 拆分
-        String str = "xiaoming=11,xiaohong=23";
-        Map<String,String> map = Splitter.on(",").withKeyValueSeparator("=").split(str);
+        String str = "xiaoming=11，xiaohong=23";
+        Map<String,String> map = Splitter.onPattern(",|，").withKeyValueSeparator("=").split(str);
 
         //字符串多条件拆分装入List
         String input = "aa.dd,,ff,,.";
@@ -50,6 +51,8 @@ public class ImmuTest {
         ImmutableMap<String, String> of1 = ImmutableMap.of("a", "sddd", "b", "kjkkj");
         ImmutableMap<Object, Object> build3 = ImmutableMap.builder().put("a", 1).put("b", 2).build();
         ImmutableList<Object> build = ImmutableList.builder().add(null).add(null).build();
+        val a = "";
+
 
 
     }

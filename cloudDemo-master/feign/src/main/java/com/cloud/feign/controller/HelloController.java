@@ -6,10 +6,14 @@ import com.cloud.feign.service.inter.IHelloServiceInter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -28,9 +32,11 @@ public class HelloController {
         return helloService.findInt(id);
     }
 
-    @GetMapping(value = {"gitHubApi","gitHub"})
-    public Map gitHubApi(@RequestParam(value = "q")String qq){
-        return helloService.gitHubApi(qq);
+    @GetMapping(name = "获取Gitgub信息！",value = {"gitHubApi","gitHub"})
+    public ResponseEntity<Map> gitHubApi(@RequestParam(value = "q")String qq){
+        Map map = new HashMap(16);
+        map.put("data",helloService.gitHubApi(qq));
+        return new ResponseEntity<Map>(map,HttpStatus.OK);
     }
 
     @GetMapping(value = {"getLayApi","getLayApis"})

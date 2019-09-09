@@ -17,9 +17,9 @@ import java.util.Map;
  * @Version V1.0
  **/
 @Component
-@ConfigurationProperties(prefix = "eureka")
+@ConfigurationProperties(prefix = "eureka.client")
 @Getter
 @Setter
 public class EurekaConfig {
-    private Map client;
+    private Map serviceUrl;
 }

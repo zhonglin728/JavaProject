@@ -1,9 +1,11 @@
 package org.spring.springboot.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Splitter;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import org.spring.springboot.exception.OrderPeriodException;
-import org.spring.springboot.interfunc.EmployeeInter;
+import org.spring.springboot.response.ResponseResult;
 import org.spring.springboot.service.StudentService;
 import org.spring.springboot.util.EurekaConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Spliterator;
 
 /**
  * Spring Boot HelloWorld 案例
@@ -36,7 +40,7 @@ public class HelloWorldController {
         try {
             System.out.println(1/0);
         }catch (Exception e){
-            throw  new OrderPeriodException("500","自定义错误消息！");
+            throw  new OrderPeriodException("","自定义错误消息！");
         }
         return "Hello,World!";
 
@@ -47,9 +51,13 @@ public class HelloWorldController {
      * @return
      */
     @RequestMapping("getOk")
-    public ResponseEntity<Object> getXx(){
-        Map client = eurekaConfig.getClient();
-        return new ResponseEntity<Object>(Optional.ofNullable(client.get("serviceUrl")).map(Object::toString).orElse("default"),HttpStatus.OK);
+    public ResponseEntity<ResponseResult> getXx(){
+        Map client = eurekaConfig.getServiceUrl();
+        String s = Optional.ofNullable(client.get("defaultZone")).map(Object::toString).orElse("default");
+        List<String> strings = Splitter.onPattern("://").omitEmptyStrings().trimResults().splitToList(s);
+        ImmutableMap<Object, Object> map = ImmutableMap.builder().put(strings.get(0), strings.get(1)).build();
+        ResponseResult res = new ResponseResult<>(map);
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
 
@@ -58,13 +66,17 @@ public class HelloWorldController {
      * @return
      */
     @RequestMapping("getUnauth")
-    public ResponseEntity<Object> getUnauth(){
-        Map<String, String> data = ImmutableMap.of("code", "测试401");
+    public ResponseEntity<ResponseResult> getUnauth(){
+        Map<String, List> data = ImmutableMap.of("list",ImmutableList.of("张飞", "关于", "刘备") );
         HttpHeaders httpHeaders = new HttpHeaders();
+
         httpHeaders.add("hh","zhonglinxxoo");
         httpHeaders.add("jj","asasaasaa");
-        ResponseEntity<Object> objectResponseEntity = new ResponseEntity<>(data,httpHeaders, HttpStatus.UNAUTHORIZED);
-        return objectResponseEntity;
+
+        ResponseResult result = new ResponseResult("200", "请求成功！", data);
+        ResponseEntity<ResponseResult> resultEntity = new ResponseEntity<>(result,httpHeaders, HttpStatus.UNAUTHORIZED);
+
+        return resultEntity;
     }
 
 }

@@ -22,7 +22,7 @@ import java.util.Map;
 public class ControllerExceptionHandler {
 
     //运行时异常
-    @ExceptionHandler(RuntimeException.class)
+    @ExceptionHandler(OrderPeriodException.class)
     @ResponseBody
     public ResponseEntity<Map> runtimeExceptionHandler(RuntimeException ex) {
         return new ResponseEntity<Map>(ImmutableMap.of("content",ex.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);

@@ -1,5 +1,8 @@
 package org.spring.springboot.exception;
 
+import com.google.common.collect.ImmutableMap;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,9 +24,7 @@ public class ControllerExceptionHandler {
     //运行时异常
     @ExceptionHandler(RuntimeException.class)
     @ResponseBody
-    public Map runtimeExceptionHandler(RuntimeException ex) {
-        Map map = new HashMap();
-        map.put("500","拦截到异常信息@！");
-        return map;
+    public ResponseEntity<Map> runtimeExceptionHandler(RuntimeException ex) {
+        return new ResponseEntity<Map>(ImmutableMap.of("content",ex.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

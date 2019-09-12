@@ -9,9 +9,7 @@ import lombok.val;
 import org.spring.springboot.entity.Student;
 import org.spring.springboot.entity.User;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -32,6 +30,19 @@ public class LombokTest {
         //System.out.println(findUser(null));
         System.out.println(findArr(arr));
         log.info(new ObjectMapper().writeValueAsString(user));
+
+
+
+        Map map = new HashMap<>();
+        map.put("type","a");
+        map.put("type","b");
+        System.out.println(map);
+
+
+        User user1 = new User();
+        user1 = null;
+        String  xx= Optional.ofNullable(user1).map(User::getName).orElse("xx");
+        System.out.println(xx);
 
 
     }

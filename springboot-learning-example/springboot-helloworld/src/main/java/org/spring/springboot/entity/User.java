@@ -24,7 +24,8 @@ import lombok.*;
 @Builder(toBuilder = true)
 public class User {
     private int id;
-    private String name;
+    @Builder.Default
+    private String name = "钟林";
     private int age;
     private String address;
 }

@@ -1,13 +1,12 @@
 package org.spring.springboot.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.spring.springboot.exception.OrderPeriodException;
 import org.spring.springboot.response.ResponseResult;
 import org.spring.springboot.service.StudentService;
-import org.spring.springboot.util.EurekaConfig;
+import org.spring.springboot.service.EurekaConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Spliterator;
 
 /**
  * Spring Boot HelloWorld 案例

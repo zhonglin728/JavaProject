@@ -1,4 +1,4 @@
-package org.spring.springboot.util;
+package org.spring.springboot.MessageAdvice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

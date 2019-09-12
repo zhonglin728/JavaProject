@@ -1,4 +1,4 @@
-package org.spring.springboot.util;
+package org.spring.springboot.service;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

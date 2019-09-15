@@ -2,6 +2,7 @@ package org.spring.springboot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * Spring Boot 应用启动类
@@ -13,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // Spring Boot 应用的标识
 
 @SpringBootApplication
+@EnableAsync  // 启用异步任务
 public class Application {
 
     public static void main(String[] args) {

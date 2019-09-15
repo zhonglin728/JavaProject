@@ -50,14 +50,23 @@ public class AsyncController {
             // Wait until they are all done
             //join() 的作用：让“主线程”等待“子线程”结束之后才能继续运行
             CompletableFuture.allOf(page1,page2,page3).join();
-            // Print results, including elapsed time
-            float exc = (float)(System.currentTimeMillis() - start)/1000;
-            log.info("Elapsed time: " + exc + " seconds");
             //log.info("--> " + page1.get());
             //log.info("--> " + page2.get());
             //log.info("--> " + page3.get());
-            ArrayList<Map> strings = Lists.newArrayList(page1.get(), page2.get(), page3.get(),page4.get(),page5.get(),page6.get());
+            //等待任务完成！
+            for(;;){
+                if (page1.isDone() && page2.isDone() && page3.isDone() && page4.isDone() && page5.isDone() && page6.isDone()){
+                    break;
+                }
+                Thread.sleep(100);
+                log.info("等待ing!.......");
+            }
+            float exc = (float)(System.currentTimeMillis() - start)/1000;
+            log.info("Elapsed time: " + exc + " seconds");
+
+             ArrayList<Map> strings = Lists.newArrayList(page1.get(), page2.get(), page3.get(),page4.get(),page5.get(),page6.get());
              responseResult = new ResponseResult(strings);
+
         }catch (Exception e){
             e.printStackTrace();
             throw  new OrderPeriodException("444",e.getMessage());

@@ -9,6 +9,7 @@ package org.spring.springboot.entity;
  **/
 
 import lombok.*;
+import org.spring.springboot.annotion.EncryptField;
 
 /**
  * 如果没有添加@Setter注解，则无法使用setAge()等方法。
@@ -25,7 +26,9 @@ import lombok.*;
 public class User {
     private int id;
     @Builder.Default
-    private String name = "钟林";
+    @EncryptField
+    private String name = "默认";
     private int age;
+    @EncryptField
     private String address;
 }

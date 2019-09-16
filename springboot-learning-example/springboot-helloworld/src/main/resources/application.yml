@@ -7,4 +7,3 @@ server:
 spring:
   application:
     name: feign-consumer
-aseKey: AD42F6697B035B7580E4FEF93BE20BA7

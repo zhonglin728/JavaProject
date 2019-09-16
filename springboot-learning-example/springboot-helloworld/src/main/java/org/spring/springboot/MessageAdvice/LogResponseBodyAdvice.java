@@ -7,7 +7,6 @@ import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import java.lang.reflect.Method;
@@ -22,7 +21,6 @@ import static org.apache.logging.log4j.message.MapMessage.MapFormat.JSON;
  * @Version V1.0
  **/
 @Slf4j
-@RestControllerAdvice(basePackages = "org.spring.springboot.web")
 public class LogResponseBodyAdvice implements ResponseBodyAdvice {
     @Override
     public boolean supports(MethodParameter methodParameter, Class aClass) {

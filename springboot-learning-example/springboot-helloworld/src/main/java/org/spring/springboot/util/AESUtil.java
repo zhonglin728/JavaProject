@@ -1,7 +1,6 @@
 package org.spring.springboot.util;
 
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -14,7 +13,6 @@ import javax.crypto.spec.SecretKeySpec;
  * @Date 2019/9/9
  * @Version V1.0
  **/
-@Component
 public class AESUtil {
 
     // 密钥
@@ -95,7 +93,7 @@ public class AESUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        String s = "钟林";
+        String s = "我是一个快乐的人！";
         // 加密
         System.out.println("加密前：" + s);
         String encryptResultStr = encrypt(s);

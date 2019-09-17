@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.spring.springboot.annotion.Encryption;
 import org.spring.springboot.annotion.EncryptField;
 import org.spring.springboot.util.AESUtil;
@@ -56,8 +57,6 @@ public class LogRequestBodyAdvice implements RequestBodyAdvice {
         Encryption annotation = method.getAnnotation(Encryption.class);
         //获取自定义注解2 无用代码
         Encryption[] annotationsByType = method.getAnnotationsByType(Encryption.class);
-
-
         //获取 参数上面的 注解       二维数组    flatMap 装到List里面
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
         List<Annotation> collect = Arrays.stream(parameterAnnotations).flatMap(v -> Arrays.stream(v)).collect(Collectors.toList());
@@ -71,6 +70,9 @@ public class LogRequestBodyAdvice implements RequestBodyAdvice {
                     //获取字段注解！
                     if (declaredField.isAnnotationPresent(EncryptField.class)){
                         String fieldName = declaredField.getName();
+                        // PropertyUtils  取值！ test
+                        Object property = PropertyUtils.getProperty(o, fieldName);
+
                         String propertyValue = BeanUtils.getProperty(o, fieldName);
                         String encryptValue = AESUtil.encrypt(propertyValue);
                         BeanUtils.setProperty(o,fieldName,encryptValue);

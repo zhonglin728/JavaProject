@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import lombok.extern.slf4j.Slf4j;
 import org.spring.springboot.interfunc.MyFunction;
 import org.spring.springboot.enums.ColorEnum;
 import org.spring.springboot.entity.Demo;
@@ -33,6 +34,7 @@ import static java.util.stream.Collectors.*;
 /**
  * @author Hua-cloud
  */
+@Slf4j
 public class Jdk8Util {
     public static void main(String[] args) throws ParseException, JsonProcessingException {
         List<Student> list =new ArrayList<>();
@@ -55,7 +57,7 @@ public class Jdk8Util {
         list.stream().map(m->{
             Student s = new Student();
             if(m.getAge().equals("18")) {
-                s = new Student(m.getAge()+"Map字符串",m.getSex()+100);
+                s = new Student(m.getAge() + "Map字符串",m.getSex()+100);
             }else {
                 s = new Student(m.getAge(),m.getSex());
             }

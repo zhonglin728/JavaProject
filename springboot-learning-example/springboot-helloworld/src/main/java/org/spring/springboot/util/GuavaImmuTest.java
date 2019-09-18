@@ -20,7 +20,7 @@ import java.util.stream.Stream;
  * @Date: 2019/9/2 20:58
  * @Description:
  */
-public class ImmuTest {
+public class GuavaImmuTest {
 
     public static void main(String arg []) {
         //字符串装到List里面
@@ -50,9 +50,11 @@ public class ImmuTest {
         //ImmutableMap装入数据
         ImmutableMap<String, String> of1 = ImmutableMap.of("a", "sddd", "b", "kjkkj");
         ImmutableMap<Object, Object> build3 = ImmutableMap.builder().put("a", 1).put("b", 2).build();
+        //ImmutableList
         ImmutableList<Object> build = ImmutableList.builder().add(null).add(null).build();
-        val a = "";
-
+        //newArrayList
+        val a = Lists.newArrayList(null,null,null);
+        Lists.newArrayList();
 
 
     }

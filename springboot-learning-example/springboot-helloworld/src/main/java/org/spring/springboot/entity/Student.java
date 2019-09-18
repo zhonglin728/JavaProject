@@ -1,9 +1,6 @@
 package org.spring.springboot.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.spring.springboot.enums.ColorEnum;
 
 /**
@@ -16,23 +13,15 @@ import org.spring.springboot.enums.ColorEnum;
 @Getter
 @ToString
 @EqualsAndHashCode
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Student {
 
     private String name;
     private  Integer sex;
     private  String age;
     private ColorEnum colorEnum;
-
-    public Student() {
-    }
-
-    public Student(String name, Integer sex, String age, ColorEnum colorEnum) {
-        this.name = name;
-        this.sex = sex;
-        this.age = age;
-        this.colorEnum = colorEnum;
-    }
-
 
     public Student(String age, Integer sex) {
         this.sex = sex;

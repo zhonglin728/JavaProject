@@ -24,6 +24,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -53,16 +54,16 @@ public class LogRequestBodyAdvice implements RequestBodyAdvice {
     @Override
     public Object afterBodyRead(Object o, HttpInputMessage httpInputMessage, MethodParameter methodParameter, Type type, Class<? extends HttpMessageConverter<?>> aClass) {
         Method method = methodParameter.getMethod();
-        //获取自定义注解1  无用代码
-        Encryption annotation = method.getAnnotation(Encryption.class);
-        //获取自定义注解2 无用代码
-        Encryption[] annotationsByType = method.getAnnotationsByType(Encryption.class);
+        //获取自定义注解1  无用代码  获取方法上面的注解！
+        //Encryption annotation = method.getAnnotation(Encryption.class);
+        //获取自定义注解2 无用代码 获取方法上面的注解！
+        //Encryption[] annotationsByType = method.getAnnotationsByType(Encryption.class);
         //获取 参数上面的 注解       二维数组    flatMap 装到List里面
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-        List<Annotation> collect = Arrays.stream(parameterAnnotations).flatMap(v -> Arrays.stream(v)).collect(Collectors.toList());
+        Set<Annotation> collect = Arrays.stream(parameterAnnotations).flatMap(v -> Arrays.stream(v)).collect(Collectors.toSet());
         boolean isRequestBody = collect.stream().anyMatch(v -> v.annotationType().getSimpleName().equals(RequestBody.class.getSimpleName()));
         boolean isEncrypt = collect.stream().anyMatch(v -> v.annotationType().getSimpleName().equals(Encryption.class.getSimpleName()));
-        //获取 方法注解！
+        //判断参数注解注解！
         if (isEncrypt && isRequestBody){
             try {
                 Field[] declaredFields = o.getClass().getDeclaredFields();
@@ -70,9 +71,8 @@ public class LogRequestBodyAdvice implements RequestBodyAdvice {
                     //获取字段注解！
                     if (declaredField.isAnnotationPresent(EncryptField.class)){
                         String fieldName = declaredField.getName();
-                        // PropertyUtils  取值！ test
-                        Object property = PropertyUtils.getProperty(o, fieldName);
-
+                        // PropertyUtils.getProperty,BeanUtils.getProperty  取值！ test 这里可以有多重方法获取位置类型的对象的值！~
+                        //Object property = PropertyUtils.getProperty(o, fieldName);
                         String propertyValue = BeanUtils.getProperty(o, fieldName);
                         String encryptValue = AESUtil.encrypt(propertyValue);
                         BeanUtils.setProperty(o,fieldName,encryptValue);

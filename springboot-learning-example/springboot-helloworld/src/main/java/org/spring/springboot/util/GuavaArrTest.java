@@ -26,7 +26,7 @@ import static java.util.stream.Collectors.toCollection;
  * @Date 2019/8/13
  * @Version V1.0
  **/
-public class GuavaTest {
+public class GuavaArrTest {
 
     private  static   List<Student> list1 = new ArrayList<Student>();
     private  static   List<Student> list2 = new ArrayList<Student>();
@@ -44,6 +44,8 @@ public class GuavaTest {
         list2.add(new Student("罗志祥",7,"13", ColorEnum.RED));
 
     }
+
+
 
 
     public static void main(String arg []) {

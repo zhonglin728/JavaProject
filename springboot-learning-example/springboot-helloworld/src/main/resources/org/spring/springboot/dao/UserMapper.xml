@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.spring.springboot.dao.UserMapper">
+
+    <resultMap id="baseMap" type="org.spring.springboot.entity.BaseEntity">
+        <result column="create_by" property="createBy"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="update_by" property="updateBy"></result>
+        <result column="update_time" property="updateTime"></result>
+    </resultMap>
+
+    <resultMap id="getUserMap" type="org.spring.springboot.entity.Users" extends="baseMap">
+        <id column="user_id" property="userId"></id>
+        <result column="dept_id" property="deptId"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="user_type" property="userType"></result>
+        <result column="email" property="email"></result>
+        <result column="phonenumber" property="phoneNumber"></result>
+        <result column="avatar" property="avatar"></result>
+        <result column="password" property="password"></result>
+        <result column="status" property="status"></result>
+        <result column="del_flag" property="delFlag"></result>
+        <result column="login_ip" property="loginIp"></result>
+        <result column="login_date" property="loginDate"></result>
+        <result column="remark" property="remark"></result>
+        <!--property="dict"为主方的VO对象里面的字段
+        column="{dict_code=sex}"   dict_code为需要传递的key    sex为当前查询出的字段
+        -->
+        <association property="dict" column="{dict_code=sex}" javaType="org.spring.springboot.entity.Dict" select="org.spring.springboot.dao.UserMapper.getDict">
+        </association>
+        <collection property="role" column="user_id" javaType="java.util.ArrayList" ofType="org.spring.springboot.entity.Role" select="org.spring.springboot.dao.UserMapper.getRole">
+        </collection>
+    </resultMap>
+
+    <resultMap id="getDictMap" type="org.spring.springboot.entity.Dict"  extends="baseMap">
+        <result column="dict_code" property="dictCode"></result>
+        <result column="dict_sort" property="dictSort"></result>
+        <result column="dict_type" property="dictType"></result>
+        <result column="dict_label" property="dictLabel"></result>
+    </resultMap>
+
+    <resultMap id="getRoleMap" type="org.spring.springboot.entity.Role" extends="baseMap">
+        <result column="role_id" property="roleId"></result>
+        <result column="role_name" property="roleName"></result>
+        <result column="role_key" property="roleKey"></result>
+        <result column="role_sort" property="roleSort"></result>
+        <result column="status" property="status"></result>
+        <result column="del_flag" property="delFlag"></result>
+        <result column="remark" property="remark"></result>
+    </resultMap>
+
+    <!--查询用户-->
+    <select id="getUser" resultMap="getUserMap">
+       select  * from sys_user
+    </select>
+    <!--一对一查询字段里面的性别-->
+    <select id="getDict" resultMap="getDictMap" parameterType="hashmap">
+        	select dict_code,dict_sort,dict_type,dict_label,create_by,create_time,update_by,update_time from sys_dict_data where dict_code = #{dict_code}
+    </select>
+    <!--一对多查询出用户对应的角色-->
+    <select id="getRole" resultMap="getRoleMap" parameterType="map">
+        	select r.role_id,role_name,role_key,role_key,role_sort,status,del_flag,create_by,create_time,update_by,update_time,remark from sys_user_role ur INNER JOIN sys_role r on ur.role_id = r.role_id where ur.user_id = #{user_id}
+    </select>
+
+
+</mapper>

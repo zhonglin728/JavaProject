@@ -1,5 +1,6 @@
 package org.spring.springboot;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -12,9 +13,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
  * @date 16/4/26
  */
 // Spring Boot 应用的标识
-
 @SpringBootApplication
 @EnableAsync  // 启用异步任务
+@MapperScan("org.spring.springboot.dao")
 public class Application {
 
     public static void main(String[] args) {

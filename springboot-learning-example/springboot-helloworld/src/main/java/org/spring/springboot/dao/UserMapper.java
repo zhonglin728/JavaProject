@@ -1,6 +1,7 @@
 package org.spring.springboot.dao;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.spring.springboot.entity.Dept;
 import org.spring.springboot.entity.Dict;
 import org.spring.springboot.entity.Role;
 import org.spring.springboot.entity.Users;
@@ -18,4 +19,5 @@ public interface UserMapper {
     List<Users> getUser();
     Dict getDict(Map map);
     List<Role> getRole(String s);
+    List<Dept> getDept(Map map);
 }

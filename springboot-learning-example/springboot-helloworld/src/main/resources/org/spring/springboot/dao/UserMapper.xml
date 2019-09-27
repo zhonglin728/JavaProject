@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.spring.springboot.dao.UserMapper">
 
+    <!-- 父类结果集！-->
     <resultMap id="baseMap" type="org.spring.springboot.entity.BaseEntity">
         <result column="create_by" property="createBy"></result>
         <result column="create_time" property="createTime"></result>
@@ -9,6 +10,7 @@
         <result column="update_time" property="updateTime"></result>
     </resultMap>
 
+    <!--User用户结果集-->
     <resultMap id="getUserMap" type="org.spring.springboot.entity.Users" extends="baseMap">
         <id column="user_id" property="userId"></id>
         <result column="dept_id" property="deptId"></result>
@@ -24,22 +26,20 @@
         <result column="login_ip" property="loginIp"></result>
         <result column="login_date" property="loginDate"></result>
         <result column="remark" property="remark"></result>
-        <!--property="dict"为主方的VO对象里面的字段
-        column="{dict_code=sex}"   dict_code为需要传递的key    sex为当前查询出的字段
-        -->
+        <!--property="dict"为主方的VO对象里面的字段column="{dict_code=sex}"   dict_code为需要传递的key    sex为当前查询出的字段-->
         <association property="dict" column="{dict_code=sex}" javaType="org.spring.springboot.entity.Dict" select="org.spring.springboot.dao.UserMapper.getDict">
         </association>
         <collection property="role" column="user_id" javaType="java.util.ArrayList" ofType="org.spring.springboot.entity.Role" select="org.spring.springboot.dao.UserMapper.getRole">
         </collection>
     </resultMap>
-
+    <!--Dict字典结果集-->
     <resultMap id="getDictMap" type="org.spring.springboot.entity.Dict"  extends="baseMap">
         <result column="dict_code" property="dictCode"></result>
         <result column="dict_sort" property="dictSort"></result>
         <result column="dict_type" property="dictType"></result>
         <result column="dict_label" property="dictLabel"></result>
     </resultMap>
-
+    <!--角色结果集-->
     <resultMap id="getRoleMap" type="org.spring.springboot.entity.Role" extends="baseMap">
         <result column="role_id" property="roleId"></result>
         <result column="role_name" property="roleName"></result>
@@ -48,6 +48,25 @@
         <result column="status" property="status"></result>
         <result column="del_flag" property="delFlag"></result>
         <result column="remark" property="remark"></result>
+        <collection property="dept" column="{roleId=role_id}" javaType="java.util.ArrayList" ofType="org.spring.springboot.entity.Dept" select="org.spring.springboot.dao.UserMapper.getDept">
+        </collection>
+    </resultMap>
+    <!--部门结果集-->
+    <resultMap id="getDeptMap" type="org.spring.springboot.entity.Dept" extends="baseMap">
+        <result property="deptId" column="dept_id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="ancestors" column="ancestors"/>
+        <result property="deptName" column="dept_name"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="leader" column="leader"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="status" column="status"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"  javaType="java.util.Date"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"  javaType="java.util.Date"/>
     </resultMap>
 
     <!--查询用户-->
@@ -60,7 +79,13 @@
     </select>
     <!--一对多查询出用户对应的角色-->
     <select id="getRole" resultMap="getRoleMap" parameterType="map">
-        	select r.role_id,role_name,role_key,role_key,role_sort,status,del_flag,create_by,create_time,update_by,update_time,remark from sys_user_role ur INNER JOIN sys_role r on ur.role_id = r.role_id where ur.user_id = #{user_id}
+        	select r.role_id,role_name,role_key,role_key,role_sort,status,del_flag,create_by,create_time,update_by,update_time,remark from sys_user_role ur
+        	INNER JOIN sys_role r on ur.role_id = r.role_id where ur.user_id = #{user_id}
+    </select>
+    <!--一对多查询出角色下面的部门数据-->
+    <select id="getDept" resultMap="getDeptMap" parameterType="hashmap">
+          select d.dept_id,d.dept_name,d.leader,email,phone,`status`,del_flag,order_num,create_by,create_time,update_by,update_time from sys_role_dept rd
+          INNER JOIN sys_dept d on rd.dept_id = d.dept_id where rd.role_id = #{roleId}
     </select>
 
 

@@ -171,7 +171,7 @@ private String getInsert(String filePath) throws IOException {
 
             insertIfValue = insertIfValue + String.format("\t<if test=\"%s != null"+ifNoll+"\" >\n" +
                     "        #{%s},\n" +
-                    "\t</if>\n",propertyName,columnName);
+                    "\t</if>\n",propertyName,propertyName);
         }
     }
     insertPre = insertPre + insertIfValues + "</trim>\n" +

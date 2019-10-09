@@ -87,6 +87,9 @@
           select d.dept_id,d.dept_name,d.leader,email,phone,`status`,del_flag,order_num,create_by,create_time,update_by,update_time from sys_role_dept rd
           INNER JOIN sys_dept d on rd.dept_id = d.dept_id where rd.role_id = #{roleId}
     </select>
+    <select id="findByUserName" resultMap="getUserMap" parameterType="hashmap">
+	  select  * from sys_user WHERE login_name = 'admin';
+    </select>
 
 
 </mapper>

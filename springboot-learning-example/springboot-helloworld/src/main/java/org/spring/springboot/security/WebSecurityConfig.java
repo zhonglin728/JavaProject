@@ -23,6 +23,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Qualifier(value = "secUserService")
     SecUserService secUserService;
 
+    @Autowired
+    LoginSuccessHandler loginSuccessHandler;
+
+    @Autowired
+    LoginFailHandler loginFailHandler;
+
     @Override
     protected void configure(HttpSecurity auth)
             throws Exception {
@@ -41,7 +47,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //必须登录才能访问！
                 .anyRequest().authenticated()
                 //自定义登录界面
-                .and().formLogin().loginPage("/toLogin").loginProcessingUrl("/login").failureUrl("/toLogin?error").permitAll()
+                .and().formLogin().loginPage("/toLogin").loginProcessingUrl("/login")
+                //默认跳转的 路由！
+                .defaultSuccessUrl("/home")
+                //.successHandler(loginSuccessHandler)
+                //.failureHandler(loginFailHandler)
+                .failureUrl("/toLogin?error").permitAll()
                 .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .and().exceptionHandling().accessDeniedPage("/toLogin?deny")
                 .and().httpBasic()

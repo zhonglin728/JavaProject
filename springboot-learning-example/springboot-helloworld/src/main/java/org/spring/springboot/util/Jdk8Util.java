@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
+import org.spring.springboot.entity.Users;
 import org.spring.springboot.interfunc.MyFunction;
 import org.spring.springboot.enums.ColorEnum;
 import org.spring.springboot.entity.Demo;
@@ -257,7 +258,7 @@ public class Jdk8Util {
 
 
         Map<String,Student> map1 = new HashMap();
-        LinkedHashSet<Object> objects = Sets.newLinkedHashSet();
+        LinkedHashSet<Student> objects = Sets.newLinkedHashSet();
         list.forEach(objects::add);
         map1.put("a",new Student("e",10,"24", ColorEnum.GREEN));
         map1.put("b",new Student("f",34,"13", ColorEnum.BLANK));

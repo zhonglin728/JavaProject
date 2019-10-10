@@ -1,6 +1,7 @@
 package org.spring.springboot.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,46 +15,41 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  * @Date: 2019/10/8 18:58
  * @Description:
  */
-//@EnableWebSecurity
+@EnableWebSecurity
+@Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
+    @Autowired(required = false)
+    @Qualifier(value = "secUserService")
     SecUserService secUserService;
 
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(secUserService).passwordEncoder(new PasswordEncoder() {
-            @Override
-            public String encode(CharSequence rawPassword) {
-                return MD5Util.encode((String) rawPassword);
-            }
-
-            @Override
-            public boolean matches(CharSequence rawPassword, String encodedPassword) {
-                return encodedPassword.equals(MD5Util.encode((String) rawPassword));
-            }
-        });
-    }
-
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(HttpSecurity auth)
+            throws Exception {
         //允许基于HttpServletRequest使用限制访问
-        http.authorizeRequests()
+        auth.authorizeRequests()
                 //不需要身份认证
-                .antMatchers( "/home","/toLogin","/**/customer/**").permitAll()
+                .antMatchers( "/toLogin","/**/customer/**").permitAll()
                 .antMatchers("/js/**", "/css/**", "/images/**", "/fronts/**", "/doc/**", "/toLogin").permitAll()
-                //.antMatchers("/user/**").hasAnyRole("USER")
+                .antMatchers("/admin").access("hasAnyRole('ROLE_admin')")
+                .antMatchers("/user").access("hasAnyRole('ROLE_chufang','AA','BB')")
+                .antMatchers("/home").access("hasRole('ROLE_kanmen')")
+                //.antMatchers("/user").hasAnyRole("admin","kanmen","chufang")
+                //.antMatchers("/home").hasAnyRole("admin","kanmen","chufang")
                 //.hasIpAddress()//读取配置权限配置
-                .antMatchers("/**").access("hasRole('ADMIN')")
+                //.antMatchers("/**").access("hasAnyRole('admin')")
+                //必须登录才能访问！
                 .anyRequest().authenticated()
                 //自定义登录界面
-//                .and().formLogin().loginPage("/toLogin").loginProcessingUrl("/login").failureUrl("/toLogin?error").permitAll()
-//                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                .and().exceptionHandling().accessDeniedPage("/toLogin?deny")
-//                .and().httpBasic()
-//                .and().sessionManagement().invalidSessionUrl("/toLogin")
+                .and().formLogin().loginPage("/toLogin").loginProcessingUrl("/login").failureUrl("/toLogin?error").permitAll()
+                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .and().exceptionHandling().accessDeniedPage("/toLogin?deny")
+                .and().httpBasic()
+                .and().sessionManagement().invalidSessionUrl("/toLogin")
                 .and().csrf().disable();
-
     }
-
-
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(secUserService).passwordEncoder(new MyPasswordEncoder());
+    }
 }

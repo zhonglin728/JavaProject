@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * @Date: 2019/10/8 19:02
  * @Description:
  */
-//@Service
+@Service
 public class SecUserService<T extends User> implements UserDetailsService {
 
     @Autowired
@@ -40,7 +40,7 @@ public class SecUserService<T extends User> implements UserDetailsService {
             //用户权限
             List<SimpleGrantedAuthority> authorities = new ArrayList<>();
             if (!CollectionUtils.isEmpty(user.getRole())) {
-                List<String> roles = user.getRole().stream().map(Role::getRoleKey).collect(Collectors.toList());
+                List<String> roles = user.getRole().stream().map(v-> "ROLE_" + v.getRoleKey()).collect(Collectors.toList());
                 for (String role : roles) {
                     if (!StringUtils.isEmpty(role)) {
                         authorities.add(new SimpleGrantedAuthority(role.trim()));

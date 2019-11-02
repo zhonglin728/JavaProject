@@ -19,7 +19,6 @@ import java.util.List;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class Users extends BaseEntity{
-
     private Integer userId;
     private Integer deptId;
     private String loginName;

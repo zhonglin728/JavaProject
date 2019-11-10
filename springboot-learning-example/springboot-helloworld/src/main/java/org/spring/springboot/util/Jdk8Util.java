@@ -190,7 +190,7 @@ public class Jdk8Util {
         }).collect(Collectors.toList());
 
         //Stream.concat 合并 list
-        System.out.println("stream.concat合并集合数据*******************1");
+        System.out.println("stream.concat合并集合数据*******************");
         List<Object> collect5 = Stream.concat(list.stream(), demos.stream()).collect(Collectors.toList());
 
         // anyMatch 任意一个人匹配就返回  true

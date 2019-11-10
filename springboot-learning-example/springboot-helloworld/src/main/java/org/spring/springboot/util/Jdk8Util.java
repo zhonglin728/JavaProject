@@ -219,6 +219,10 @@ public class Jdk8Util {
                         toCollection(() -> new TreeSet<>(Comparator.comparing(Student::getAge))), ArrayList::new)
         );
 
+        list.forEach(v->v.setAge("XX"));
+        long count = list.stream().mapToInt(Student::getSex).sum();
+        List<Student> collect7 = list.stream().peek(v -> v.setAge(v.getAge() + "BB")).collect(toList());
+
         //JDK8  时间API
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

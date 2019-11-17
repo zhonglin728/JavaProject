@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
  */
 // Spring Boot 应用的标识
 @SpringBootApplication
-@EnableAsync  // 启用异步任务
+@EnableAsync  // 启用异步任务1
 @MapperScan("org.spring.springboot.dao")
 public class Application {
 

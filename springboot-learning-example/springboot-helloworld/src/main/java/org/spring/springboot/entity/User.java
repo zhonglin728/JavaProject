@@ -9,6 +9,7 @@ package org.spring.springboot.entity;
  **/
 
 import lombok.*;
+import lombok.experimental.Accessors;
 import org.spring.springboot.annotion.EncryptField;
 
 /**
@@ -23,6 +24,7 @@ import org.spring.springboot.annotion.EncryptField;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
+@Accessors(chain = true)
 public class User {
     private int id;
     @Builder.Default

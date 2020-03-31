@@ -3,6 +3,7 @@ package org.spring.springboot.web;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import lombok.var;
 import org.spring.springboot.exception.OrderPeriodException;
 import org.spring.springboot.response.ResponseResult;
 import org.spring.springboot.service.StudentService;
@@ -54,7 +55,7 @@ public class HelloWorldController {
         String s = Optional.ofNullable(client.get("defaultZone")).map(Object::toString).orElse("default");
         List<String> strings = Splitter.onPattern("://").omitEmptyStrings().trimResults().splitToList(s);
         ImmutableMap<Object, Object> map = ImmutableMap.builder().put(strings.get(0), strings.get(1)).build();
-        ResponseResult res = new ResponseResult<>(map);
+        var res = new ResponseResult<>(map);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 

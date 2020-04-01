@@ -28,6 +28,6 @@ import java.util.Map;
 public interface GitHubApi {
     @GetMapping(value = "/search/repositories",name = "获取git信息")
     @Headers({"Content-Type: application/json","Accept: application/json"})
-    public Map searchRepo(@RequestParam("q") String queryStr);
+    Map searchRepo(@RequestParam("q") String queryStr);
 }
 

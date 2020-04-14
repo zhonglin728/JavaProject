@@ -1,0 +1,8 @@
+ding:
+  agentId: 708739600
+  appSecre: 1q2JoS70fdiRxaX1vaIErylbmjpcycZES_1Faq7ooOr2x-s6J1Db9NWiPvDJM4c5
+  appKey: dingvd6fv1o3l5saykxe
+  # 获取token
+  gettokenUrl: https://oapi.dingtalk.com/gettoken
+  # 发送消息！
+  asyncsendUrl: https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2

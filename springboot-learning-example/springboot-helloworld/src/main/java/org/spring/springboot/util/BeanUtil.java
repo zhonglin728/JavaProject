@@ -86,7 +86,7 @@ public class BeanUtil {
      */
     public static <E,C> List<C> copyList(List<E> sourceList,Class<C> targetClass){
         List<C> collect = sourceList.stream().map(v -> {
-            C o  = null;
+            C o = null;
             try {
                 o = targetClass.newInstance();
             } catch (InstantiationException e) {

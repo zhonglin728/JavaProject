@@ -14,11 +14,11 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.google.common.collect.Lists;
 import com.taobao.api.ApiException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.List;
 
@@ -67,6 +67,11 @@ public class DingService {
     private  String zlRoleId = "1183616592";
 
 
+    @PostConstruct
+    private void init() {
+        getToken();
+        log.info("首次加载token!");
+    }
     public void runTest (){
         sendToConversationText(agentId,zlUserId, "现在时间："+DateUtils.getStringToday()+"请及时打卡！");
         /*send_to_conversationMarkdown(agentId,bylUserId,"公司通知！","# 今天吃什么"+ DateUtils.getStringToday()+"\n" +
@@ -75,8 +80,6 @@ public class DingService {
                 "2. 猪肉!");*/
 
     }
-
-
     /**
      *  全部发送消息
      * @param agentId
@@ -94,10 +97,6 @@ public class DingService {
             obj2.setContent(content);
             obj1.setText(obj2);
             req.setMsg(obj1);
-            //第一次启动时检查token
-            if (StringUtils.isEmpty(globToken)){
-                getToken();
-            }
             OapiMessageCorpconversationAsyncsendV2Response rsp = client.execute(req, globToken);
             printlnJson(rsp.getBody());
         } catch (ApiException e) {
@@ -123,10 +122,6 @@ public class DingService {
             text.setContent(content);
             msg.setText(text);
             req.setMsg(msg);
-            //第一次启动时检查token
-            if (StringUtils.isEmpty(globToken)){
-                getToken();
-            }
             OapiMessageCorpconversationAsyncsendV2Response rsp = client.execute(req,globToken);
             //SendToConversationResultVo sendToConversationResultVo = objectMapper.readValue(rsp.getBody(), SendToConversationResultVo.class);
             printlnJson(rsp.getBody());
@@ -155,10 +150,6 @@ public class DingService {
             markdown.setText(content);
             msg.setMarkdown(markdown);
             req.setMsg(msg);
-            //第一次启动时检查token
-            if (StringUtils.isEmpty(globToken)){
-                getToken();
-            }
             OapiMessageCorpconversationAsyncsendV2Response rsp = client.execute(req, globToken);
             printlnJson(rsp.getBody());
         } catch (ApiException e) {
@@ -167,6 +158,9 @@ public class DingService {
     }
 
 
+    /**
+     * 部门发送消息！
+     */
     public void sendToConversationTextDept(){
 
     }
@@ -179,10 +173,6 @@ public class DingService {
             DingTalkClient client = new DefaultDingTalkClient(deptUrl);
             OapiDepartmentListRequest req = new OapiDepartmentListRequest();
             req.setHttpMethod(HttpMethod.GET.name());
-            //第一次启动时检查token
-            if (StringUtils.isEmpty(globToken)){
-                getToken();
-            }
             OapiDepartmentListResponse rsp = client.execute(req, globToken);
             List<OapiDepartmentListResponse.Department> list = rsp.getDepartment();
             return list;
@@ -204,13 +194,9 @@ public class DingService {
             OapiUserSimplelistRequest req = new OapiUserSimplelistRequest();
             req.setDepartmentId(id);
             req.setHttpMethod(HttpMethod.GET.name());
-            //第一次启动时检查token
-            if (StringUtils.isEmpty(globToken)){
-                getToken();
-            }
             OapiUserSimplelistResponse rsp = client.execute(req, globToken);
             List<OapiUserSimplelistResponse.Userlist> userlist = rsp.getUserlist();
-            printlnJson(rsp.getBody());
+            //printlnJson(rsp.getBody());
             return userlist;
         } catch (ApiException e) {
             e.printStackTrace();
@@ -226,10 +212,6 @@ public class DingService {
             OapiUserGetByMobileRequest req = new OapiUserGetByMobileRequest();
             req.setMobile(zlPhone);
             req.setHttpMethod(HttpMethod.GET.name());
-            //第一次启动时检查token
-            if (StringUtils.isEmpty(globToken)){
-                getToken();
-            }
             OapiUserGetByMobileResponse rsp = client.execute(req, globToken);
             String userid = rsp.getUserid();
             printlnJson(rsp.getBody());

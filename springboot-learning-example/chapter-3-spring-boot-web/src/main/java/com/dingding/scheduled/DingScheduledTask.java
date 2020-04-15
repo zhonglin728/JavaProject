@@ -55,6 +55,7 @@ public class DingScheduledTask {
     @Scheduled(fixedRate  = 1000*60*60)
     public void getTokenScheduled(){
         dingService.getToken();
+        log.info("间隔一小时刷新token!");
     }
 
     /**

@@ -6,6 +6,7 @@ ding:
   gettokenUrl: https://oapi.dingtalk.com/gettoken
   # 发送消息！
   asyncsendUrl: https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2
+  deptUrl: https://oapi.dingtalk.com/user/simplelist
 
 # Logger Config
 logging:

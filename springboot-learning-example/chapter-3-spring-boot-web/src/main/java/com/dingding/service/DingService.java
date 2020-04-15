@@ -5,26 +5,22 @@ import com.dingding.domain.TokenResultVo;
 import com.dingding.util.DateUtils;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
-import com.dingtalk.api.request.OapiGettokenRequest;
-import com.dingtalk.api.request.OapiMessageCorpconversationAsyncsendV2Request;
-import com.dingtalk.api.request.OapiUserGetByMobileRequest;
-import com.dingtalk.api.request.OapiUserSimplelistRequest;
-import com.dingtalk.api.response.OapiGettokenResponse;
-import com.dingtalk.api.response.OapiMessageCorpconversationAsyncsendV2Response;
-import com.dingtalk.api.response.OapiUserGetByMobileResponse;
-import com.dingtalk.api.response.OapiUserSimplelistResponse;
+import com.dingtalk.api.request.*;
+import com.dingtalk.api.response.*;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.taobao.api.ApiException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.util.List;
+
 /**
  * SpringBoot 测试类
  *
@@ -45,13 +41,17 @@ public class DingService {
     private  String appKey;
     @Value(value = "${ding.appSecre}")
     private  String appSecre;
-    //token
-    private String globToken = "";
-
+    //获取Token接口
     @Value(value = "${ding.gettokenUrl}")
     private String gettokenUrl;
+    // 发送消息接口
     @Value(value = "${ding.asyncsendUrl}")
     private String asyncsendUrl;
+    //获取部门接口
+    @Value(value = "${ding.deptUrl}")
+    private String deptUrl;
+    //token
+    private String globToken = "";
 
 
     private  String zlUserId = "11392835271205976";
@@ -63,7 +63,7 @@ public class DingService {
 
 
     public void runTest (){
-        send_to_conversationText(agentId,zlUserId, "现在时间："+DateUtils.getStringToday()+"请及时打卡！");
+        sendToConversationText(agentId,zlUserId, "现在时间："+DateUtils.getStringToday()+"请及时打卡！");
         /*send_to_conversationMarkdown(agentId,bylUserId,"公司通知！","# 今天吃什么"+ DateUtils.getStringToday()+"\n" +
                 "菜单\n" +
                 "1. 牛肉!\n" +
@@ -73,13 +73,40 @@ public class DingService {
 
 
     /**
+     *  全部发送消息
+     * @param agentId
+     * @param content
+     */
+    public void sendToConversationTextAll(Long agentId,String content) {
+        try {
+            DingTalkClient client = new DefaultDingTalkClient(asyncsendUrl);
+            OapiMessageCorpconversationAsyncsendV2Request req = new OapiMessageCorpconversationAsyncsendV2Request();
+            req.setAgentId(agentId);
+            req.setToAllUser(true);
+            OapiMessageCorpconversationAsyncsendV2Request.Msg obj1 = new OapiMessageCorpconversationAsyncsendV2Request.Msg();
+            obj1.setMsgtype(MsgTypeEnum.TEXT.getType());
+            OapiMessageCorpconversationAsyncsendV2Request.Text obj2 = new OapiMessageCorpconversationAsyncsendV2Request.Text();
+            obj2.setContent(content);
+            obj1.setText(obj2);
+            req.setMsg(obj1);
+            //第一次启动时检查token
+            if (StringUtils.isEmpty(globToken)){
+                gettoken();
+            }
+            OapiMessageCorpconversationAsyncsendV2Response rsp = client.execute(req, globToken);
+            printlnJson(rsp.getBody());
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
      *
-     * 指定人TEXT发送消息
+     * 指定人发送text消息
      * @param agentId 应用ID
      *  @param zlUserId 用户ID
      * @param content 内容
      */
-    public  void send_to_conversationText(Long agentId,String zlUserId,String content) {
+    public  void sendToConversationText(Long agentId,String zlUserId,String content) {
         try {
             DingTalkClient client = new DefaultDingTalkClient(asyncsendUrl);
             OapiMessageCorpconversationAsyncsendV2Request req = new OapiMessageCorpconversationAsyncsendV2Request();
@@ -110,7 +137,7 @@ public class DingService {
      * @param title markdown标题
      * @param content markdown内容
      */
-    public  void send_to_conversationMarkdown(Long agentId,String zlUserId,String title ,String content) {
+    public  void sendToConversationMarkdown(Long agentId,String zlUserId,String title ,String content) {
         try {
             DingTalkClient client = new DefaultDingTalkClient(asyncsendUrl);
             OapiMessageCorpconversationAsyncsendV2Request req = new OapiMessageCorpconversationAsyncsendV2Request();
@@ -132,6 +159,28 @@ public class DingService {
         } catch (ApiException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 获取所有的部门
+     * @return
+     */
+    public List<?> getDeptList(){
+        try {
+            DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/department/list");
+            OapiDepartmentListRequest req = new OapiDepartmentListRequest();
+            req.setHttpMethod(HttpMethod.GET.name());
+            //第一次启动时检查token
+            if (StringUtils.isEmpty(globToken)){
+                gettoken();
+            }
+            OapiDepartmentListResponse rsp = client.execute(req, globToken);
+            List<OapiDepartmentListResponse.Department> department = rsp.getDepartment();
+
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -211,7 +260,7 @@ public class DingService {
      * 格式化JSON数据！
      * @param object
      */
-    public static void printlnJson(Object object){
+    public void printlnJson(Object object){
         String s = String.valueOf(object);
         ObjectMapper objectMapper = new ObjectMapper();
         try {

@@ -45,7 +45,7 @@ public class DingServiceTest {
      */
     @Before
     public void getTokenScheduled(){
-        dingService.gettoken();
+        dingService.getToken();
     }
 
     /**

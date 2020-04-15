@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.google.common.collect.Lists;
 import com.taobao.api.ApiException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -47,9 +48,13 @@ public class DingService {
     // 发送消息接口
     @Value(value = "${ding.asyncsendUrl}")
     private String asyncsendUrl;
-    //获取部门接口
+    //获取部门用户接口
+    @Value(value = "${ding.deptUserUrl}")
+    private String deptUserUrl;
+    // 获取部门
     @Value(value = "${ding.deptUrl}")
     private String deptUrl;
+
     //token
     private String globToken = "";
 
@@ -91,7 +96,7 @@ public class DingService {
             req.setMsg(obj1);
             //第一次启动时检查token
             if (StringUtils.isEmpty(globToken)){
-                gettoken();
+                getToken();
             }
             OapiMessageCorpconversationAsyncsendV2Response rsp = client.execute(req, globToken);
             printlnJson(rsp.getBody());
@@ -103,15 +108,15 @@ public class DingService {
      *
      * 指定人发送text消息
      * @param agentId 应用ID
-     *  @param zlUserId 用户ID
+     *  @param userId 用户ID
      * @param content 内容
      */
-    public  void sendToConversationText(Long agentId,String zlUserId,String content) {
+    public  void sendToConversationText(Long agentId,String userId,String content) {
         try {
             DingTalkClient client = new DefaultDingTalkClient(asyncsendUrl);
             OapiMessageCorpconversationAsyncsendV2Request req = new OapiMessageCorpconversationAsyncsendV2Request();
             req.setAgentId(agentId);
-            req.setUseridList(zlUserId);
+            req.setUseridList(userId);
             OapiMessageCorpconversationAsyncsendV2Request.Msg msg = new OapiMessageCorpconversationAsyncsendV2Request.Msg();
             msg.setMsgtype(MsgTypeEnum.TEXT.getType());
             OapiMessageCorpconversationAsyncsendV2Request.Text text = new OapiMessageCorpconversationAsyncsendV2Request.Text();
@@ -120,7 +125,7 @@ public class DingService {
             req.setMsg(msg);
             //第一次启动时检查token
             if (StringUtils.isEmpty(globToken)){
-                gettoken();
+                getToken();
             }
             OapiMessageCorpconversationAsyncsendV2Response rsp = client.execute(req,globToken);
             //SendToConversationResultVo sendToConversationResultVo = objectMapper.readValue(rsp.getBody(), SendToConversationResultVo.class);
@@ -152,7 +157,7 @@ public class DingService {
             req.setMsg(msg);
             //第一次启动时检查token
             if (StringUtils.isEmpty(globToken)){
-                gettoken();
+                getToken();
             }
             OapiMessageCorpconversationAsyncsendV2Response rsp = client.execute(req, globToken);
             printlnJson(rsp.getBody());
@@ -161,32 +166,83 @@ public class DingService {
         }
     }
 
+
+    public void sendToConversationTextDept(){
+
+    }
     /**
      * 获取所有的部门
      * @return
      */
-    public List<?> getDeptList(){
+    public List<OapiDepartmentListResponse.Department> getDeptList(){
         try {
-            DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/department/list");
+            DingTalkClient client = new DefaultDingTalkClient(deptUrl);
             OapiDepartmentListRequest req = new OapiDepartmentListRequest();
             req.setHttpMethod(HttpMethod.GET.name());
             //第一次启动时检查token
             if (StringUtils.isEmpty(globToken)){
-                gettoken();
+                getToken();
             }
             OapiDepartmentListResponse rsp = client.execute(req, globToken);
-            List<OapiDepartmentListResponse.Department> department = rsp.getDepartment();
-
+            List<OapiDepartmentListResponse.Department> list = rsp.getDepartment();
+            return list;
         } catch (ApiException e) {
             e.printStackTrace();
         }
-        return null;
+        return Lists.newArrayList();
     }
 
+
+    /**
+     * 根据部门ID获取用户列表
+     * simplelist
+     * @param id 部门ID
+     */
+    public  List<OapiUserSimplelistResponse.Userlist> simplelist(Long id) {
+        try {
+            DingTalkClient client = new DefaultDingTalkClient(deptUserUrl);
+            OapiUserSimplelistRequest req = new OapiUserSimplelistRequest();
+            req.setDepartmentId(id);
+            req.setHttpMethod(HttpMethod.GET.name());
+            //第一次启动时检查token
+            if (StringUtils.isEmpty(globToken)){
+                getToken();
+            }
+            OapiUserSimplelistResponse rsp = client.execute(req, globToken);
+            List<OapiUserSimplelistResponse.Userlist> userlist = rsp.getUserlist();
+            printlnJson(rsp.getBody());
+            return userlist;
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+        return Lists.newArrayList();
+    }
+    /**
+     * 根据手机号码查询用户的userId
+     */
+    public  String getByMobile() {
+        try {
+            DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/get_by_mobile");
+            OapiUserGetByMobileRequest req = new OapiUserGetByMobileRequest();
+            req.setMobile(zlPhone);
+            req.setHttpMethod(HttpMethod.GET.name());
+            //第一次启动时检查token
+            if (StringUtils.isEmpty(globToken)){
+                getToken();
+            }
+            OapiUserGetByMobileResponse rsp = client.execute(req, globToken);
+            String userid = rsp.getUserid();
+            printlnJson(rsp.getBody());
+            return userid;
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
     /**
      * 获取token
      */
-    public  String gettoken() {
+    public  String getToken() {
         try {
             DingTalkClient client = new DefaultDingTalkClient(gettokenUrl);
             OapiGettokenRequest req = new OapiGettokenRequest();
@@ -213,48 +269,10 @@ public class DingService {
         return "";
     }
 
-    /**
-     * 根据手机号码查询用户的userId
-     */
-    public  void get_by_mobile() {
-        try {
-            DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/get_by_mobile");
-            OapiUserGetByMobileRequest req = new OapiUserGetByMobileRequest();
-            req.setMobile(zlPhone);
-            req.setHttpMethod(HttpMethod.GET.name());
-            //第一次启动时检查token
-            if (StringUtils.isEmpty(globToken)){
-                gettoken();
-            }
-            OapiUserGetByMobileResponse rsp = client.execute(req, globToken);
-            printlnJson(rsp.getBody());
-        } catch (ApiException e) {
-            e.printStackTrace();
-        }
-    }
 
 
-    /**
-     * 获取部门用户
-     * simplelist
-     * @param
-     */
-    public  void simplelist() {
-        try {
-            DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/simplelist");
-            OapiUserSimplelistRequest req = new OapiUserSimplelistRequest();
-            req.setDepartmentId(1L);
-            req.setHttpMethod(HttpMethod.GET.name());
-            //第一次启动时检查token
-            if (StringUtils.isEmpty(globToken)){
-                gettoken();
-            }
-            OapiUserSimplelistResponse rsp = client.execute(req, globToken);
-            printlnJson(rsp.getBody());
-        } catch (ApiException e) {
-            e.printStackTrace();
-        }
-    }
+
+
 
     /**
      * 格式化JSON数据！

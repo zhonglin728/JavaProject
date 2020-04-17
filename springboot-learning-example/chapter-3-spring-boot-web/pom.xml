@@ -2,11 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <name>chapter-3-spring-boot-web</name>
+    <name>spring-boot-web</name>
     <description>钉钉开发Demo</description>
 
     <groupId>com.dingding</groupId>
-    <artifactId>chapter-3-spring-boot-web</artifactId>
+    <artifactId>spring-boot-web</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 
@@ -20,6 +20,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <!--跳过测试用例！-->
+        <skipTests>true</skipTests>
     </properties>
 
     <dependencies>
@@ -134,6 +136,12 @@
             <version>28.2-jre</version>
         </dependency>
 
+        <!--汉子转拼音-->
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>2.5.0</version>
+        </dependency>
 
 
 
@@ -142,6 +150,7 @@
 
 
     <build>
+        <finalName>boot</finalName>
         <plugins>
             <!-- Spring Boot Maven 插件 -->
             <plugin>
@@ -156,7 +165,7 @@
     </build>
 
 
-    <repositories>
+    <!--<repositories>
         <repository>
             <id>spring-snapshots</id>
             <name>Spring Snapshots</name>
@@ -165,6 +174,6 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-    </repositories>
+    </repositories>-->
 
 </project>

@@ -1,24 +1,29 @@
 package com.dingding.scheduled;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.dingding.domain.User;
+import com.dingding.mapper.UserMapper;
 import com.dingding.service.DingService;
 import com.dingding.util.DateUtils;
 import com.dingtalk.api.response.OapiDepartmentListResponse;
-import com.dingtalk.api.response.OapiUserSimplelistResponse;
-import com.google.common.collect.Lists;
+import com.dingtalk.api.response.OapiUserListbypageResponse;
 import com.google.common.collect.Maps;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Scheduled注解可以控制方法定时执行，其中有三个参数可选择：
@@ -47,6 +52,10 @@ public class DingScheduledTask {
     private DingService dingService;
     @Autowired
     private Configuration configuration;
+    @Autowired
+    private UserMapper userMapper;
+
+
 
     /**
      * @Scheduled(fixedDelay  = 1000*60*60)
@@ -61,10 +70,19 @@ public class DingScheduledTask {
     /**
      * 测试发送私人消息！
      */
-    @Scheduled(fixedRate  = 1000*5)
-    public void task(){
+   @Scheduled(fixedRate  = 1000*5)
+    public void taskTest(){
         dingService.sendToConversationText(agentId, zlUserId, DateUtils.getStringToday());
     }
+
+    /**
+     * 定时任务 每周一凌晨0.0 去钉钉拉取用户数据到本地库！
+     */
+    @Scheduled(cron = "0 0 0 * * 1")
+    public void task(){
+        dingService.syncUser();
+    }
+
     /**
      * 模板1 发送全体员工
      * 工作日17:25
@@ -90,12 +108,11 @@ public class DingScheduledTask {
      * 工作日20:45
      */
     @Scheduled(cron = "0 45 20 * * 1,2,3,4,5")
+    //@Scheduled(fixedRate  = 1000*60*60)
     public void task3(){
         String content = readTemplateToString("3报工不符合通知.ftl", Maps.newHashMap());
-        ArrayList<String> strings = Lists.newArrayList("1", "2");
-        strings.forEach(v->{
-            dingService.sendToConversationText(agentId, v,content);
-        });
+        List<Map<String, ?>> users = userMapper.getTaskOauth3();
+        sendMsg(users, content);
 
     }
 
@@ -106,10 +123,9 @@ public class DingScheduledTask {
     @Scheduled(cron = "0 45 20 * * 5")
     public void task4(){
         String content = readTemplateToString("4报工不符合通知周末.ftl", Maps.newHashMap());
-        ArrayList<String> strings = Lists.newArrayList("1", "2");
-        strings.forEach(v->{
-            dingService.sendToConversationText(agentId, v,content);
-        });
+        List<Map<String, ?>> users = userMapper.getTaskOauth4();
+        sendMsg(users, content);
+
     }
 
     /**
@@ -119,29 +135,26 @@ public class DingScheduledTask {
     @Scheduled(cron = "0 45 10 * * 7")
     public void task5(){
         String content = readTemplateToString("5报工不符合通知周日.ftl", Maps.newHashMap());
-        ArrayList<String> strings = Lists.newArrayList("1", "2");
-        strings.forEach(v->{
-            dingService.sendToConversationText(agentId, v,content);
-        });
+        List<Map<String, ?>> users = userMapper.getTaskOauth5();
+        sendMsg(users, content);
+
     }
 
 
     /**
-     * 模板6 发送到个人 报工审理组员工
+     * 模板6 发送到 报工审理组
      * 周六10:30
      */
-    //@Scheduled(cron = "0 30 10 * * 6")
-    @Scheduled(fixedRate  = 1000*5)
+    //@Scheduled(fixedRate  = 1000*60*60*60)
+    @Scheduled(cron = "0 30 10 * * 6")
     public void task6(){
         String content = readTemplateToString("6报工审批全通知.ftl", Maps.newHashMap());
         List<OapiDepartmentListResponse.Department> deptList = dingService.getDeptList();
-        OapiDepartmentListResponse.Department department = deptList.stream().filter(v -> "报工通知".equals(v.getName())).findFirst().orElseThrow(() -> new IllegalStateException("未找到该部门"));
-        //TODO 报工审批组
-        List<OapiUserSimplelistResponse.Userlist> simplelist = dingService.simplelist(department.getId());
-        simplelist.forEach(v->{
-            log.info(v.getUserid());
-            //dingService.sendToConversationText(agentId, v.getUserid(),content);
-        });
+        OapiDepartmentListResponse.Department department = deptList.stream().filter(v -> "报工审批组".equals(v.getName())).findFirst()
+                .orElseThrow(() -> new IllegalStateException("未找到该部门"));
+        // 报工审批组发送消息
+        dingService.sendToConversationTextDept(String.valueOf(department.getId()),content);
+
     }
 
     /**
@@ -151,11 +164,15 @@ public class DingScheduledTask {
     @Scheduled(cron = "0 30 10 * * 7")
     public void task7(){
         String content = readTemplateToString("7报工审批不符合通知.ftl", Maps.newHashMap());
-        ArrayList<String> strings = Lists.newArrayList("1", "2");
-        strings.forEach(v->{
-            dingService.sendToConversationText(agentId, v,content);
-        });
+        List<Map<String, ?>> users = userMapper.getTaskOauth7();
+        sendMsg(users, content);
+
     }
+
+
+
+
+
     /**
      *  读取模板文件返回字符串！
      * @param ftlName 模板名称
@@ -173,6 +190,43 @@ public class DingScheduledTask {
             e.printStackTrace();
         }
         return "";
+    }
+    /**
+     * 递归 分页 去读取 部门下面的用户信息！
+     * 递归逐层返回！
+     * @param id
+     * @param listRes
+     * @return
+     */
+    public List<OapiUserListbypageResponse.Userlist> getUserListInfo(Long id,int index,List<OapiUserListbypageResponse.Userlist> listRes){
+        List<OapiUserListbypageResponse.Userlist> list = new ArrayList<>();
+        list = dingService.getUserListInfo(id, Long.valueOf(index-1)*2L, 2L);
+        if (!CollectionUtils.isEmpty(list) && list.size()>0){
+            index++;
+            getUserListInfo(id,index,listRes);
+            listRes.addAll(list);
+        }
+        return listRes;
+    }
+
+    /**
+     * 发送消息！
+     * @param users jira系统查询的数据
+     * @param content  模板内容
+     */
+    public void sendMsg(List<Map<String, ?>> users,String content){
+        List<String> author = users.stream().map(v -> {
+            return String.valueOf(v.get("author"));
+        }).distinct().collect(Collectors.toList());
+        //TODO jira数据和本地库NameEn 对比查询出userId
+        author.forEach(v->{
+            User user = userMapper.selectList(new QueryWrapper<User>().lambda().eq(StringUtils.isNotEmpty(v), User::getNameEn, v))
+                    .stream()
+                    .findFirst()
+                    .orElse(new User().setUserid(""));
+            dingService.sendToConversationText(agentId, user.getUserid(),content);
+            log.info("用户:{}发送消息，内容是:{}",v,content);
+        });
     }
     /**
      * 测试阶段给指定人每隔1分钟执行一次！

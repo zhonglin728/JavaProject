@@ -2,7 +2,6 @@ package com.dingding.service;
 
 import com.dingding.WebApplication;
 import freemarker.template.Configuration;
-import freemarker.template.TemplateException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -51,7 +48,7 @@ public class DingServiceTest {
     /**
      * 全员发送消息！
      */
-    @Test
+   /* @Test
     public void send_to_conversationTextScheduled(){
         try {
             configuration.setClassForTemplateLoading(this.getClass(), "/ftl");
@@ -63,7 +60,7 @@ public class DingServiceTest {
             e.printStackTrace();
         }
 
-    }
+    }*/
 
     /**
      * 获取部门列表

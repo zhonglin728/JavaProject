@@ -6,12 +6,18 @@ ding:
   gettokenUrl: https://oapi.dingtalk.com/gettoken
   # 发送消息！
   asyncsendUrl: https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2
-  deptUserUrl: https://oapi.dingtalk.com/user/simplelist
+  # 获取所有部门
   deptUrl: https://oapi.dingtalk.com/department/list
+  # 获取部门下的用户简略信息
+  deptUserUrl: https://oapi.dingtalk.com/user/simplelist
+  # 获取部门下的用户详细信息
+  deptUserInfoUrl: https://oapi.dingtalk.com/user/listbypage
 
 # Logger Config
 logging:
+  file: bootTask.log
   level:
+    #root: debug
     com.baomidou.mybatisplus.samples.quickstart: debug
 
 #数据源
@@ -68,7 +74,7 @@ spring:
 mybatis-plus:
   # 如果是放在src/main/java目录下 classpath:/com/yourpackage/*/mapper/*Mapper.xml
   # 如果是放在resource目录 classpath:/mapper/*Mapper.xml
-  mapper-locations: classpath*:com/dingding/**/**.xml,classpath*:mapping/**/**.xml
+  mapper-locations: classpath*:com/dingding/**/**.xml,classpath*:mapper/**/**.xml
   #实体扫描，多个package用逗号或者分号分隔
   typeAliasesPackage: com.dingding.**.entity,com.dingding.**.domain
   global-config:

@@ -1,11 +1,9 @@
 package com.dingding.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dingding.domain.MsgTypeEnum;
 import com.dingding.domain.TokenResultVo;
 import com.dingding.domain.User;
-import com.dingding.service.impl.UserServiceImpl;
+import com.dingding.mapper.UserMapper;
 import com.dingding.util.DateUtils;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
@@ -24,7 +22,6 @@ import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
 import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,8 +50,9 @@ import static java.util.stream.Collectors.toCollection;
 @Component
 public class DingService {
 
+
     @Autowired
-    private UserServiceImpl userService;
+    private UserMapper userMapper;
     //申请的小程序ID
     @Value("${ding.agentId}")
     private  Long agentId;
@@ -323,13 +321,8 @@ public class DingService {
             return user;
         }).collect(Collectors.toList());
         userList.forEach(v->{
-            LambdaQueryWrapper<User> lambda = new QueryWrapper<User>().lambda();
-            lambda.eq(StringUtils.isNotEmpty(v.getUserid()), User::getUserid,v.getUserid());
-            Integer count = userService.selectCount(lambda);
-            //不存在 插入
-            if (count == 0){
-                userService.insert(v);
-            }
+            //不存在就添加 否则更新！
+            int count = userMapper.insertOrUpdate(v);
         });
     }
 

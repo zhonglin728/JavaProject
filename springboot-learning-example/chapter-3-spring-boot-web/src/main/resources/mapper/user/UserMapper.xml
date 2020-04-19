@@ -5,8 +5,8 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.dingding.domain.User">
     <result column="id" property="id" />
-        <result column="user_id" property="userId" />
-        <result column="union_id" property="unionId" />
+        <result column="user_id" property="userid" />
+        <result column="union_id" property="unionid" />
         <result column="order" property="order" />
         <result column="mobile" property="mobile" />
         <result column="tel" property="tel" />
@@ -21,6 +21,49 @@
         <result column="email" property="email" />
         <result column="jobnumber" property="jobnumber" />
     </resultMap>
+
+    <insert id="insertOrUpdate" parameterType="com.dingding.domain.User">
+        INSERT INTO `ding_user` (
+        `user_id`,
+        `union_id`,
+        `order`,
+        `mobile`,
+        `tel`,
+        `work_place`,
+        `is_admin`,
+        `is_boss`,
+        `is_hide`,
+        `is_leader`,
+        `name_en`,
+        `name`,
+        `department`,
+        `position`,
+        `email`,
+        `jobnumber`,
+        `create_time`
+        )
+        VALUES
+            (
+            #{userid},
+            #{unionid},
+            #{order},
+            #{mobile},
+            #{tel},
+            #{workPlace},
+            #{isAdmin},
+            #{isBoss},
+            #{isHide},
+            #{isLeader},
+            #{nameEn},
+            #{name},
+            #{department},
+            #{position},
+            #{email},
+            #{jobnumber},
+            now()
+            )
+            ON duplicate KEY UPDATE `create_time` = now()
+    </insert>
 
     <select id="getTaskOauth3" resultType="java.util.Map">
          SELECT

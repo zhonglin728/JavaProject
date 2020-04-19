@@ -16,6 +16,8 @@ import java.util.Map;
  */
 public interface UserMapper extends BaseMapper<User> {
 
+    int insertOrUpdate(User user);
+
     List<Map<String,?>> getTaskOauth3();
 
     List<Map<String,?>> getTaskOauth4();

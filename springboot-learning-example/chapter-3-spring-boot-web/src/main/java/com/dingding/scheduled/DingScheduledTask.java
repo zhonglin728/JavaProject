@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dingding.domain.User;
 import com.dingding.mapper.UserMapper;
 import com.dingding.service.DingService;
-import com.dingding.util.DateUtils;
 import com.dingtalk.api.response.OapiDepartmentListResponse;
 import com.dingtalk.api.response.OapiUserListbypageResponse;
 import com.google.common.collect.Maps;
@@ -70,10 +69,10 @@ public class DingScheduledTask {
     /**
      * 测试发送私人消息！
      */
-   @Scheduled(fixedRate  = 1000*5)
+   /*@Scheduled(fixedRate  = 1000*5)
     public void taskTest(){
         dingService.sendToConversationText(agentId, zlUserId, DateUtils.getStringToday());
-    }
+    }*/
 
     /**
      * 定时任务 每周一凌晨0.0 去钉钉拉取用户数据到本地库！

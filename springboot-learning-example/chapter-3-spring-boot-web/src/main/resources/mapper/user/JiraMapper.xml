@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingding.mapper.JiraMapper">
+
+
+    <select id="getTaskOauth3" resultType="com.dingding.domain.OaUser">
+        SELECT
+            nameEn,
+            name,
+            curdate( ) curdate,
+            '2020-04-17' date,
+            '5' HOUR
+        FROM
+            oa
+    </select>
+
+    <select id="getTaskOauth4" resultType="com.dingding.domain.OaUser">
+        SELECT
+            nameEn,
+            name,
+            curdate( ) curdate,
+            '2020-04-17' date,
+            '5' HOUR
+        FROM
+            oa
+    </select>
+
+    <select id="getTaskOauth5" resultType="com.dingding.domain.OaUser">
+        SELECT
+            nameEn,
+            name,
+            curdate( ) curdate,
+            '2020-04-17' date,
+            '5' HOUR
+        FROM
+            oa
+    </select>
+
+    <select id="getTaskOauth7" resultType="com.dingding.domain.OaUser">
+        SELECT
+            nameEn,
+            name,
+            curdate( ) curdate,
+            '2020-04-17' date,
+            '5' HOUR
+        FROM
+            oa
+    </select>
+
+
+</mapper>

@@ -1,8 +1,10 @@
 package com.dingding.scheduled;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.dingding.domain.OaUser;
 import com.dingding.domain.User;
-import com.dingding.mapper.UserMapper;
+import com.dingding.mapper.DingMapper;
+import com.dingding.mapper.JiraMapper;
 import com.dingding.service.DingService;
 import com.dingtalk.api.response.OapiDepartmentListResponse;
 import com.dingtalk.api.response.OapiUserListbypageResponse;
@@ -22,7 +24,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Scheduled注解可以控制方法定时执行，其中有三个参数可选择：
@@ -52,7 +53,9 @@ public class DingScheduledTask {
     @Autowired
     private Configuration configuration;
     @Autowired
-    private UserMapper userMapper;
+    private DingMapper dingMapper;
+    @Autowired
+    private JiraMapper jiraMapper;
 
 
 
@@ -106,11 +109,11 @@ public class DingScheduledTask {
      * 模板3 发送个人
      * 工作日20:45
      */
-    @Scheduled(cron = "0 45 20 * * 1,2,3,4,5")
-    //@Scheduled(fixedRate  = 1000*60*60)
+    //@Scheduled(cron = "0 45 20 * * 1,2,3,4,5")
+    @Scheduled(fixedRate  = 1000*60*60)
     public void task3(){
         String content = readTemplateToString("3报工不符合通知.ftl", Maps.newHashMap());
-        List<Map<String, ?>> users = userMapper.getTaskOauth3();
+        List<OaUser> users = jiraMapper.getTaskOauth3();
         sendMsg(users, content);
 
     }
@@ -122,7 +125,7 @@ public class DingScheduledTask {
     @Scheduled(cron = "0 45 20 * * 5")
     public void task4(){
         String content = readTemplateToString("4报工不符合通知周末.ftl", Maps.newHashMap());
-        List<Map<String, ?>> users = userMapper.getTaskOauth4();
+        List<OaUser> users = jiraMapper.getTaskOauth4();
         sendMsg(users, content);
 
     }
@@ -134,7 +137,7 @@ public class DingScheduledTask {
     @Scheduled(cron = "0 45 10 * * 7")
     public void task5(){
         String content = readTemplateToString("5报工不符合通知周日.ftl", Maps.newHashMap());
-        List<Map<String, ?>> users = userMapper.getTaskOauth5();
+        List<OaUser> users = jiraMapper.getTaskOauth5();
         sendMsg(users, content);
 
     }
@@ -163,7 +166,7 @@ public class DingScheduledTask {
     @Scheduled(cron = "0 30 10 * * 7")
     public void task7(){
         String content = readTemplateToString("7报工审批不符合通知.ftl", Maps.newHashMap());
-        List<Map<String, ?>> users = userMapper.getTaskOauth7();
+        List<OaUser> users = jiraMapper.getTaskOauth7();
         sendMsg(users, content);
 
     }
@@ -213,18 +216,27 @@ public class DingScheduledTask {
      * @param users jira系统查询的数据
      * @param content  模板内容
      */
-    public void sendMsg(List<Map<String, ?>> users,String content){
-        List<String> author = users.stream().map(v -> {
-            return String.valueOf(v.get("author"));
-        }).distinct().collect(Collectors.toList());
+    public void sendMsg(List<OaUser> users,String content){
         //TODO jira数据和本地库NameEn 对比查询出userId
-        author.forEach(v->{
-            User user = userMapper.selectList(new QueryWrapper<User>().lambda().eq(StringUtils.isNotEmpty(v), User::getNameEn, v))
-                    .stream()
-                    .findFirst()
-                    .orElse(new User().setUserid(""));
-            dingService.sendToConversationText(agentId, user.getUserid(),content);
-            log.info("用户:{}发送消息，内容是:{}",v,content);
+        users.forEach(v->{
+            //如果中文名和英文名字段都有值  优先匹配中文名 这样更精确
+            if(StringUtils.isNotEmpty(v.getNameEn()) && StringUtils.isNotEmpty(v.getName())){
+                User u = dingMapper.selectList(new QueryWrapper<User>().lambda().eq(true, User::getName, v.getName()
+                ))
+                        .stream()
+                        .findFirst()
+                        .orElse(new User().setUserid(""));
+                System.out.println(v);
+                //dingService.sendToConversationText(agentId, u.getUserid(),content);
+            }else{//否则只匹配 英文名
+                User u = dingMapper.selectList(new QueryWrapper<User>().lambda().eq(true, User::getNameEn, v.getNameEn()))
+                        .stream()
+                        .findFirst()
+                        .orElse(new User().setUserid(""));
+                System.out.println(v);
+                //dingService.sendToConversationText(agentId, u.getUserid(),content);
+            }
+            log.info("用户:{}发送消息，内容是:{}",v.getNameEn(),content);
         });
     }
     /**

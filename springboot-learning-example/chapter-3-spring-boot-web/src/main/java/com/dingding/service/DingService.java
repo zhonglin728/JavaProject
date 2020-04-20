@@ -3,7 +3,7 @@ package com.dingding.service;
 import com.dingding.domain.MsgTypeEnum;
 import com.dingding.domain.TokenResultVo;
 import com.dingding.domain.User;
-import com.dingding.mapper.UserMapper;
+import com.dingding.mapper.DingMapper;
 import com.dingding.util.DateUtils;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
@@ -52,7 +52,7 @@ public class DingService {
 
 
     @Autowired
-    private UserMapper userMapper;
+    private DingMapper userMapper;
     //申请的小程序ID
     @Value("${ding.agentId}")
     private  Long agentId;

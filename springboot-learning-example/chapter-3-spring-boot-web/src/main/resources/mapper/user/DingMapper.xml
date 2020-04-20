@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dingding.mapper.UserMapper">
+<mapper namespace="com.dingding.mapper.DingMapper">
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.dingding.domain.User">
@@ -65,27 +65,7 @@
             ON duplicate KEY UPDATE `create_time` = now()
     </insert>
 
-    <select id="getTaskOauth3" resultType="java.util.Map">
-         SELECT
-            'zhonglin' author,
-            curdate( ) curdate,
-            '2020-04-17' date,
-            '5' hour
-        FROM
-            ding_user limit 1
-    </select>
 
-    <select id="getTaskOauth4" resultType="java.util.Map">
-
-    </select>
-
-    <select id="getTaskOauth5" resultType="java.util.Map">
-
-    </select>
-
-    <select id="getTaskOauth7" resultType="java.util.Map">
-
-    </select>
 
 
 </mapper>

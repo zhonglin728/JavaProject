@@ -10,10 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * <p>
- * 
- * </p>
- *
+ * 钉钉用户
  * @author zhonglin
  * @since 2020-04-17
  */

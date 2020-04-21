@@ -48,8 +48,8 @@ public class CityWebFluxController {
 
     @GetMapping("/hello")
     public Mono<String> hello(final Model model) {
-        model.addAttribute("name", "泥瓦匠");
-        model.addAttribute("city", "浙江温岭");
+        model.addAttribute("name" , "泥瓦匠");
+        model.addAttribute("city" , "浙江温岭");
 
         String path = "hello";
         return Mono.create(monoSink -> monoSink.success(path));
@@ -60,7 +60,7 @@ public class CityWebFluxController {
     @GetMapping("/page/list")
     public String listPage(final Model model) {
         final Flux<City> cityFluxList = cityHandler.findAllCity();
-        model.addAttribute("cityList", cityFluxList);
+        model.addAttribute("cityList" , cityFluxList);
         return CITY_LIST_PATH_NAME;
     }
 

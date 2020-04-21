@@ -9,9 +9,9 @@ import org.spring.springboot.enums.ColorEnum;
  */
 public class EnumUtil {
 
-    public static  void main(String args []){
+    public static void main(String args[]) {
         // 枚举的使用！
-        System.out.println( ColorEnum.getName2(2));
+        System.out.println(ColorEnum.getName2(2));
         System.out.println(ColorEnum.getIndex2("绿色"));
     }
 }

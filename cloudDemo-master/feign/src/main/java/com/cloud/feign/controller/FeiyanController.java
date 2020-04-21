@@ -22,7 +22,7 @@ public class FeiyanController {
     private FeiyanApi feiyanApi;
 
     @GetMapping(value = "news")
-    public ResponseEntity<Map> news(){
+    public ResponseEntity<Map> news() {
         Map map = feiyanApi.news();
         ResponseEntity<Map> mapResponseEntity = new ResponseEntity<>(map, HttpStatus.OK);
         return mapResponseEntity;

@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class Dept  extends BaseEntity{
+public class Dept extends BaseEntity {
     private Integer deptId; //部门id
     private Integer parentId; //0' COMMENT '父部门id
     private String ancestors; //' COMMENT '祖级列表

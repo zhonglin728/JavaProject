@@ -4,12 +4,12 @@ import org.spring.springboot.result.ErrorInfoInterface;
 
 /**
  * 业务错误码 案例
- *
+ * <p>
  * Created by bysocket on 14/03/2017.
  */
 public enum CityErrorInfoEnum implements ErrorInfoInterface {
-    PARAMS_NO_COMPLETE("000001","params no complete"),
-    CITY_EXIT("000002","city exit");
+    PARAMS_NO_COMPLETE("000001" , "params no complete"),
+    CITY_EXIT("000002" , "city exit");
 
     private String code;
 
@@ -20,11 +20,11 @@ public enum CityErrorInfoEnum implements ErrorInfoInterface {
         this.message = message;
     }
 
-    public String getCode(){
+    public String getCode() {
         return this.code;
     }
 
-    public String getMessage(){
+    public String getMessage() {
         return this.message;
     }
 }

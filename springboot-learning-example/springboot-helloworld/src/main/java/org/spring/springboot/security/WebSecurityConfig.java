@@ -35,8 +35,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //允许基于HttpServletRequest使用限制访问
         auth.authorizeRequests()
                 //不需要身份认证
-                .antMatchers( "/toLogin","/**/customer/**").permitAll()
-                .antMatchers("/js/**", "/css/**", "/images/**", "/fronts/**", "/doc/**", "/toLogin").permitAll()
+                .antMatchers("/toLogin" , "/**/customer/**").permitAll()
+                .antMatchers("/js/**" , "/css/**" , "/images/**" , "/fronts/**" , "/doc/**" , "/toLogin").permitAll()
                 .antMatchers("/admin").access("hasAnyRole('ROLE_admin')")
                 .antMatchers("/user").access("hasAnyRole('ROLE_chufang','AA','BB')")
                 .antMatchers("/home").access("hasRole('ROLE_kanmen')")
@@ -59,6 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().sessionManagement().invalidSessionUrl("/toLogin")
                 .and().csrf().disable();
     }
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(secUserService).passwordEncoder(new MyPasswordEncoder());

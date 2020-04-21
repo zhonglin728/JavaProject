@@ -7,7 +7,6 @@ import java.util.List;
 
 /**
  * 城市 ES 业务接口类
- *
  */
 public interface CityService {
 

@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * 城市 ES 业务逻辑实现类
- *
+ * <p>
  * Created by bysocket on 07/02/2017.
  */
 @Service
@@ -48,9 +48,9 @@ public class CityESServiceImpl implements CityService {
 
         // Function Score Query
         FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery()
-                .add(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("cityname", searchContent)),
-                    ScoreFunctionBuilders.weightFactorFunction(1000))
-                .add(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("description", searchContent)),
+                .add(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("cityname" , searchContent)),
+                        ScoreFunctionBuilders.weightFactorFunction(1000))
+                .add(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("description" , searchContent)),
                         ScoreFunctionBuilders.weightFactorFunction(100));
 
         // 创建搜索 DSL 查询

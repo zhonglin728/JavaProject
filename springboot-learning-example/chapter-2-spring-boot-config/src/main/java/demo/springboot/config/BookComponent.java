@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 
 /**
  * 书属性
- *
  */
 @Component
 @ConfigurationProperties(prefix = "demo.book")

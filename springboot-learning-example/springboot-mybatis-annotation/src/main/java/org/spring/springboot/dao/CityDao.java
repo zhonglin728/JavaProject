@@ -5,7 +5,7 @@ import org.spring.springboot.domain.City;
 
 /**
  * 城市 DAO 接口类
- *
+ * <p>
  * Created by xchunzhao on 02/05/2017.
  */
 @Mapper // 标志为 Mybatis 的 Mapper
@@ -19,10 +19,10 @@ public interface CityDao {
     @Select("SELECT * FROM city")
     // 返回 Map 结果集
     @Results({
-            @Result(property = "id", column = "id"),
-            @Result(property = "provinceId", column = "province_id"),
-            @Result(property = "cityName", column = "city_name"),
-            @Result(property = "description", column = "description"),
+            @Result(property = "id" , column = "id"),
+            @Result(property = "provinceId" , column = "province_id"),
+            @Result(property = "cityName" , column = "city_name"),
+            @Result(property = "description" , column = "description"),
     })
     City findByName(@Param("cityName") String cityName);
 }

@@ -8,8 +8,8 @@ package com.pingan.entity;
 public class Student {
 
     private String name;
-    private  Integer sex;
-    private  String age;
+    private Integer sex;
+    private String age;
 
     public Student() {
     }
@@ -21,7 +21,7 @@ public class Student {
     }
 
 
-    public Student( String age,Integer sex) {
+    public Student(String age, Integer sex) {
         this.sex = sex;
         this.age = age;
     }

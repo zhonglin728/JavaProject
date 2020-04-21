@@ -13,21 +13,21 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class ConfigApplicationTests {
 
-	@Autowired
-	BookProperties bookProperties;
+    @Autowired
+    BookProperties bookProperties;
 
-	@Autowired
-	BookComponent bookComponent;
+    @Autowired
+    BookComponent bookComponent;
 
-	@Test
-	public void testBookProperties() {
-		Assert.assertEquals(bookProperties.getName(),"[Spring Boot 2.x Core Action]");
-		Assert.assertEquals(bookProperties.getWriter(),"BYSocket");
-	}
+    @Test
+    public void testBookProperties() {
+        Assert.assertEquals(bookProperties.getName(), "[Spring Boot 2.x Core Action]");
+        Assert.assertEquals(bookProperties.getWriter(), "BYSocket");
+    }
 
-	@Test
-	public void testBookComponent() {
-		Assert.assertEquals(bookComponent.getName(),"[Spring Boot 2.x Core Action]");
-		Assert.assertEquals(bookComponent.getWriter(),"BYSocket");
-	}
+    @Test
+    public void testBookComponent() {
+        Assert.assertEquals(bookComponent.getName(), "[Spring Boot 2.x Core Action]");
+        Assert.assertEquals(bookComponent.getWriter(), "BYSocket");
+    }
 }

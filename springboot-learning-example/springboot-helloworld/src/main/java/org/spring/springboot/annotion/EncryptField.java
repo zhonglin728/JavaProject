@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Deprecated
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD,ElementType.METHOD,ElementType.PARAMETER})
+@Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
 public @interface EncryptField {
 
 }

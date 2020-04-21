@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
  * Created by bysocket on 17/05/2017.
  */
 @Repository
-public interface CityRepository extends ElasticsearchRepository<City,Long> {
+public interface CityRepository extends ElasticsearchRepository<City, Long> {
 
 
 }

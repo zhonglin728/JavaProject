@@ -21,13 +21,13 @@ public class CityController {
     @Autowired
     private CityService cityService;
 
-    @RequestMapping(value = "/api/city/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/city/{id}" , method = RequestMethod.GET)
     public String findOneCity(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("city", cityService.findCityById(id));
+        model.addAttribute("city" , cityService.findCityById(id));
         return "city";
     }
 
-    @RequestMapping(value = "/api/city", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/city" , method = RequestMethod.GET)
     public String findAllCity(Model model) {
         //List<City> cityList = cityService.findAllCity();
         List<City> list = new ArrayList<>();
@@ -36,7 +36,7 @@ public class CityController {
         city.setCityName("湖北");
         city.setDescription("这个地方很好玩！");
         list.add(city);
-        model.addAttribute("cityList",list);
+        model.addAttribute("cityList" , list);
         return "cityList";
     }
 }

@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 /**
  * 城市实体类
- *
  */
 public class City implements Serializable {
 

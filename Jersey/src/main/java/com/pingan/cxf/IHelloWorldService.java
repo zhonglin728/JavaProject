@@ -5,17 +5,17 @@ import java.util.List;
 import javax.jws.WebService;
 
 import com.pingan.entity.User;
+
 @WebService
 public interface IHelloWorldService {
 
-	List<User> query(String name);
+    List<User> query(String name);
 
-	void add(User user);
+    void add(User user);
 
-	void delete(String id);
+    void delete(String id);
 
-	Integer update(User user);
-	
-	
+    Integer update(User user);
+
 
 }

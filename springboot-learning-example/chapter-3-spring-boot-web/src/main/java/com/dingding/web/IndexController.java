@@ -27,7 +27,7 @@ public class IndexController {
     /**
      * 欢迎页面,通过url访问，判断后端服务是否启动
      */
-    @RequestMapping(value = "/welcome", method = RequestMethod.GET)
+    @RequestMapping(value = "/welcome" , method = RequestMethod.GET)
     public String welcome() {
         return "welcome";
     }
@@ -37,7 +37,7 @@ public class IndexController {
      *
      * @param requestAuthCode 免登临时code
      */
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login" , method = RequestMethod.POST)
     @ResponseBody
     public ServiceResult login(@RequestParam(value = "authCode") String requestAuthCode) {
         //获取accessToken,注意正是代码要有异常流处理
@@ -64,8 +64,8 @@ public class IndexController {
         System.out.println(userName);
         //返回结果
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("userId", userId);
-        resultMap.put("userName", userName);
+        resultMap.put("userId" , userId);
+        resultMap.put("userName" , userName);
         ServiceResult serviceResult = ServiceResult.success(resultMap);
         return serviceResult;
     }

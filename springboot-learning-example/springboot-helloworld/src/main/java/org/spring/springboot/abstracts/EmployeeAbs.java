@@ -11,41 +11,41 @@ import java.io.Serializable;
  **/
 public abstract class EmployeeAbs implements Serializable {
     protected abstract double computePays();
+
     private String name;
     private String address;
     private int number;
-    public EmployeeAbs(String name, String address, int number)
-    {
+
+    public EmployeeAbs(String name, String address, int number) {
         System.out.println("Constructing an Employee");
         this.name = name;
         this.address = address;
         this.number = number;
     }
-    public double computePay()
-    {
+
+    public double computePay() {
         System.out.println("Inside Employee computePay");
         return 0.0;
     }
-    public void mailCheck()
-    {
+
+    public void mailCheck() {
         System.out.println("Mailing a check to " + this.name
                 + " " + this.address);
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
-    public String getAddress()
-    {
+
+    public String getAddress() {
         return address;
     }
-    public void setAddress(String newAddress)
-    {
+
+    public void setAddress(String newAddress) {
         address = newAddress;
     }
-    public int getNumber()
-    {
+
+    public int getNumber() {
         return number;
     }
 }

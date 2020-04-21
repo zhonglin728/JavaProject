@@ -4,7 +4,6 @@ import org.springframework.data.annotation.Id;
 
 /**
  * 城市实体类
- *
  */
 public class City {
 

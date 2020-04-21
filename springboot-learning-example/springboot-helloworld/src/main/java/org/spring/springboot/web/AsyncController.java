@@ -49,7 +49,7 @@ public class AsyncController {
 
             // Wait until they are all done
             //join() 的作用：让“主线程”等待“子线程”结束之后才能继续运行
-            CompletableFuture.allOf(page1,page2,page3,page4,page5,page6).join();
+            CompletableFuture.allOf(page1, page2, page3, page4, page5, page6).join();
             //log.info("--> " + page1.get());
             //log.info("--> " + page2.get());
             //log.info("--> " + page3.get());
@@ -61,15 +61,15 @@ public class AsyncController {
                 Thread.sleep(100);
                 log.info("等待ing!.......");
             }*/
-            float exc = (float)(System.currentTimeMillis() - start)/1000;
+            float exc = (float) (System.currentTimeMillis() - start) / 1000;
             log.info("Elapsed time: " + exc + " seconds");
 
-             ArrayList<Map> strings = Lists.newArrayList(page1.get(), page2.get(), page3.get(),page4.get(),page5.get(),page6.get());
-             responseResult = new ResponseResult(strings);
+            ArrayList<Map> strings = Lists.newArrayList(page1.get(), page2.get(), page3.get(), page4.get(), page5.get(), page6.get());
+            responseResult = new ResponseResult(strings);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            throw  new OrderPeriodException("444",e.getMessage());
+            throw new OrderPeriodException("444" , e.getMessage());
 
         }
 

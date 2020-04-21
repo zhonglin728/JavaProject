@@ -29,13 +29,13 @@ public class AccessTokenUtil {
             String accessToken = response.getAccessToken();
             return accessToken;
         } catch (ApiException e) {
-            bizLogger.error("getAccessToken failed", e);
+            bizLogger.error("getAccessToken failed" , e);
             throw new RuntimeException();
         }
 
     }
 
-    public static void main(String[] args)throws ApiException {
+    public static void main(String[] args) throws ApiException {
         String accessToken = AccessTokenUtil.getToken();
         System.out.println(accessToken);
     }

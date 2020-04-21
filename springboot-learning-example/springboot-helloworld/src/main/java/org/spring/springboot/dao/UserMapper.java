@@ -14,8 +14,12 @@ import java.util.Map;
 //@Mapper
 public interface UserMapper {
     List<Users> getUser();
+
     Dict getDict(Map map);
+
     List<Role> getRole(String s);
+
     List<Dept> getDept(Map map);
+
     Users findByUserName();
 }

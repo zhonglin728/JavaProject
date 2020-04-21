@@ -21,13 +21,12 @@ import com.ruoyi.framework.web.base.BaseController;
 
 /**
  * 角色信息
- * 
+ *
  * @author ruoyi
  */
 @Controller
 @RequestMapping("/system/role")
-public class SysRoleController extends BaseController
-{
+public class SysRoleController extends BaseController {
     private String prefix = "system/role";
 
     @Autowired
@@ -35,27 +34,24 @@ public class SysRoleController extends BaseController
 
     @RequiresPermissions("system:role:view")
     @GetMapping()
-    public String role()
-    {
+    public String role() {
         return prefix + "/role";
     }
 
     @RequiresPermissions("system:role:list")
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(SysRole role)
-    {
+    public TableDataInfo list(SysRole role) {
         startPage();
         List<SysRole> list = roleService.selectRoleList(role);
         return getDataTable(list);
     }
 
-    @Log(title = "角色管理", businessType = BusinessType.EXPORT)
+    @Log(title = "角色管理" , businessType = BusinessType.EXPORT)
     @RequiresPermissions("system:role:export")
     @PostMapping("/export")
     @ResponseBody
-    public AjaxResult export(SysRole role)
-    {
+    public AjaxResult export(SysRole role) {
         List<SysRole> list = roleService.selectRoleList(role);
         ExcelUtil<SysRole> util = new ExcelUtil<SysRole>(SysRole.class);
         return util.exportExcel(list, "role");
@@ -65,8 +61,7 @@ public class SysRoleController extends BaseController
      * 新增角色
      */
     @GetMapping("/add")
-    public String add()
-    {
+    public String add() {
         return prefix + "/add";
     }
 
@@ -74,12 +69,11 @@ public class SysRoleController extends BaseController
      * 新增保存角色
      */
     @RequiresPermissions("system:role:add")
-    @Log(title = "角色管理", businessType = BusinessType.INSERT)
+    @Log(title = "角色管理" , businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
-    public AjaxResult addSave(SysRole role)
-    {
+    public AjaxResult addSave(SysRole role) {
         role.setCreateBy(ShiroUtils.getLoginName());
         ShiroUtils.clearCachedAuthorizationInfo();
         return toAjax(roleService.insertRole(role));
@@ -90,9 +84,8 @@ public class SysRoleController extends BaseController
      * 修改角色
      */
     @GetMapping("/edit/{roleId}")
-    public String edit(@PathVariable("roleId") Long roleId, ModelMap mmap)
-    {
-        mmap.put("role", roleService.selectRoleById(roleId));
+    public String edit(@PathVariable("roleId") Long roleId, ModelMap mmap) {
+        mmap.put("role" , roleService.selectRoleById(roleId));
         return prefix + "/edit";
     }
 
@@ -100,12 +93,11 @@ public class SysRoleController extends BaseController
      * 修改保存角色
      */
     @RequiresPermissions("system:role:edit")
-    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
+    @Log(title = "角色管理" , businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
-    public AjaxResult editSave(SysRole role)
-    {
+    public AjaxResult editSave(SysRole role) {
         role.setUpdateBy(ShiroUtils.getLoginName());
         ShiroUtils.clearCachedAuthorizationInfo();
         return toAjax(roleService.updateRole(role));
@@ -115,9 +107,8 @@ public class SysRoleController extends BaseController
      * 新增数据权限
      */
     @GetMapping("/rule/{roleId}")
-    public String rule(@PathVariable("roleId") Long roleId, ModelMap mmap)
-    {
-        mmap.put("role", roleService.selectRoleById(roleId));
+    public String rule(@PathVariable("roleId") Long roleId, ModelMap mmap) {
+        mmap.put("role" , roleService.selectRoleById(roleId));
         return prefix + "/rule";
     }
 
@@ -125,28 +116,23 @@ public class SysRoleController extends BaseController
      * 修改保存数据权限
      */
     @RequiresPermissions("system:role:edit")
-    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
+    @Log(title = "角色管理" , businessType = BusinessType.UPDATE)
     @PostMapping("/rule")
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
-    public AjaxResult ruleSave(SysRole role)
-    {
+    public AjaxResult ruleSave(SysRole role) {
         role.setUpdateBy(ShiroUtils.getLoginName());
         return toAjax(roleService.updateRule(role));
     }
 
     @RequiresPermissions("system:role:remove")
-    @Log(title = "角色管理", businessType = BusinessType.DELETE)
+    @Log(title = "角色管理" , businessType = BusinessType.DELETE)
     @PostMapping("/remove")
     @ResponseBody
-    public AjaxResult remove(String ids)
-    {
-        try
-        {
+    public AjaxResult remove(String ids) {
+        try {
             return toAjax(roleService.deleteRoleByIds(ids));
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return error(e.getMessage());
         }
     }
@@ -156,8 +142,7 @@ public class SysRoleController extends BaseController
      */
     @PostMapping("/checkRoleNameUnique")
     @ResponseBody
-    public String checkRoleNameUnique(SysRole role)
-    {
+    public String checkRoleNameUnique(SysRole role) {
         return roleService.checkRoleNameUnique(role);
     }
 
@@ -166,8 +151,7 @@ public class SysRoleController extends BaseController
      */
     @PostMapping("/checkRoleKeyUnique")
     @ResponseBody
-    public String checkRoleKeyUnique(SysRole role)
-    {
+    public String checkRoleKeyUnique(SysRole role) {
         return roleService.checkRoleKeyUnique(role);
     }
 
@@ -175,15 +159,15 @@ public class SysRoleController extends BaseController
      * 选择菜单树
      */
     @GetMapping("/selectMenuTree")
-    public String selectMenuTree()
-    {
+    public String selectMenuTree() {
         return prefix + "/tree";
     }
+
     @PostMapping("/sort")
     @ResponseBody
-    public List sort(@RequestBody List<Map<String,Object>> list ){
-        list.forEach(v->{
-            roleService.sort(String.valueOf(v.get("roleId")),String.valueOf(v.get("roleSort")));
+    public List sort(@RequestBody List<Map<String, Object>> list) {
+        list.forEach(v -> {
+            roleService.sort(String.valueOf(v.get("roleId")), String.valueOf(v.get("roleSort")));
         });
         return list;
     }

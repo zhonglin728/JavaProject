@@ -7,32 +7,39 @@ package org.spring.springboot.exception;
  * @Date 2019/8/14
  * @Version V1.0
  **/
-public class OrderPeriodException extends  RuntimeException {
+public class OrderPeriodException extends RuntimeException {
 
     private static final long serialVersionUID = 6958499248468627021L;
-    /** 错误码 */
+    /**
+     * 错误码
+     */
     private String errorCode;
-    /** 错误上下文 */
+    /**
+     * 错误上下文
+     */
     private String errorContext;
 
 
-    public OrderPeriodException(String errorCode, String errorMsg){
+    public OrderPeriodException(String errorCode, String errorMsg) {
         super(errorMsg);
         this.errorCode = errorCode;
     }
-    public OrderPeriodException(OrderExceptionEnum orderExceptionEnum){
+
+    public OrderPeriodException(OrderExceptionEnum orderExceptionEnum) {
         super(orderExceptionEnum.getErrorMsg());
         this.errorCode = orderExceptionEnum.getErrorCode();
     }
 
-    public OrderPeriodException(String errorCode, String errorMsg,Throwable throwable){
-        super(errorMsg,throwable);
+    public OrderPeriodException(String errorCode, String errorMsg, Throwable throwable) {
+        super(errorMsg, throwable);
         this.errorCode = errorCode;
     }
-    public OrderPeriodException(OrderExceptionEnum orderExceptionEnum,Throwable throwable){
-        super(orderExceptionEnum.getErrorMsg(),throwable);
+
+    public OrderPeriodException(OrderExceptionEnum orderExceptionEnum, Throwable throwable) {
+        super(orderExceptionEnum.getErrorMsg(), throwable);
         this.errorCode = orderExceptionEnum.getErrorCode();
     }
+
     /**
      * Getter method for property <tt>errorCode</tt>.
      *
@@ -71,11 +78,11 @@ public class OrderPeriodException extends  RuntimeException {
     }
 
     public static void main(String[] args) {
-        try{
-            int i = 1/0;
-        }catch (Exception e){
+        try {
+            int i = 1 / 0;
+        } catch (Exception e) {
             //throw new AbcException("","CCCCCCCCCC");
-            throw new OrderPeriodException(OrderExceptionEnum.SYSTEM_ERROR,e);
+            throw new OrderPeriodException(OrderExceptionEnum.SYSTEM_ERROR, e);
         }
     }
 

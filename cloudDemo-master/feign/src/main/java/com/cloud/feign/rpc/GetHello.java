@@ -18,26 +18,26 @@ import java.util.Map;
  * fallback: 定义容错的处理类，当调用远程接口失败或超时时，会调用对应接口的容错逻辑，fallback指定的类必须实现@FeignClient标记的接口
  * fallbackFactory: 工厂类，用于生成fallback类示例，通过这个属性我们可以实现每个接口通用的容错逻辑，减少重复的代码
  * path: 定义当前FeignClient的统一前缀
- *  构造Fegin区请求 接口！
+ * 构造Fegin区请求 接口！
  */
-@FeignClient(name = "ribbon-consumer",qualifier = "getHello")
+@FeignClient(name = "ribbon-consumer" , qualifier = "getHello")
 public interface GetHello {
 
 
-    @RequestMapping(value = "/hello?name=feign",method = RequestMethod.GET)
+    @RequestMapping(value = "/hello?name=feign" , method = RequestMethod.GET)
     public String sayHello();
 
 
-    @RequestMapping(value = "/findInt",method = RequestMethod.GET)
+    @RequestMapping(value = "/findInt" , method = RequestMethod.GET)
     public int findInt(@RequestParam(value = "id") int id);
 
-    @RequestMapping(value = "/saveUser",method = RequestMethod.POST)
+    @RequestMapping(value = "/saveUser" , method = RequestMethod.POST)
     public Map saveUser(
-            @RequestParam(name = "id",required = false,defaultValue = "0") String id,
-            @RequestParam(name = "userName",required = false) String userName,
+            @RequestParam(name = "id" , required = false, defaultValue = "0") String id,
+            @RequestParam(name = "userName" , required = false) String userName,
             @RequestParam(name = "userPassword") String userPassword
     );
 
-    @RequestMapping(value = "/saveUserEntity",method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON)
+    @RequestMapping(value = "/saveUserEntity" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
     public Map saveUserEntity(User user);
 }

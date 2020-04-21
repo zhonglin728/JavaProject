@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 /**
  * jira系统的查询实体
+ *
  * @author zhonglin
  */
 @Data

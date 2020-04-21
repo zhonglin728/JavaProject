@@ -26,36 +26,36 @@ public class HelloController {
 
 
     @GetMapping("/hello")
-    public String sayHello(String name){
+    public String sayHello(String name) {
         return helloService.sayHello() + " " + name;
     }
 
     @GetMapping("/findInt")
-    public int findInt(@RequestParam(name = "id",required = false,defaultValue = "888") int id){
+    public int findInt(@RequestParam(name = "id" , required = false, defaultValue = "888") int id) {
         return Integer.valueOf(helloService.findInt(id));
     }
 
     @GetMapping("/findUser")
-    public String findUser(String name){
+    public String findUser(String name) {
         return "走了走了走！";
     }
 
     @PostMapping("/saveUser")
     public Map saveUser(
-            @RequestParam(name = "id",required = false,defaultValue = "0") String id,
-            @RequestParam(name = "userName",required = false) String userName,
+            @RequestParam(name = "id" , required = false, defaultValue = "0") String id,
+            @RequestParam(name = "userName" , required = false) String userName,
             @RequestParam(name = "userPassword") String userPassword
-            ) throws IOException {
+    ) throws IOException {
         Map map = new HashMap();
-        map.put("id",id);
-        map.put("userName",userName);
-        map.put("userPassword",userPassword);
+        map.put("id" , id);
+        map.put("userName" , userName);
+        map.put("userPassword" , userPassword);
         return map;
     }
 
     @PostMapping("/saveUserEntity")
-    public Map saveUserEntity(@RequestBody User user){
-        user.setUserName(user.getUserName()+ new Random().toString());
+    public Map saveUserEntity(@RequestBody User user) {
+        user.setUserName(user.getUserName() + new Random().toString());
         Map map = new ObjectMapper().convertValue(user, Map.class);
         return map;
     }

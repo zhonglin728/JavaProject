@@ -19,8 +19,8 @@ import org.spring.springboot.enums.ColorEnum;
 public class Student {
 
     private String name;
-    private  Integer sex;
-    private  String age;
+    private Integer sex;
+    private String age;
     private ColorEnum colorEnum;
 
     public Student(String age, Integer sex) {

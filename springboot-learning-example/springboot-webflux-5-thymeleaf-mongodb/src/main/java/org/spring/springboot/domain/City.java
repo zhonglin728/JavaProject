@@ -2,7 +2,6 @@ package org.spring.springboot.domain;
 
 /**
  * 城市实体类
- *
  */
 public class City {
 

@@ -37,12 +37,12 @@ public class SecUserService<T extends User> implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
             Users user = userService.findByUserName(Maps.newHashMap());
-            Assert.notNull(user,"用户名不存在");
+            Assert.notNull(user, "用户名不存在");
             //用户权限
-            List<SimpleGrantedAuthority> authorities =  Lists.newArrayList();
+            List<SimpleGrantedAuthority> authorities = Lists.newArrayList();
             if (!CollectionUtils.isEmpty(user.getRole())) {
-                Set<String> roles = user.getRole().stream().map(v-> "ROLE_" + v.getRoleKey().trim()).collect(Collectors.toSet());
-                roles.forEach(v->{
+                Set<String> roles = user.getRole().stream().map(v -> "ROLE_" + v.getRoleKey().trim()).collect(Collectors.toSet());
+                roles.forEach(v -> {
                     if (!StringUtils.isEmpty(v)) {
                         authorities.add(new SimpleGrantedAuthority(v));
                     }

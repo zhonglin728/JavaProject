@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @EnableEurekaClient
 public class ServiceHiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ServiceHiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ServiceHiApplication.class, args);
+    }
 }

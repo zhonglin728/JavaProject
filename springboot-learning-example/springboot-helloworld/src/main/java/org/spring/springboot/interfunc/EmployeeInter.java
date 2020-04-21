@@ -22,12 +22,14 @@ public interface EmployeeInter {
     static void staticMethod() {
         System.out.println("static method invoked!VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV ");
     }
+
     /**
      * train
      */
     public void train();
+
     /**
      * air
      */
-     void air();
+    void air();
 }

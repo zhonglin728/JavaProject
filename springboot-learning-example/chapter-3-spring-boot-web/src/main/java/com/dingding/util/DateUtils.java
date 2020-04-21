@@ -10,22 +10,34 @@ import java.util.GregorianCalendar;
 
 public class DateUtils {
 
-    /** 系统默认 日期类型 yyyy-MM-dd */
+    /**
+     * 系统默认 日期类型 yyyy-MM-dd
+     */
     public static final String DATE_PATTERN_DEFAULT = "yyyy-MM-dd";
 
-    /** 时间 日期类型 HH:mm:ss */
+    /**
+     * 时间 日期类型 HH:mm:ss
+     */
     public static final String DATE_PATTERN_TIME = "HH:mm:ss";
 
-    /** 日期时间 日期类型 yyyy-MM-dd HH:mm:ss */
+    /**
+     * 日期时间 日期类型 yyyy-MM-dd HH:mm:ss
+     */
     public static final String DATE_PATTERN_DATETIME = "yyyy-MM-dd HH:mm:ss";
 
-    /** 时期格式 yyyy-MM-dd */
+    /**
+     * 时期格式 yyyy-MM-dd
+     */
     public static DateFormat dateformater;
 
-    /** 时间格式 HH:mm:ss */
+    /**
+     * 时间格式 HH:mm:ss
+     */
     public static DateFormat timeformater;
 
-    /** 日期时间格式 yyyy-MM-dd HH:mm */
+    /**
+     * 日期时间格式 yyyy-MM-dd HH:mm
+     */
     public static DateFormat dateTimeformater;
 
     static {
@@ -41,13 +53,19 @@ public class DateUtils {
         }
     }
 
-    /** 一天毫秒数 */
+    /**
+     * 一天毫秒数
+     */
     public static final long DAY_IN_MILLISECOND = 1000 * 3600 * 24;
 
-    /** 一小时毫秒数 */
+    /**
+     * 一小时毫秒数
+     */
     public static final long HOUR_IN_MILLISECOND = 1000 * 3600;
 
-    /** 构造方法私有化 */
+    /**
+     * 构造方法私有化
+     */
     private DateUtils() {
     }
 
@@ -64,14 +82,10 @@ public class DateUtils {
     }
 
     /**
-     *
      * 根据 yyyy-MM-dd 字符串解析成相应的日期
      *
-     * @param strDate
-     *            yyyy-MM-dd 格式的日期
-     *
+     * @param strDate yyyy-MM-dd 格式的日期
      * @return 转换后的日期
-     *
      */
     public static Date parseDate(String strDate) {
         Date date = null;
@@ -79,8 +93,7 @@ public class DateUtils {
         if (!StringUtils.isEmpty(strDate)) {
             try {
                 date = DateUtils.dateformater.parse(strDate);
-            }
-            catch (final Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
                 return date;
             }
@@ -89,25 +102,18 @@ public class DateUtils {
     }
 
     /**
-     *
      * 根据传入的日期格式 将字符串解析成 日期类型
      *
-     * @param strDate
-     *            日期字符串
-     *
-     * @param pattern
-     *            日期格式 如果传入格式为空，则为默认格式 yyyy-MM-dd
-     *
+     * @param strDate 日期字符串
+     * @param pattern 日期格式 如果传入格式为空，则为默认格式 yyyy-MM-dd
      * @return 日期类型
-     *
      */
     public static Date parseDate(String strDate, String pattern) {
         Date date = null;
         try {
             final DateFormat format = DateUtils.getDateFormat(pattern);
             date = format.parse(strDate);
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
             return date;
         }
@@ -115,21 +121,16 @@ public class DateUtils {
     }
 
     /**
-     *
      * 根据 HH:mm:ss 字符串解析成相应的时间格式
      *
-     * @param strTime
-     *            HH:mm:ss 格式的时间格式
-     *
+     * @param strTime HH:mm:ss 格式的时间格式
      * @return 转换后的时间
-     *
      */
     public static Date parseTime(String strTime) {
         Date date = null;
         try {
             date = DateUtils.timeformater.parse(strTime);
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
             return date;
         }
@@ -137,18 +138,16 @@ public class DateUtils {
     }
 
     /**
-     *
      * 根据yyyy-MM-dd HH:mm字符串解析成相应的日期时间
+     *
      * @param strDateTime 以"yyyy-MM-dd HH:mm:ss"为格式的时间字符串
      * @return 转换后的日期
-     *
      */
     public static Date parseDateTime(String strDateTime) {
         Date date = new Date();
         try {
             date = DateUtils.dateTimeformater.parse(strDateTime);
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
             return date;
         }
@@ -156,11 +155,9 @@ public class DateUtils {
     }
 
     /**
-     *
      * 获取系统当前时间
      *
      * @return 系统当前时间
-     *
      */
     public static Date getCurrentDate() {
         final Calendar gc = Calendar.getInstance();
@@ -168,14 +165,10 @@ public class DateUtils {
     }
 
     /**
-     *
      * 得到日期的起始日期，例如2004-1-1 15:12，转换后为 2004-1-1 00:00
      *
-     * @param date
-     *            需要转换的日期
-     *
+     * @param date 需要转换的日期
      * @return 该日期的零点
-     *
      */
     public static Date getTodayStart(Date date) {
         final Calendar gc = Calendar.getInstance();
@@ -188,14 +181,10 @@ public class DateUtils {
     }
 
     /**
-     *
      * 得到日期的结束日期，例如2004-1-1 15:12，转换后为2004-1-2 00:00，注意为第二天的0点整
      *
-     * @param date
-     *            所要转换的日期
-     *
+     * @param date 所要转换的日期
      * @return 为第二天的零点整
-     *
      */
     public static Date getTodayEnd(Date date) {
         final Calendar gc = Calendar.getInstance();
@@ -204,14 +193,10 @@ public class DateUtils {
     }
 
     /**
-     *
      * 得到日期所在月份的开始日期（第一天的开始日期），例如2004-1-15 15:10，转换后为2004-1-1 00:00
      *
-     * @param date
-     *            需要转换的日期
-     *
+     * @param date 需要转换的日期
      * @return 日期所在月份的开始日期
-     *
      */
     public static Date getMonthBegin(Date date) {
         final Calendar gc = Calendar.getInstance();
@@ -223,17 +208,11 @@ public class DateUtils {
     }
 
     /**
-     *
      * 根据年、月返回由年、月构成的日期的月份开始日期
      *
-     * @param year
-     *            所在的年
-     *
-     * @param month
-     *            所在的月份，从1月到12月
-     *
+     * @param year  所在的年
+     * @param month 所在的月份，从1月到12月
      * @return 由年、月构成的日期的月份开始日期
-     *
      */
     public static Date getMonthBegin(int year, int month) {
         if ((month <= 0) || (month > 12)) {
@@ -244,14 +223,10 @@ public class DateUtils {
     }
 
     /**
-     *
      * 根据日期所在的月份，得到下个月的第一天零点整
      *
-     * @param date
-     *            需要转换的日期
-     *
+     * @param date 需要转换的日期
      * @return 对应日期的下个月的第一天零点整
-     *
      */
     public static Date getMonthEnd(Date date) {
         final Calendar cal = Calendar.getInstance();
@@ -262,14 +237,10 @@ public class DateUtils {
     }
 
     /**
-     *
      * 根据日期所在的星期，得到这个星期的开始日期，注意，每周从星期日开始计算
      *
-     * @param date
-     *            需要转换的日期
-     *
+     * @param date 需要转换的日期
      * @return 传入日期所在周的第一天的零点整
-     *
      */
     public static Date getWeekBegin(Date date) {
         final Calendar gCal = Calendar.getInstance();
@@ -280,14 +251,10 @@ public class DateUtils {
     }
 
     /**
-     *
      * 根据日期所在的星期，得到下周开始第一天的零点整
      *
-     * @param date
-     *            需要转换的日期
-     *
+     * @param date 需要转换的日期
      * @return 传入日期的下周开始第一天的零点整
-     *
      */
     public static Date getWeekEnd(Date date) {
         final Calendar gCal = Calendar.getInstance();
@@ -298,17 +265,11 @@ public class DateUtils {
     }
 
     /**
-     *
      * 根据年、月返回由年、月构成的日期的下一个月第一天零点整
      *
-     * @param year
-     *            所在的年
-     *
-     * @param month
-     *            所在的月份，从1月到12月
-     *
+     * @param year  所在的年
+     * @param month 所在的月份，从1月到12月
      * @return 下一个月第一天零点整
-     *
      */
     public static Date getMonthEnd(int year, int month) {
         final Date start = DateUtils.getMonthBegin(year, month);
@@ -316,14 +277,10 @@ public class DateUtils {
     }
 
     /**
-     *
      * 根据日期所在的年份，得到当年的开始日期，为每年的1月1日零点整
      *
-     * @param date
-     *            需要转换的日期
-     *
+     * @param date 需要转换的日期
      * @return 当年的开始日期，为每年的1月1日零点整
-     *
      */
     public static Date getYearBegin(Date date) {
         final Calendar gCal = Calendar.getInstance();
@@ -333,14 +290,10 @@ public class DateUtils {
     }
 
     /**
-     *
      * 根据日期所在的年份，得到当年的结束日期，为来年的1月1日零点整
      *
-     * @param date
-     *            需要转换的日期
-     *
+     * @param date 需要转换的日期
      * @return 来年的1月1日零点整
-     *
      */
     public static Date getYearEnd(Date date) {
         final Calendar cal = Calendar.getInstance();
@@ -351,14 +304,10 @@ public class DateUtils {
     }
 
     /**
-     *
      * 转换日期为 yyyy-MM-dd 格式的字符串
      *
-     * @param date
-     *            需要转换的日期
-     *
+     * @param date 需要转换的日期
      * @return 转换后的日期字符串
-     *
      */
     public static String formatDate(Date date) {
         String str = "";
@@ -370,45 +319,31 @@ public class DateUtils {
     }
 
     /**
-     *
      * 转换指定日期成时间格式 HH:mm:ss 格式的字符串
      *
-     * @param date
-     *            指定的时间
-     *
+     * @param date 指定的时间
      * @return 转换后的字符串
-     *
      */
     public static String formatTime(Date date) {
         return DateUtils.timeformater.format(date);
     }
 
     /**
-     *
      * 转换指定日期成 yyyy-MM-dd HH:mm:ss 格式的字符串
      *
-     * @param date
-     *            需要转换的日期
-     *
+     * @param date 需要转换的日期
      * @return 转换后的字符串
-     *
      */
     public static String formatDateTime(Date date) {
         return DateUtils.dateTimeformater.format(date);
     }
 
     /**
-     *
      * 根据指定的转化模式，转换日期成字符串
      *
-     * @param date
-     *            需要转换的日期
-     *
-     * @param pattern
-     *            日期格式 如果传入格式为空，则为默认格式 yyyy-MM-dd
-     *
+     * @param date    需要转换的日期
+     * @param pattern 日期格式 如果传入格式为空，则为默认格式 yyyy-MM-dd
      * @return 转换后的字符串
-     *
      */
     public static String formatDate(Date date, String pattern) {
         final DateFormat formater = DateUtils.getDateFormat(pattern);
@@ -416,17 +351,11 @@ public class DateUtils {
     }
 
     /**
-     *
      * 在指定日期的基础上，增加或是减少月份信息，如1月31日，增加一个月后，则为2月28日（非闰年）
      *
-     * @param date
-     *            指定的日期
-     *
-     * @param months
-     *            增加或是减少的月份数，正数为增加，负数为减少
-     *
+     * @param date   指定的日期
+     * @param months 增加或是减少的月份数，正数为增加，负数为减少
      * @return 增加或是减少后的日期
-     *
      */
     public static Date dateMonthAdd(Date date, int months) {
         final Calendar cal = Calendar.getInstance();
@@ -441,17 +370,11 @@ public class DateUtils {
     }
 
     /**
-     *
      * 在指定的日期基础上，增加或是减少天数
      *
-     * @param date
-     *            指定的日期
-     *
-     * @param days
-     *            需要增加或是减少的天数，正数为增加，负数为减少
-     *
+     * @param date 指定的日期
+     * @param days 需要增加或是减少的天数，正数为增加，负数为减少
      * @return 增加或是减少后的日期
-     *
      */
     public static Date dateDayAdd(Date date, int days) {
         final long now = date.getTime() + (days * DateUtils.DAY_IN_MILLISECOND);
@@ -459,17 +382,11 @@ public class DateUtils {
     }
 
     /**
-     *
      * 在指定的日期基础上，增加或是减少年数
      *
-     * @param date
-     *            指定的日期
-     *
-     * @param year
-     *            需要增加或是减少的年数，正数为增加，负数为减少
-     *
+     * @param date 指定的日期
+     * @param year 需要增加或是减少的年数，正数为增加，负数为减少
      * @return 增加或是减少后的日期
-     *
      */
     public static Date dateYearAdd(Date date, int year) {
         final Calendar cal = Calendar.getInstance();
@@ -479,14 +396,10 @@ public class DateUtils {
     }
 
     /**
-     *
      * 得到日期的年数
      *
-     * @param date
-     *            指定的日期
-     *
+     * @param date 指定的日期
      * @return 返回指定日期的年数
-     *
      */
     public static int getDateYear(Date date) {
         final Calendar cal = Calendar.getInstance();
@@ -495,14 +408,10 @@ public class DateUtils {
     }
 
     /**
-     *
      * 得到指定日期的月份数
      *
-     * @param date
-     *            指定的日期
-     *
+     * @param date 指定的日期
      * @return 返回指定日期的月份数
-     *
      */
     public static int getDateMonth(Date date) {
         final Calendar cal = Calendar.getInstance();
@@ -511,14 +420,10 @@ public class DateUtils {
     }
 
     /**
-     *
      * 得到制定日期在当前天数，例如2004-5-20日，返回141
      *
-     * @param date
-     *            指定的日期
-     *
+     * @param date 指定的日期
      * @return 返回的天数
-     *
      */
     public static int getDateYearDay(Date date) {
         final Calendar cal = Calendar.getInstance();
@@ -527,14 +432,10 @@ public class DateUtils {
     }
 
     /**
-     *
      * 得到制定日期在当前月中的天数，例如2004-5-20日，返回20
      *
-     * @param date
-     *            指定的日期
-     *
+     * @param date 指定的日期
      * @return 返回天数
-     *
      */
     public static int getDateMonthDay(Date date) {
         final Calendar cal = Calendar.getInstance();
@@ -543,14 +444,10 @@ public class DateUtils {
     }
 
     /**
-     *
      * 得到指定日期的年份
      *
-     * @param date
-     *            指定的日期
-     *
+     * @param date 指定的日期
      * @return 日期的年份
-     *
      */
     public static int getYear(Date date) {
         final Calendar cal = Calendar.getInstance();
@@ -559,14 +456,10 @@ public class DateUtils {
     }
 
     /**
-     *
      * 得到指定日期在当在一年中的月份数，从1开始
      *
-     * @param date
-     *            指定的日期
-     *
+     * @param date 指定的日期
      * @return 指定日期在当在一年中的月份数
-     *
      */
     public static int getMonth(Date date) {
         final Calendar cal = Calendar.getInstance();
@@ -575,14 +468,10 @@ public class DateUtils {
     }
 
     /**
-     *
      * 得到指定日期在当在一月中的号数，从1开始
      *
-     * @param date
-     *            指定的日期
-     *
+     * @param date 指定的日期
      * @return 日期在当在一月中的号数
-     *
      */
     public static int getDay(Date date) {
         final Calendar cal = Calendar.getInstance();
@@ -591,16 +480,12 @@ public class DateUtils {
     }
 
     /**
-     *
      * 得到指定日期在当前星期中的天数，例如2004-5-20日，返回5，
-     *
+     * <p>
      * 每周以周日为开始按1计算，所以星期四为5
      *
-     * @param date
-     *            指定的日期
-     *
+     * @param date 指定的日期
      * @return 返回天数
-     *
      */
     public static int getDateWeekDay(Date date) {
         final Calendar cal = Calendar.getInstance();
@@ -609,14 +494,10 @@ public class DateUtils {
     }
 
     /**
-     *
      * 得到指定日期在当前周内是第几天 (周一开始)
      *
-     * @param date
-     *            指定日期
-     *
+     * @param date 指定日期
      * @return 周内天书
-     *
      */
     public static int getWeek(Date date) {
         final Calendar cal = Calendar.getInstance();
@@ -625,11 +506,10 @@ public class DateUtils {
     }
 
     /**
-     *
      * 根据传入的格式，获取日期格式化实例，如果传入格式为空，则为默认格式 yyyy-MM-dd
+     *
      * @param pattern 日期格式
      * @return 格式化实例
-     *
      */
     public static DateFormat getDateFormat(String pattern) {
         if (StringUtils.isEmpty(pattern.trim())) {
@@ -640,17 +520,11 @@ public class DateUtils {
     }
 
     /**
-     *
      * 计算两个时间之间的时间差
      *
-     * @param from
-     *            开始
-     *
-     * @param to
-     *            结束
-     *
+     * @param from 开始
+     * @param to   结束
      * @return 时间差
-     *
      */
     public static long calculateTimeInMillis(Date from, Date to) {
         final Calendar fromCal = DateUtils.getCalendar(from);
@@ -663,14 +537,10 @@ public class DateUtils {
     }
 
     /**
-     *
      * 获取Calendar实例
      *
-     * @param date
-     *            日期类型
-     *
+     * @param date 日期类型
      * @return
-     *
      */
     public static Calendar getCalendar(Date date) {
         final Calendar gc = Calendar.getInstance();
@@ -679,25 +549,20 @@ public class DateUtils {
     }
 
     /**
-     *
      * 根据 yyyyMMdd HH:mm 日期格式，转换成数据库使用的时间戳格式
      *
-     * @param strTimestamp
-     *            以 yyyyMMdd HH:mm 格式的时间字符串
-     *
+     * @param strTimestamp 以 yyyyMMdd HH:mm 格式的时间字符串
      * @return 转换后的时间戳
-     *
      */
     public static java.sql.Timestamp parseTimestamp(String strTimestamp) {
         return new java.sql.Timestamp(DateUtils.parseDateTime(strTimestamp).getTime());
     }
 
     /**
-     *
      * 根据出生时间计算岁数
      * Date birthday
-     * @return 年龄
      *
+     * @return 年龄
      */
     public static int getAgeByBirth(Date birthday) {
         int age = 0;
@@ -717,8 +582,7 @@ public class DateUtils {
                 }
             }
             return age;
-        }
-        catch (final Exception e) {// 兼容性更强,异常后返回数据
+        } catch (final Exception e) {// 兼容性更强,异常后返回数据
             return 0;
         }
     }

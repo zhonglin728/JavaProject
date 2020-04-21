@@ -17,7 +17,7 @@ public interface IHelloServiceInter {
 
     Map saveUserEntity(User user);
 
-     Map gitHubApi(String qq);
+    Map gitHubApi(String qq);
 
-     Map getLayApi(String page,String limit);
+    Map getLayApi(String page, String limit);
 }

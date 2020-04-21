@@ -16,7 +16,7 @@ import java.util.Set;
  * @Version V1.0
  **/
 public class ScanPackageUtils {
-    public static void main(String [] args ){
+    public static void main(String[] args) {
 // true：默认TypeFilter生效，这种模式会查询出许多不符合你要求的class名
         // false：关闭默认TypeFilter
         ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(

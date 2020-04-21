@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 /**
  * Book 实体类
- *
+ * <p>
  * Created by bysocket on 30/09/2017.
  */
 @Entity

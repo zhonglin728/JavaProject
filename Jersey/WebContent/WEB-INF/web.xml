@@ -2,51 +2,50 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
-         
-     <!-- 加载Log4J 配置文件  -->  
-	<context-param>  
-	    <param-name>log4jConfigLocation</param-name>  
-	    <param-value>WEB-INF/log4j.xml</param-value>  
-	</context-param>     
-	<!-- 开启监控   3秒扫描一次配置文件的变动 -->
-	<context-param>  
-	    <param-name>log4jRefreshInterval</param-name>  
-	      <param-value>3000</param-value>  
-	 </context-param>  
-	<listener>  
-	
-	    <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>  
-	 </listener>  
-	 
-	<!-- 提供request  session  供应 rest   @Autowired  注入   -->
-	<listener>    
-        <listener-class>    
-            org.springframework.web.context.request.RequestContextListener
-        </listener-class>    
-	</listener>
 
-   
-   
-      <!-- 配置请求过滤器，编码格式设为UTF-8，避免中文乱码--> 
+    <!-- 加载Log4J 配置文件  -->
+    <context-param>
+        <param-name>log4jConfigLocation</param-name>
+        <param-value>WEB-INF/log4j.xml</param-value>
+    </context-param>
+    <!-- 开启监控   3秒扫描一次配置文件的变动 -->
+    <context-param>
+        <param-name>log4jRefreshInterval</param-name>
+        <param-value>3000</param-value>
+    </context-param>
+    <listener>
+
+        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    </listener>
+
+    <!-- 提供request  session  供应 rest   @Autowired  注入   -->
+    <listener>
+        <listener-class>
+            org.springframework.web.context.request.RequestContextListener
+        </listener-class>
+    </listener>
+
+
+    <!-- 配置请求过滤器，编码格式设为UTF-8，避免中文乱码-->
     <filter>
-       <filter-name>springUtf8Encoding</filter-name>
-       <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-       <init-param>
-           <param-name>encoding</param-name>
-           <param-value>UTF-8</param-value>
-       </init-param>
-       <init-param>
-           <param-name>forceEncoding</param-name>
-           <param-value>true</param-value>
-       </init-param> 
+        <filter-name>springUtf8Encoding</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
     </filter>
     <filter-mapping>
-       <filter-name>springUtf8Encoding</filter-name>
-       <url-pattern>/*</url-pattern>
-   </filter-mapping>
-   
-   
-	<!-- Jersey! -->
+        <filter-name>springUtf8Encoding</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+    <!-- Jersey! -->
     <servlet>
         <servlet-name>JerseyServlet</servlet-name>
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
@@ -61,58 +60,54 @@
         <servlet-name>JerseyServlet</servlet-name>
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
-    
-    
+
+
     <!--spring mvc-->
-	<servlet>
-	    <servlet-name>springMVC</servlet-name>
-	    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-	    <init-param>
+    <servlet>
+        <servlet-name>springMVC</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
             <param-name>contextConfigLocation</param-name>
             <param-value>WEB-INF/springMVC-servlet.xml</param-value>
         </init-param>
-	    <load-on-startup>2</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-	    <servlet-name>springMVC</servlet-name>
-	    <url-pattern>/</url-pattern>
-	</servlet-mapping>
-	
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>springMVC</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
 
 
-	<!-- 集成  cxf服务  2017-6-14 11:38:46-->
-	<servlet>  
-	   <servlet-name>CXFServlet</servlet-name>  
-	   <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>  
-	   <load-on-startup>3</load-on-startup>  
-	 </servlet>  
-	 <servlet-mapping>  
-	   <servlet-name>CXFServlet</servlet-name>  
-	   <url-pattern>/service/*</url-pattern>  
-	 </servlet-mapping> 
-	
-	
-	
-	<!-- 加载Spring配置 -->
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>
-			WEB-INF/bean.xml
-		</param-value>
-	</context-param>
-	
-	
-	<listener>
-	  <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
- 	</listener>
-    
-    
+    <!-- 集成  cxf服务  2017-6-14 11:38:46-->
+    <servlet>
+        <servlet-name>CXFServlet</servlet-name>
+        <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+        <load-on-startup>3</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CXFServlet</servlet-name>
+        <url-pattern>/service/*</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- 加载Spring配置 -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            WEB-INF/bean.xml
+        </param-value>
+    </context-param>
+
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+
     <!--欢迎页面-->
-   <welcome-file-list>  
-        <welcome-file>index.jsp</welcome-file>  
-    </welcome-file-list> 
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
 
-   
-   
-   
+
 </web-app>

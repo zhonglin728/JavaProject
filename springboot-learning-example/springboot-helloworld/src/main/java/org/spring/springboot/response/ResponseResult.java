@@ -14,7 +14,7 @@ import java.io.Serializable;
  **/
 @Getter
 @Setter
-public class ResponseResult<T>  {
+public class ResponseResult<T> {
 
     //请求成功返回码为：0000
     private static final String successCode = "0000";
@@ -25,27 +25,28 @@ public class ResponseResult<T>  {
     //返回描述
     private String msg;
 
-    public ResponseResult(){
+    public ResponseResult() {
         this.code = successCode;
         this.msg = "请求成功";
     }
 
-    public ResponseResult(String code,String msg){
+    public ResponseResult(String code, String msg) {
         this();
         this.code = code;
         this.msg = msg;
     }
-    public ResponseResult(String code,String msg,T data){
+
+    public ResponseResult(String code, String msg, T data) {
         this();
         this.code = code;
         this.msg = msg;
-        this.data = data;
-    }
-    public ResponseResult(T data){
-        this();
         this.data = data;
     }
 
+    public ResponseResult(T data) {
+        this();
+        this.data = data;
+    }
 
 
 }

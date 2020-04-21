@@ -2,16 +2,17 @@ package com.pingan;
 
 import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.server.ResourceConfig;
+
 /**
  * jersey 扫描包
- * @author Administrator
  *
+ * @author Administrator
  */
 public class MyRestWebService extends ResourceConfig {
-	@SuppressWarnings("deprecation")
-	public MyRestWebService(){
-       packages("com.pingan.restful");
-       register(LoggingFilter.class);
+    @SuppressWarnings("deprecation")
+    public MyRestWebService() {
+        packages("com.pingan.restful");
+        register(LoggingFilter.class);
     }
 
 }

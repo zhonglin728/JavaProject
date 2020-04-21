@@ -1,14 +1,14 @@
 package com.dingding.domain;
 
 public enum MsgTypeEnum {
-    TEXT("text", 1),//文本消息
-    IMAGE("image", 2),//图片消息
-    VOICE("voice", 3),//语音消息
-    FILE("file", 4),//文件消息
-    LINK("link",5),//链接消息
-    OA("oa",6),//OA消息
-    MARKDOWN("markdown",7),//markdown消息
-    ACTION_CARD("action_card",8);//卡片消息
+    TEXT("text" , 1),//文本消息
+    IMAGE("image" , 2),//图片消息
+    VOICE("voice" , 3),//语音消息
+    FILE("file" , 4),//文件消息
+    LINK("link" , 5),//链接消息
+    OA("oa" , 6),//OA消息
+    MARKDOWN("markdown" , 7),//markdown消息
+    ACTION_CARD("action_card" , 8);//卡片消息
 
     private String type;
     private int index;

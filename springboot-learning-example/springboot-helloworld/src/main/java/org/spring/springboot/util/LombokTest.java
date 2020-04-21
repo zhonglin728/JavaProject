@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 @Log
 public class LombokTest {
 
-    public static void main(String arg []) throws JsonProcessingException {
-        String [] arr = new String []{"a","b"};
+    public static void main(String arg[]) throws JsonProcessingException {
+        String[] arr = new String[]{"a" , "b"};
 
         val user = User.builder().id(100).age(23).address("湖北襄阳！").build();
         System.out.println(findUser(user));
@@ -32,16 +32,15 @@ public class LombokTest {
         log.info(new ObjectMapper().writeValueAsString(user));
 
 
-
         Map map = new HashMap<>();
-        map.put("type","a");
-        map.put("type","b");
+        map.put("type" , "a");
+        map.put("type" , "b");
         System.out.println(map);
 
 
         User user1 = new User();
         user1 = null;
-        String  xx= Optional.ofNullable(user1).map(User::getName).orElse("xx");
+        String xx = Optional.ofNullable(user1).map(User::getName).orElse("xx");
         System.out.println(xx);
 
 
@@ -49,24 +48,21 @@ public class LombokTest {
 
 
     /**
-     *
      * @param user
      * @return
      */
-    public static String findUser(@NonNull User user){
+    public static String findUser(@NonNull User user) {
         return Optional.ofNullable(user).map(User::getName).orElse("****null****");
     }
 
     /**
-     *
      * @param s
      * @return
      */
-    public static List<String> findArr(@org.springframework.lang.NonNull String ...s){
-       final val list = Arrays.stream(s).map(String::toUpperCase).collect(Collectors.toList());
+    public static List<String> findArr(@org.springframework.lang.NonNull String... s) {
+        final val list = Arrays.stream(s).map(String::toUpperCase).collect(Collectors.toList());
         return list;
     }
-
 
 
 }

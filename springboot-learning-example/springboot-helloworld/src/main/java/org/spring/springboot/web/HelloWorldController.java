@@ -22,7 +22,6 @@ import java.util.Optional;
 /**
  * Spring Boot HelloWorld 案例
  *
- *
  * @author bysocket
  * @date 16/4/26
  */
@@ -37,9 +36,9 @@ public class HelloWorldController {
     @RequestMapping("err")
     public String sayHello() {
         try {
-            System.out.println(1/0);
-        }catch (Exception e){
-            throw  new OrderPeriodException("","自定义错误消息！");
+            System.out.println(1 / 0);
+        } catch (Exception e) {
+            throw new OrderPeriodException("" , "自定义错误消息！");
         }
         return "Hello,World!";
 
@@ -47,10 +46,11 @@ public class HelloWorldController {
 
     /**
      * 测试 200 状态码
+     *
      * @return
      */
     @RequestMapping("getOk")
-    public ResponseEntity<ResponseResult> getXx(){
+    public ResponseEntity<ResponseResult> getXx() {
         Map client = eurekaConfig.getServiceUrl();
         String s = Optional.ofNullable(client.get("defaultZone")).map(Object::toString).orElse("default");
         List<String> strings = Splitter.onPattern("://").omitEmptyStrings().trimResults().splitToList(s);
@@ -62,18 +62,19 @@ public class HelloWorldController {
 
     /**
      * 测试 401状态码
+     *
      * @return
      */
     @RequestMapping("getUnauth")
-    public ResponseEntity<ResponseResult> getUnauth(){
-        Map<String, List> data = ImmutableMap.of("list",ImmutableList.of("张飞", "关于", "刘备") );
+    public ResponseEntity<ResponseResult> getUnauth() {
+        Map<String, List> data = ImmutableMap.of("list" , ImmutableList.of("张飞" , "关于" , "刘备"));
         HttpHeaders httpHeaders = new HttpHeaders();
 
-        httpHeaders.add("hh","zhonglinxxoo");
-        httpHeaders.add("jj","asasaasaa");
+        httpHeaders.add("hh" , "zhonglinxxoo");
+        httpHeaders.add("jj" , "asasaasaa");
 
-        ResponseResult result = new ResponseResult("200", "请求成功！", data);
-        ResponseEntity<ResponseResult> resultEntity = new ResponseEntity<>(result,httpHeaders, HttpStatus.UNAUTHORIZED);
+        ResponseResult result = new ResponseResult("200" , "请求成功！" , data);
+        ResponseEntity<ResponseResult> resultEntity = new ResponseEntity<>(result, httpHeaders, HttpStatus.UNAUTHORIZED);
 
         return resultEntity;
     }

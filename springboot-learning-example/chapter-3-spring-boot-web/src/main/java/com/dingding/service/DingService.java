@@ -55,11 +55,11 @@ public class DingService {
     private DingMapper userMapper;
     //申请的小程序ID
     @Value("${ding.agentId}")
-    private  Long agentId;
+    private Long agentId;
     @Value("${ding.appKey}")
-    private  String appKey;
+    private String appKey;
     @Value(value = "${ding.appSecre}")
-    private  String appSecre;
+    private String appSecre;
     //获取Token接口
     @Value(value = "${ding.gettokenUrl}")
     private String gettokenUrl;
@@ -80,12 +80,12 @@ public class DingService {
     private String globToken = "";
 
 
-    private  String zlUserId = "11392835271205976";
-    private  String bylUserId = "manager7767";
+    private String zlUserId = "11392835271205976";
+    private String bylUserId = "manager7767";
 
-    private  String zlPhone = "17688538142";
+    private String zlPhone = "17688538142";
 
-    private  String zlRoleId = "1183616592";
+    private String zlRoleId = "1183616592";
 
 
     @PostConstruct
@@ -95,21 +95,24 @@ public class DingService {
         syncUser();
         log.info("同步钉钉用户信息到本地库完毕！");
     }
-    public void runTest (){
-        sendToConversationText(agentId,zlUserId, "现在时间："+DateUtils.getStringToday()+"请及时打卡！");
+
+    public void runTest() {
+        sendToConversationText(agentId, zlUserId, "现在时间：" + DateUtils.getStringToday() + "请及时打卡！");
         /*send_to_conversationMarkdown(agentId,bylUserId,"公司通知！","# 今天吃什么"+ DateUtils.getStringToday()+"\n" +
                 "菜单\n" +
                 "1. 牛肉!\n" +
                 "2. 猪肉!");*/
 
     }
+
     /**
-     *  全部发送消息
+     * 全部发送消息
+     *
      * @param agentId
      * @param content
      * @return 任务ID
      */
-    public Long sendToConversationTextAll(Long agentId,String content) {
+    public Long sendToConversationTextAll(Long agentId, String content) {
         try {
             DingTalkClient client = new DefaultDingTalkClient(asyncsendUrl);
             OapiMessageCorpconversationAsyncsendV2Request req = new OapiMessageCorpconversationAsyncsendV2Request();
@@ -130,11 +133,12 @@ public class DingService {
         }
         return 0L;
     }
+
     /**
-     *
      * 指定人发送text消息
+     *
      * @param agentId 应用ID
-     *  @param userId 用户ID
+     * @param userId  用户ID
      * @param content 内容
      * @return 任务ID
      */
@@ -150,7 +154,7 @@ public class DingService {
             text.setContent(content);
             msg.setText(text);
             req.setMsg(msg);
-            OapiMessageCorpconversationAsyncsendV2Response rsp = client.execute(req,globToken);
+            OapiMessageCorpconversationAsyncsendV2Response rsp = client.execute(req, globToken);
             printlnJson(rsp.getBody());
             return rsp.getTaskId();
         } catch (ApiException e) {
@@ -161,13 +165,14 @@ public class DingService {
 
     /**
      * 发送markdown消息
-     * @param agentId 应用ID
+     *
+     * @param agentId  应用ID
      * @param zlUserId 用户ID
-     * @param title markdown标题
-     * @param content markdown内容
+     * @param title    markdown标题
+     * @param content  markdown内容
      * @return 任务ID
      */
-    public  Long sendToConversationMarkdown(Long agentId,String zlUserId,String title ,String content) {
+    public Long sendToConversationMarkdown(Long agentId, String zlUserId, String title, String content) {
         try {
             DingTalkClient client = new DefaultDingTalkClient(asyncsendUrl);
             OapiMessageCorpconversationAsyncsendV2Request req = new OapiMessageCorpconversationAsyncsendV2Request();
@@ -192,11 +197,12 @@ public class DingService {
 
     /**
      * 部门发送消息！
+     *
      * @param deptList 部门ID
-     * @param content 消息内容
+     * @param content  消息内容
      * @return 任务ID
      */
-    public Long sendToConversationTextDept(String deptList,String content){
+    public Long sendToConversationTextDept(String deptList, String content) {
         try {
             DingTalkClient client = new DefaultDingTalkClient(asyncsendUrl);
             OapiMessageCorpconversationAsyncsendV2Request req = new OapiMessageCorpconversationAsyncsendV2Request();
@@ -217,11 +223,13 @@ public class DingService {
         }
         return 0L;
     }
+
     /**
      * 获取所有的部门
+     *
      * @return
      */
-    public List<OapiDepartmentListResponse.Department> getDeptList(){
+    public List<OapiDepartmentListResponse.Department> getDeptList() {
         try {
             DingTalkClient client = new DefaultDingTalkClient(deptUrl);
             OapiDepartmentListRequest req = new OapiDepartmentListRequest();
@@ -237,11 +245,12 @@ public class DingService {
 
     /**
      * 获取部门下的用户详细信息！
-     * @param id 部门ID
+     *
+     * @param id     部门ID
      * @param offSet 分页
-     * @param size 页码
+     * @param size   页码
      */
-    public  List<OapiUserListbypageResponse.Userlist> getUserListInfo(Long id,Long offSet,Long size) {
+    public List<OapiUserListbypageResponse.Userlist> getUserListInfo(Long id, Long offSet, Long size) {
         try {
             DingTalkClient client = new DefaultDingTalkClient(deptUserInfoUrl);
             OapiUserListbypageRequest req = new OapiUserListbypageRequest();
@@ -262,9 +271,10 @@ public class DingService {
     /**
      * 根据部门ID获取用户列表简略信息
      * simplelist
+     *
      * @param id 部门ID
      */
-    public  List<OapiUserSimplelistResponse.Userlist> simplelist(Long id) {
+    public List<OapiUserSimplelistResponse.Userlist> simplelist(Long id) {
         try {
             DingTalkClient client = new DefaultDingTalkClient(deptUserUrl);
             OapiUserSimplelistRequest req = new OapiUserSimplelistRequest();
@@ -279,10 +289,11 @@ public class DingService {
         }
         return Lists.newArrayList();
     }
+
     /**
      * 根据手机号码查询用户的userId
      */
-    public  String getByMobile() {
+    public String getByMobile() {
         try {
             DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/get_by_mobile");
             OapiUserGetByMobileRequest req = new OapiUserGetByMobileRequest();
@@ -301,12 +312,12 @@ public class DingService {
     /**
      * 同步用户信息！
      */
-    public void syncUser(){
+    public void syncUser() {
         //获取所有部门
         List<OapiDepartmentListResponse.Department> deptList = getDeptList();
         List<OapiUserListbypageResponse.Userlist> userlists = new ArrayList<>();
-        deptList.forEach(v->{
-            List<OapiUserListbypageResponse.Userlist> list = getUserListInfo(v.getId(), 1,Lists.newArrayList());
+        deptList.forEach(v -> {
+            List<OapiUserListbypageResponse.Userlist> list = getUserListInfo(v.getId(), 1, Lists.newArrayList());
             userlists.addAll(list);
         });
         //根据Useid去重
@@ -320,7 +331,7 @@ public class DingService {
             BeanUtils.copyProperties(v, user);
             return user;
         }).collect(Collectors.toList());
-        userList.forEach(v->{
+        userList.forEach(v -> {
             //不存在就添加 否则更新！
             int count = userMapper.insertOrUpdate(v);
         });
@@ -329,24 +340,26 @@ public class DingService {
     /**
      * 递归 分页 去读取 部门下面的用户信息！
      * 递归逐层返回！
+     *
      * @param id
      * @param listRes
      * @return
      */
-    public List<OapiUserListbypageResponse.Userlist> getUserListInfo(Long id,int index,List<OapiUserListbypageResponse.Userlist> listRes){
+    public List<OapiUserListbypageResponse.Userlist> getUserListInfo(Long id, int index, List<OapiUserListbypageResponse.Userlist> listRes) {
         List<OapiUserListbypageResponse.Userlist> list = new ArrayList<>();
-        list = getUserListInfo(id, Long.valueOf(index-1)*100L, 100L);
-        if (!CollectionUtils.isEmpty(list) && list.size()>0){
+        list = getUserListInfo(id, Long.valueOf(index - 1) * 100L, 100L);
+        if (!CollectionUtils.isEmpty(list) && list.size() > 0) {
             index++;
-            getUserListInfo(id,index,listRes);
+            getUserListInfo(id, index, listRes);
             listRes.addAll(list);
         }
         return listRes;
     }
+
     /**
      * 获取token
      */
-    public  String getToken() {
+    public String getToken() {
         try {
             DingTalkClient client = new DefaultDingTalkClient(gettokenUrl);
             OapiGettokenRequest req = new OapiGettokenRequest();
@@ -373,15 +386,12 @@ public class DingService {
     }
 
 
-
-
-
-
     /**
      * 格式化JSON数据！
+     *
      * @param object
      */
-    public void printlnJson(Object object){
+    public void printlnJson(Object object) {
         String s = String.valueOf(object);
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -412,7 +422,7 @@ public class DingService {
                         "[\\u4E00-\\u9FA5]+")) {
                     t2 = PinyinHelper.toHanyuPinyinStringArray(t1[i], t3);
                     t4 += t2[0];
-                } else{
+                } else {
                     t4 += java.lang.Character.toString(t1[i]);
                 }
             }

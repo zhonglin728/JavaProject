@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 错误码案例
- *
+ * <p>
  * Created by bysocket on 16/4/26.
  */
 @RestController
@@ -25,12 +25,12 @@ public class ErrorJsonController {
      * @return
      * @throws GlobalErrorInfoException
      */
-    @RequestMapping(value = "/api/city", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/city" , method = RequestMethod.GET)
     public ResultBody findOneCity(@RequestParam("cityName") String cityName) throws GlobalErrorInfoException {
         // 入参为空
         if (StringUtils.isEmpty(cityName)) {
             throw new GlobalErrorInfoException(CityErrorInfoEnum.PARAMS_NO_COMPLETE);
         }
-        return new ResultBody(new City(1L,2L,"温岭","是我的故乡"));
+        return new ResultBody(new City(1L, 2L, "温岭" , "是我的故乡"));
     }
 }

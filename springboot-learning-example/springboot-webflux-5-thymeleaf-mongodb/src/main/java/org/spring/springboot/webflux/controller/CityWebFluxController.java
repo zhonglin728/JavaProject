@@ -52,7 +52,7 @@ public class CityWebFluxController {
     @GetMapping("/page/list")
     public String listPage(final Model model) {
         final Flux<City> cityFluxList = cityHandler.findAllCity();
-        model.addAttribute("cityList", cityFluxList);
+        model.addAttribute("cityList" , cityFluxList);
         return CITY_LIST_PATH_NAME;
     }
 
@@ -60,7 +60,7 @@ public class CityWebFluxController {
     public String getByCityName(final Model model,
                                 @RequestParam("cityName") String cityName) {
         final Mono<City> city = cityHandler.getByCityName(cityName);
-        model.addAttribute("city", city);
+        model.addAttribute("city" , city);
         return CITY_PATH_NAME;
     }
 }

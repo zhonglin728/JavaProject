@@ -20,12 +20,12 @@ public class HelloService implements IHelloServiceInter {
     private GetHello getHello; //注入rpc
     @Autowired
     private LayApi layApi;
-   @Autowired
-   private GitHubApi gitHubApi;
+    @Autowired
+    private GitHubApi gitHubApi;
 
 
     @Override
-    public String sayHello(){
+    public String sayHello() {
         return getHello.sayHello(); // 提供一个hello World
     }
 
@@ -37,8 +37,8 @@ public class HelloService implements IHelloServiceInter {
     @Override
     public Map saveUser(String id, String userName, String userPassword) {
         //Map map1 = layuiApi.getUser("10", "1");
-        Map map = new RestTemplate().getForEntity("https://www.layui.com/demo/table/user/?page=2&limit=10", Map.class).getBody();
-        return getHello.saveUser(id,userName,userPassword);
+        Map map = new RestTemplate().getForEntity("https://www.layui.com/demo/table/user/?page=2&limit=10" , Map.class).getBody();
+        return getHello.saveUser(id, userName, userPassword);
     }
 
     @Override
@@ -47,14 +47,14 @@ public class HelloService implements IHelloServiceInter {
     }
 
     @Override
-    public Map gitHubApi(String qq){
+    public Map gitHubApi(String qq) {
         Map map = gitHubApi.searchRepo("a");
         return map;
     }
 
     @Override
     public Map getLayApi(String page, String limit) {
-        Map student = layApi.getLayApi("1", "10");
+        Map student = layApi.getLayApi("1" , "10");
         return student;
     }
 }

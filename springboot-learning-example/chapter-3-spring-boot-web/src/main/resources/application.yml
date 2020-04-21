@@ -2,6 +2,16 @@ ding:
   agentId: 708739600
   appSecre: 1q2JoS70fdiRxaX1vaIErylbmjpcycZES_1Faq7ooOr2x-s6J1Db9NWiPvDJM4c5
   appKey: dingvd6fv1o3l5saykxe
+  # 定时任务
+  taskTest: 0 45 16 * * 1,2,3,4,5
+  task: 0 0 0 * * 1
+  task1: 0 25 17 * * 1,2,3,4,5
+  task2: 0 25 17 * * 5
+  task3: 0 45 20 * * 1,2,3,4,5
+  task4: 0 45 20 * * 5
+  task5: 0 45 10 * * 7
+  task6: 0 30 10 * * 6
+  task7: 0 30 10 * * 7
   # 获取token
   gettokenUrl: https://oapi.dingtalk.com/gettoken
   # 发送消息！
@@ -28,7 +38,7 @@ spring:
       enabled: false
   datasource:
     dynamic:
-      primary: ding #设置默认的数据源或者数据源组,默认值即为master
+      primary: jira #设置默认的数据源或者数据源组,默认值即为master
       datasource:
         ding:
           username: root

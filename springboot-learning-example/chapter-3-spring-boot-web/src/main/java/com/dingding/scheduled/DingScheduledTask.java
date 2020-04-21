@@ -109,8 +109,8 @@ public class DingScheduledTask {
      * 模板3 发送个人
      * 工作日20:45
      */
-    //@Scheduled(cron = "0 45 20 * * 1,2,3,4,5")
-    @Scheduled(fixedRate  = 1000*60*60)
+    @Scheduled(cron = "0 45 20 * * 1,2,3,4,5")
+    //@Scheduled(fixedRate  = 1000*5)
     public void task3(){
         String content = readTemplateToString("3报工不符合通知.ftl", Maps.newHashMap());
         List<OaUser> users = jiraMapper.getTaskOauth3();
@@ -226,15 +226,13 @@ public class DingScheduledTask {
                         .stream()
                         .findFirst()
                         .orElse(new User().setUserid(""));
-                System.out.println(v);
-                //dingService.sendToConversationText(agentId, u.getUserid(),content);
+                dingService.sendToConversationText(agentId, u.getUserid(),content);
             }else{//否则只匹配 英文名
                 User u = dingMapper.selectList(new QueryWrapper<User>().lambda().eq(true, User::getNameEn, v.getNameEn()))
                         .stream()
                         .findFirst()
                         .orElse(new User().setUserid(""));
-                System.out.println(v);
-                //dingService.sendToConversationText(agentId, u.getUserid(),content);
+                dingService.sendToConversationText(agentId, u.getUserid(),content);
             }
             log.info("用户:{}发送消息，内容是:{}",v.getNameEn(),content);
         });

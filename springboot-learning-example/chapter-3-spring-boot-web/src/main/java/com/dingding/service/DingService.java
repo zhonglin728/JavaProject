@@ -52,7 +52,7 @@ public class DingService {
 
 
     @Autowired
-    private DingMapper userMapper;
+    private DingMapper dingMapper;
     //申请的小程序ID
     @Value("${ding.agentId}")
     private Long agentId;
@@ -333,7 +333,7 @@ public class DingService {
         }).collect(Collectors.toList());
         userList.forEach(v -> {
             //不存在就添加 否则更新！
-            int count = userMapper.insertOrUpdate(v);
+            int count = dingMapper.insertOrUpdate(v);
         });
     }
 

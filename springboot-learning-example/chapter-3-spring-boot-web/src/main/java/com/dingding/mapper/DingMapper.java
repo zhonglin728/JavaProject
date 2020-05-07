@@ -12,7 +12,7 @@ import com.dingding.domain.User;
  * @author zhonglin
  * @since 2020-04-17
  */
-@DS("ding")
+@DS("jira")
 public interface DingMapper extends BaseMapper<User> {
 
     int insertOrUpdate(User user);

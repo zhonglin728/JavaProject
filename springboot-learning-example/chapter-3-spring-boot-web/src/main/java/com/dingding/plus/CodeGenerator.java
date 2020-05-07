@@ -52,7 +52,7 @@ public class CodeGenerator {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://127.0.0.1:3306/tencent?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false");
+        dsc.setUrl("jdbc:mysql://127.0.0.1:3306/ding?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("root");

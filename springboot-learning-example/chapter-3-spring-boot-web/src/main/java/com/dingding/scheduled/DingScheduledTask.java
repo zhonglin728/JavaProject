@@ -226,13 +226,14 @@ public class DingScheduledTask {
                         .stream()
                         .findFirst()
                         .orElse(new User().setUserid(""));
-                dingService.sendToConversationText(agentId, u.getUserid(),content);
+                //dingService.sendToConversationText(agentId, u.getUserid(),content);
+                dingService.sendToConversationMarkdown(agentId,u.getUserid(),"报工提醒",content);
             }else{//否则只匹配 英文名
                 User u = dingMapper.selectList(new QueryWrapper<User>().lambda().eq(true, User::getNameEn, v.getNameEn()))
                         .stream()
                         .findFirst()
                         .orElse(new User().setUserid(""));
-                dingService.sendToConversationText(agentId, u.getUserid(),content);
+                dingService.sendToConversationMarkdown(agentId,u.getUserid(),"报工提醒",content);
             }
             log.info("用户:{}发送消息，内容是:{}",v.getNameEn(),content);
         });

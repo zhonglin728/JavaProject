@@ -115,6 +115,13 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/taobao-sdk-java-auto_1479188381469-20200409-source.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>com.xxx.www</groupId>
+            <artifactId>smart-attachments.jar</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/smart-attachments-2.3.3.jar</systemPath>
+        </dependency>
         <!--钉钉JAR end-->
 
         <!-- 发送消息时模板引擎 -->

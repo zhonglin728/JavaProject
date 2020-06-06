@@ -1,7 +1,7 @@
 ding:
-  agentId: 708739600
-  appSecre: 1q2JoS70fdiRxaX1vaIErylbmjpcycZES_1Faq7ooOr2x-s6J1Db9NWiPvDJM4c5
-  appKey: dingvd6fv1o3l5saykxe
+  agentId: 762559675
+  appSecre: 1d2jSxkF2jwbLgtbw1i7YeeNq8KMcF1S0TTwAkOzspxj8IF-HUpDqvJBvnHKjKSv
+  appKey: dingj3qkv91h0wksfqtm
   # 定时任务
   taskTest: 0 45 16 * * 1,2,3,4,5
   task: 0 0 0 * * 1

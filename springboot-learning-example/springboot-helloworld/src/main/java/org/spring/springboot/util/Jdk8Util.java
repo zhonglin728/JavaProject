@@ -180,7 +180,6 @@ public class Jdk8Util {
         String[] strArray  = Stream.of("hello","world","tom").toArray(String[]::new);
         List<String> strings = Arrays.asList(strArray);
         List<String> list2 = Stream.of("hello","world","tom").collect(toCollection(ArrayList::new));
-
         //Stream.of 合并 list
         System.out.println("stream of合并集合数据*******************");
         List<?> collect4 = Stream.of(

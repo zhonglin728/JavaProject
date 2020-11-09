@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.LongFunction;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -208,6 +209,7 @@ public class Jdk8Util {
 
         // reduce 求聚合函数求性别的max和sum值    ->  【 (s->s.getSex()) 可以简写为  (Student::getSex)】
         int max = list.parallelStream().mapToInt(Student::getSex).reduce(0,Integer::max);
+        list.stream().mapToLong(v-> 0).reduce(0, Long::max);
         System.out.println(max);
         int sum = list.parallelStream().map(v->v.getSex()).reduce(0,Integer::sum);
         System.out.println(sum);

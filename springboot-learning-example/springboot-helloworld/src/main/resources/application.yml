@@ -29,3 +29,11 @@ mybatis:
 logging:
   level:
     org.spring.springboot.dao: debug
+
+getui:
+  appid: DGFWOHvp956iAB2NbVBsW9
+  appkey: JP1hJerq9e9C0OOc9b96GA
+  mastersecret: tLCVe0bjkM72azSv2sMjY4
+security:
+  basic:
+    enabled: false

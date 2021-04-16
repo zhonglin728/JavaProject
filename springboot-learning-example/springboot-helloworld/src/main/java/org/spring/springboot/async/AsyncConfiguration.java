@@ -7,6 +7,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @Auther: zhonglin
@@ -18,7 +19,7 @@ import java.util.concurrent.Executor;
 public class AsyncConfiguration {
 
     // 声明一个线程池(并指定线程池的名字)
-    @Bean("taskExecutor")
+    @Bean("taskExecutorXX")
     public Executor asyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         //核心线程数5：线程池创建时候初始化的线程数
@@ -38,6 +39,22 @@ public class AsyncConfiguration {
     @Bean
     public RestTemplate restTemplate(){
         return new RestTemplate();
+    }
+
+
+    @Bean("threadPoolTaskExecutor")
+    public ThreadPoolTaskExecutor taskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        //核心线程数
+        executor.setCorePoolSize(5);
+        //最大线程数
+        executor.setMaxPoolSize(30);
+        //线程队列
+        executor.setQueueCapacity(10000);
+        executor.setThreadNamePrefix("work--XXX--");
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        executor.initialize();
+        return executor;
     }
 
 }

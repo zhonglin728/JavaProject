@@ -21,7 +21,7 @@ public class ScanPackageUtils {
         // false：关闭默认TypeFilter
         ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(
                 false);
-        // 扫描带有自定义注解的类
+        // 扫描带有自定义注解的类。
         provider.addIncludeFilter(new AnnotationTypeFilter(RestController.class));
         // 接口不会被扫描，其子类会被扫描出来
         provider.addIncludeFilter(new AssignableTypeFilter(RestController.class));

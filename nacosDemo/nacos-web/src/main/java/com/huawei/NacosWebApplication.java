@@ -1,19 +1,23 @@
 package com.huawei;
 
-import com.alibaba.nacos.spring.context.annotation.EnableNacos;
-import com.alibaba.nacos.spring.context.annotation.config.NacosPropertySource;
-import com.alibaba.nacos.spring.context.annotation.discovery.EnableNacosDiscovery;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
-@NacosPropertySource(dataId = "example", autoRefreshed = true)
 @EnableDiscoveryClient
 public class NacosWebApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(NacosWebApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(NacosWebApplication.class, args);
+	}
+	/*@LoadBalanced
+	@Bean
+	public RestTemplate restTemplate() {
+		return new RestTemplate();
+	}*/
 
 }

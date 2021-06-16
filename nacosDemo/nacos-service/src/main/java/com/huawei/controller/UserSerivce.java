@@ -1,6 +1,7 @@
 package com.huawei.controller;
 
 import com.google.common.collect.ImmutableMap;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;

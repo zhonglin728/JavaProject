@@ -1,2 +1,8 @@
 springboot-learning-example/chapter-3-spring-boot-web/bootTask.log
 *.gz
+/.idea/*
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/vcs.xml
+/nacosDemo/.idea/workspace.xml

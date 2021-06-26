@@ -1,8 +1,12 @@
 package com.huawei.dingUser.entity;
 
 import java.time.LocalDateTime;
+
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
  * <p>
@@ -13,6 +17,8 @@ import lombok.EqualsAndHashCode;
  * @since 2021-06-24
  */
 @Data
+@Accessors(chain = true)
+@TableName(autoResultMap = true)
 public class DingUser{
 
     private static final long serialVersionUID = 1L;
@@ -30,6 +36,7 @@ public class DingUser{
     /**
      * 表示人员在此部门中的排序，列表是按order的倒序排列输出的，即从大到小排列输出的		（钉钉管理后台里面调整了顺序的话order才有值）
      */
+    @TableField(value="`order`")
     private Integer order;
 
     /**

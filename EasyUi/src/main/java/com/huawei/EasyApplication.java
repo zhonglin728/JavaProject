@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.huawei.dingUser.mapper")
+@MapperScan("com.huawei.*.mapper")
 public class EasyApplication {
 
     public static void main(String[] args) {

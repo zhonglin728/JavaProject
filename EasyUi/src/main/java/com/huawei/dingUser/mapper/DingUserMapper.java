@@ -15,5 +15,4 @@ import java.util.List;
  */
 public interface DingUserMapper extends BaseMapper<DingUser> {
 
-    List<?> selectPage();
 }
